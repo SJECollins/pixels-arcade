@@ -1,6 +1,10 @@
 const holes = document.querySelectorAll(".hole")
 const rabbits = document.querySelectorAll(".rabbit")
-const start = document.getElementById("start")
+// const start = document.getElementById("start")
+
+const startOne = document.getElementById("start-one")
+const startTwo = document.getElementById("start-two")
+const startThree = document.getElementById("start-three")
 
 let time = document.getElementById("time")
 let score = document.getElementById("score")
@@ -10,6 +14,7 @@ let points = 0
 let timeUp = false
 let lastHole
 let countdown
+let difficulty
 
 /**
  * Select a random hole for the rabbit
@@ -39,16 +44,45 @@ function levelSpeed(min, max) {
   return Math.round(Math.random() * (max - min) + min)
 }
 
+function disableButtons() {
+  startOne.removeEventListener("click", levelOne)
+  startTwo.removeEventListener("click", levelTwo)
+  startThree.removeEventListener("click", levelThree)
+  setTimeout(() => {
+    startOne.addEventListener("click", levelOne)
+    startTwo.addEventListener("click", levelTwo)
+    startThree.addEventListener("click", levelThree)
+  }, 30000)
+}
+
 /** 
- * Pop up function
- */
+ * Setting levels
+*/
+
+function levelOne() {
+  difficulty = "easy"
+  disableButtons()
+  startGame()
+}
+
+function levelTwo() {
+  difficulty = "medium"
+  disableButtons()
+  startGame()
+}
+
+function levelThree() {
+  difficulty = "hard"
+  disableButtons()
+  startGame()
+}
 
 function popUp() {
-  if (start.classList.contains("slow")) {
+  if (difficulty === "easy") {
     speed = levelSpeed(1200, 2000)
-  } else if (start.classList.contains("normal")) {
+  } else if (difficulty === "medium") {
     speed = levelSpeed(800, 1500)
-  } else if (start.classList.contains("fast")) {
+  } else if (difficulty === "hard") {
     speed = levelSpeed(400, 1000)
   }
 
@@ -97,6 +131,10 @@ function startGame() {
   }, 1000)
 }
 
+console.log(difficulty)
+
 // Event listeners to start game and register hits
 rabbits.forEach(rabbit => rabbit.addEventListener("click", slap))
-start.addEventListener("click", startGame)
+startOne.addEventListener("click", levelOne)
+startTwo.addEventListener("click", levelTwo)
+startThree.addEventListener("click", levelThree)
