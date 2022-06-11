@@ -1,6 +1,5 @@
 const holes = document.querySelectorAll(".hole")
 const rabbits = document.querySelectorAll(".rabbit")
-// const start = document.getElementById("start")
 
 const startOne = document.getElementById("start-one")
 const startTwo = document.getElementById("start-two")
@@ -23,7 +22,7 @@ let difficulty
  */
 
 function randomHole(holes) {
-  // Variable block scoped. Using 9 as number of holes but could use holes.length
+  // Variable block scoped. Using 9 as number of holes but could use holes.length and code could could be used for different levels with different numbers of holes
   let pickHole = Math.floor(Math.random() * 9)
   let hole = holes[pickHole]
 
@@ -43,6 +42,8 @@ function randomHole(holes) {
 function levelSpeed(min, max) {
   return Math.round(Math.random() * (max - min) + min)
 }
+
+// Function to disable buttons in level selection
 
 function disableButtons() {
   startOne.removeEventListener("click", levelOne)
@@ -77,6 +78,8 @@ function levelThree() {
   startGame()
 }
 
+// Popup function, speed decided but diffculty set by level functions above
+
 function popUp() {
   if (difficulty === "easy") {
     speed = levelSpeed(1200, 2000)
@@ -85,8 +88,6 @@ function popUp() {
   } else if (difficulty === "hard") {
     speed = levelSpeed(400, 1000)
   }
-
-  console.log(speed)
 
   let hole = randomHole(holes)
   hole.classList.add("up")
@@ -130,8 +131,6 @@ function startGame() {
     }
   }, 1000)
 }
-
-console.log(difficulty)
 
 // Event listeners to start game and register hits
 rabbits.forEach(rabbit => rabbit.addEventListener("click", slap))

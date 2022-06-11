@@ -16,10 +16,12 @@
   width: 125px;
   border-radius: 10px;
   background-color: #282828;
+  margin: 25px 0;
 }
 
 .game-selection img {
   height: 100%;
-  width: auto;
+  width: 100%;
   margin-bottom: 5px;
+  object-fit: contain;
 }
