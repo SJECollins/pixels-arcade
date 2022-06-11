@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./assets/css/main.css" rel="stylesheet">
+  <link href="./assets/css/whack.css" rel="stylesheet">
+  <title>Slap-a-Rabbit | Level One</title>
+</head>
+<body>
+  <header><img src="./assets/images/pixel-head-green.png"><a href="index.html" alt="Navigates home"> Arcade </a><img src="./assets/images/pixel-head-green.png"></header>
+  <section id="main-screen">
+    <h1>Slap-a-Rabbit</h1>
+
+    <button id="start" class="slow">Level One: Start!</button>
+
+    <div id="game-over">
+      <div id="end">
+          <h2>Game Over!</h2>
+          <label for="end-score">Your Score: </label>
+          <span id="end-score">0</span>
+          <a href="whack.html">Level Select</a>
+          <a href="index.html">Home</a>
+      </div>
+  </div>
+
+    <div id="game-window">
+      <div class="hole" id="hole1">
+        <div class="rabbit"></div>
+      </div>
+      <div class="hole" id="hole2">
+        <div class="rabbit"></div>
+      </div>
+      <div class="hole" id="hole3">
+        <div class="rabbit"></div>
+      </div>
+      <div class="hole" id="hole4">
+        <div class="rabbit"></div>
+      </div>
+      <div class="hole" id="hole5">
+        <div class="rabbit"></div>
+      </div>
+      <div class="hole" id="hole6">
+        <div class="rabbit"></div>
+      </div>
+      <div class="hole" id="hole7">
+        <div class="rabbit"></div>
+      </div>
+      <div class="hole" id="hole8">
+        <div class="rabbit"></div>
+      </div>
+      <div class="hole" id="hole9">
+        <div class="rabbit"></div>
+      </div>
+    </div>
+
+    <div id="timer">
+      <h2>Time Left: <span id="time">0</span></h2>
+    </div>
+
+    <div id="scoreboard">
+      <h2>Score: <span id="score">0</span></h2>
+    </div>
+    
+  </section>
+  <script src="./assets/scripts/whack.js"></script>
+</body>
+</html>

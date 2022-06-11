@@ -28,38 +28,19 @@ header {
     font-size: 4rem;
     text-align: center;
     line-height: 100px;
-    position: fixed;
+    position: top;
     top: 0;
 }
 
 #main-screen {
-    width: 800px;
-    height: 600px;
+    width: 1000px;
+    height: 800px;
     border-radius: 50px;
     background-color: #EEF1DB;
     text-align: center;
 }
 
 h1 {
-    font-size: 2.5rem;
-    padding: 2rem;
-}
-
-#game-list {
-    height: 400px;
-    width: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 50px;
-    padding: 40px;
-}
-
-.game-selection {
-    border: 1px solid black;
-    border-radius: 10px;
-    height: 120px;
-    width: 100px;
-    border-radius: 10px;
+    font-size: 2rem;
+    padding: 1rem;
 }
