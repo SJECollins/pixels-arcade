@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/snake.css" rel="stylesheet">
+  <title>Snake</title>
+</head>
+<body>
+  <header>
+    <img src="assets/images/pixel-head-green.png"><a href="index.html" alt="Navigates home"> Arcade </a><img src="assets/images/pixel-head-green.png">
+  </header>
+  <section id="main-screen">
+    <h1>Snake</h1>
+
+    <div id="details">
+      <p2>Score: <span id="score">0</span></p2>
+      <button id="start">Start!</button>
+      <p2>Timer: <span id="timer">0</span></p2>
+    </div>
+
+    <div id="game-over">
+      <div id="end">
+          <h2>Game Over!</h2>
+          <p>You survived for <span id="end-time">0</span> seconds and ate <span id="end-score">0</span> pellets!</p>
+          <a href="snake.html">Level Select</a>
+          <a href="index.html">Home</a>
+      </div>
+    </div>
+
+    <div id="board"></div>
+
+    <div id="directions">
+      <button id="north"></button>
+      <div>
+        <button id="west"></button>
+        <button id="east"></button>
+      </div>
+      <button id="south"></button>
+    </div>
+
+  </section>
+  <script src="assets/scripts/snake.js"></script>
+</body>
+</html>
