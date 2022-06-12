@@ -84,7 +84,6 @@ let hasFlippedCard = false
 let lockBoard = true
 let firstCard
 let secondCard
-// let selectedCards = []
 let gameCards = []
 
 const board = document.getElementById("board")
@@ -127,8 +126,6 @@ function createCards() {
     card.appendChild(backFace);
   })
 }
-
-// // gameGrid.sort(() => 0.5 - Math.random())
 
 function flipCard() {
     if (lockBoard) return
@@ -182,23 +179,18 @@ function resetBoard() {
 function levelOne() {
   gameLevel = "easy"
   grid.style.gridTemplateColumns = "auto auto auto auto"
-  // numberOfCards()
-  // createCards()
   startGame()
 }
 
 function levelTwo() {
   gameLevel = "medium"
   grid.style.gridTemplateColumns = "auto auto auto auto auto"
-  // numberOfCards()
-  // createCards()
   startGame()
 }
 
 function levelThree() {
   gameLevel = "hard"
   grid.style.gridTemplateColumns = "auto auto auto auto auto auto"
-
   startGame()
 }
 
