@@ -10,13 +10,14 @@
 }
 
 .game-selection {
-  border: 1px solid black;
-  border-radius: 10px;
   height: 125px;
   width: 125px;
-  border-radius: 10px;
-  background-color: #282828;
   margin: 25px 0;
+}
+
+.background-card {
+  background-color: #282828;
+  border-radius: 10px;
 }
 
 .game-selection img {
