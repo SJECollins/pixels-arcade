@@ -46,3 +46,14 @@ So I read this very interesting tutorial which involved generating the board and
 
 That looked fun and simple. And ended up leading me down a several hour long rabbit of hole of learning that you can't add Event Listeners to objects in an array! So I added them as the cards were created. It took so long because DevTools would only helpfully tell me that whatever.addEventListener "is not a function". Thanks, DevTools. Also, figuring out where to best shuffle the cards was extremely tricky and it took a bit to find a solution which didn't end up shuffling my array before my cards were safely paired! Can't just concat the original array once you've shuffled and sliced your initial selection, cause then you just end up with pairs with only another card between them.
 I think I must have said "Okay, so what I want to do is-" several dozen times out loud to the empty room during this. I want to go back and make it so you can click through the board generation before start the game itself. I'm sure it would be as simple as setting some booleans somewhere. But not just yet.
+
+## Snake
+Classic.
+I watched this 15 minute tutorial:
+- [From Ania Kubow](https://www.youtube.com/watch?v=rui2tRRVtc0&ab_channel=CodewithAniaKub%C3%B3w)
+
+She does a lot of these pure vanilla Javascript games which are pretty fun. And I like that it's pretty clear that she doesn't 100% know everything about Javascript. It's like she's learning as she's creating her videos too. 
+It's a pretty straightforward game to code. Graphically it works pretty well just with CSS styling because everyone remembers what it looked like on old Nokia phones so there's no expectation for fancier graphics. Although... maybe fancying it up is something I'll think about??
+Anyway, I decided to change it so the board was generated from a function in the Javascript instead of hardcoding 100 divs in the html. The JS is still hardcoded to make a 10x10 board, but after I eventually figured out how to generate the board I think I could revisit it to create different boards in the future. HOWEVER, I would need to reconsider the controls as well because they're based on the width of the board. It's possibly a case of changing the width variable in JS when a larger board is generated. Say you generate a 20x20 board, change the width to 20? I'm just typing out loud.
+Being a mobile game and mobiles no longer having buttons, I also added arrow keys on the screen to control the game without the keyboard. There are keyboard controls too in a separate function, but I could probably combine both control methods into neater code. Change the keybinding to call the individual move functions for the arrows? I'll take another look.
+Also, added a timer and a game over screen, cause why not? 
