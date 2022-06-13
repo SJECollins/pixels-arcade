@@ -1,7 +1,7 @@
 # Javascript Game Project
 
 A practice project to combine HTML, CSS and vanilla JavaScript.
-This is for educational purposes and purely to learn and reflect on 
+This is for educational purposes and purely for learning and reflection as I work through some tutorials. Also, it's a bit of a refresher on HTML and CSS.
 
 ## Styling
 The styling is inspired by the Apple IIc
