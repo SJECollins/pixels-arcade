@@ -65,7 +65,7 @@ function startGame() {
 function moveOutcomes() {
   if (
       (currentSnake[0] + width >= (width * width) && direction === width) || //if snake hits bottom
-      (currentSnake[0] % width === width -1 && direction === 1) || //if snake his right wall
+      (currentSnake[0] % width === width -1 && direction === 1) || //if snake hits right wall
       (currentSnake[0] % width === 0 && direction === -1) || // if snake hits left wall
       (currentSnake[0] - width < 0 && direction === -width) || // if snake hits top
       squares[currentSnake[0] + direction].classList.contains("snake") // if snake goes into itself 
