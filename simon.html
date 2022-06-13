@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/simon.css" rel="stylesheet">
+  <title>Simon</title>
+</head>
+<body>
+  <header>
+    <img src="assets/images/pixel-head-green.png"><a href="index.html" alt="Navigates home"> Arcade </a><img src="assets/images/pixel-head-green.png">
+  </header>
+  <section id="main-screen">
+    <h1>Simon</h1>
+
+    <div id="details">
+      <div>
+        <label for="strict">Strict mode: </label>
+        <input type="checkbox" id="strict">
+        <button id="start">Start!</button>
+      </div>
+      <p>Turn: <span id="score">0</span></p>
+    </div>
+
+    <div id="game-over">
+      <div id="end">
+          <h2>Game Over!</h2>
+          <p>You survived for <span id="end-time">0</span> rounds!</p>
+          <a href="simon.html">Level Select</a>
+          <a href="index.html">Home</a>
+      </div>
+    </div>
+
+    <div id="board">
+      <div id="topleft" class="colour"></div>
+      <div id="topright" class="colour"></div>
+      <div id="bottomleft" class="colour"></div>
+      <div id="bottomright" class="colour"></div>
+    </div>
+
+
+  </section>
+  <script src="assets/scripts/simon.js"></script>
+</body>
+</html>
