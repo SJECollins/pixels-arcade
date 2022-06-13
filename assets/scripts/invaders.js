@@ -115,11 +115,18 @@ function moveInvaders() {
 function shoot(event) {
     let missileId
     let missilePosition = currentPosition
+ 
     function movemissile() {
         squares[missilePosition].classList.remove("missile")
         missilePosition -= width
         squares[missilePosition].classList.add("missile")
 
+        if (missilePosition <= 14) {
+          squares[missilePosition].classList.remove("missile")
+          clearInterval(missileId)
+          return
+        }
+        
         if (squares[missilePosition].classList.contains("invader")) {
             squares[missilePosition].classList.remove("missile")
             squares[missilePosition].classList.remove("invader")
@@ -132,7 +139,8 @@ function shoot(event) {
             invadersRemoved.push(invaderRemoved)
             points++
             score.innerHTML = points
-        }
+        } 
+        
     }
     switch(event.key) {
         case "ArrowUp":
