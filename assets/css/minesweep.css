@@ -33,6 +33,5 @@
 }
 
 .board > [data-status="marked"] {
-  background-image: url("/assets/images/minesweep/flag.png");
-  background-size: contain;
+  background: url("/assets/images/minesweep/flag.png") center / contain no-repeat;
 }
