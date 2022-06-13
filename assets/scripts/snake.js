@@ -1,11 +1,14 @@
 const boardElement = document.getElementById("board")
 
 const score = document.getElementById("score")
+const time = document.getElementById("time")
+const endTime = document.getElementById("end-time")
+const endScore = document.getElementById("end-score")
 const start = document.getElementById("start")
 
 let boardSize = 100
 
-function createCards() {
+function createBoard() {
   let numberofTiles = boardSize
   for (let i = 0; i < numberofTiles; i++){
     const card = document.createElement("div")
@@ -15,18 +18,20 @@ function createCards() {
   }
 }
 
-createCards()
+createBoard()
 
 const width = 10
 let currentIndex = 0
 let applePosition = 0
 let currentSnake = [2, 1, 0]
 let direction = 1
-let points = 0
+let points
 let speed = 0.9
 let intervalTime = 0
 let interval = 0
 let turn = "east"
+let timer
+let gameOver = false
 
 const squares = document.querySelectorAll(".tile")
 
@@ -36,14 +41,24 @@ function startGame() {
   squares[applePosition].classList.remove("apple")
   clearInterval(interval)
   points = 0
+  timer = 0
   randomApple()
   direction = 1
   score.innerHTML = points
   intervalTime = 1000
   currentSnake = [2, 1, 0]
-  currentIndex = 0
+  currentIndex
   currentSnake.forEach(index => squares[index].classList.add("snake"))
   interval = setInterval(moveOutcomes, intervalTime)
+
+  let startTime = setInterval(() => {
+    timer++
+    time.innerHTML = timer
+    if (gameOver) {
+      timer = 0
+      clearInterval(startTime)
+    }
+  }, 1000)
 }
 
 //Function for movements, collisions etc
@@ -55,7 +70,8 @@ function moveOutcomes() {
       (currentSnake[0] - width < 0 && direction === -width) || // if snake hits top
       squares[currentSnake[0] + direction].classList.contains("snake") // if snake goes into itself 
   ) {
-      return clearInterval(interval)
+      gameOver = true
+      endGame()
   }
 
   const tail = currentSnake.pop() // Removes last item in array and shows it
@@ -83,9 +99,27 @@ function randomApple() {
   squares[applePosition].classList.add("apple")
 }
 
-function control(event) {
+function turnNorth() {
   squares[currentIndex].classList.remove("snake")
+  direction = -width
+}
 
+function turnWest() {
+  squares[currentIndex].classList.remove("snake")
+  direction = -1
+}
+
+function turnEast() {
+  squares[currentIndex].classList.remove("snake")
+  direction = 1
+}
+
+function turnSouth() {
+  squares[currentIndex].classList.remove("snake")
+  direction = +width
+}
+
+function control(event) {
   if(event.key === "ArrowRight") {
       direction = 1
   } else if (event.key === "ArrowUp") {
@@ -95,6 +129,13 @@ function control(event) {
   } else if (event.key === "ArrowDown") {
       direction = +width
   }
+}
+
+function endGame() {
+  clearInterval(interval)
+  endScore.innerHTML = points
+  endTime.innerHTML = timer
+  document.querySelector("#game-over").style.display="block"
 }
 
 document.addEventListener("keyup", control)

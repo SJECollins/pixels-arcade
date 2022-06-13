@@ -39,7 +39,7 @@ button {
 
 .snake {
   background-color: #04650d;
-  border: 2px;
+  border-radius: 4px; 
 }
 
 .apple {
