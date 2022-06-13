@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/invaders.css" rel="stylesheet">
+  <title>Invaders</title>
+</head>
+<body>
+  <header>
+    <img src="assets/images/pixel-head-green.png"><a href="index.html" alt="Navigates home"> Arcade </a><img src="assets/images/pixel-head-green.png">
+  </header>
+  <section id="main-screen">
+    <h1>Invaders</h1>
+      <p2>Score: <span id="score">0</span></p2>
+      <button id="start">Start!</button>
+
+
+    <div id="game-over">
+      <div id="end">
+          <h2>Game Over!</h2>
+          <p>YOU <span id="result"></span></p>
+          <p>You killed <span id="end-score">0</span> invaders!</p>
+          <a href="invaders.html">Level Select</a>
+          <a href="index.html">Home</a>
+      </div>
+    </div>
+
+    <div id="board"></div>
+
+    <div id="directions">
+        <button onclick="moveLeft()" id="left"></button>
+        <button id="fire">FIRE!</button>
+        <button onclick="moveRight()" id="right"></button>
+    </div>
+
+  </section>
+  <script src="assets/scripts/invaders.js"></script>
+</body>
+</html>

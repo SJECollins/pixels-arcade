@@ -32,20 +32,20 @@ From this tutorial:
 - [From Web Dev Simplified](https://www.youtube.com/watch?v=kBMnD_aElCQ&ab_channel=WebDevSimplified)
 
 I haven't made any big changes to it yet, so will come back to this. Really, it seems like it would be very difficult to improve.
-But I need to remember to fix how the flag is displaying on the board.
+But I need to remember to fix how the flag is displaying on the board. - have now corrected flag position
 
 ## Memory Card Game
 This should have been very easy. And then I decided to make it very difficult for myself. Because I'm an idiot.
 I orginally followed this very good, easy tutorial:
 - [From Marina Ferriera](https://marina-ferreira.github.io/tutorials/js/memory-game/)
 
-And it was very good and easy to implement. And then, the part of my brain that enjoys suffering and doesn't understand that I don't know how to do what I want to do, thought, "but what if I could generate the cards from an array?? And then I could do all sorts of wonderful things like generate the board depending one what level the player selects!" And so on until I bit off more than I could chew.
+And it was very good and easy to implement. And then, the part of my brain that enjoys suffering and doesn't understand that I don't know how to do what I want to do, thought, "but what if I could generate the cards from an array?? And then I could do all sorts of wonderful things like generate the board depending on what level the player selects!" And so on until I bit off more than I could chew.
 
 So I read this very interesting tutorial which involved generating the board and cards:
 - [From Tania Rascia](https://www.taniarascia.com/how-to-create-a-memory-game-super-mario-with-plain-javascript/)
 
 That looked fun and simple. And ended up leading me down a several hour long rabbit of hole of learning that you can't add Event Listeners to objects in an array! So I added them as the cards were created. It took so long because DevTools would only helpfully tell me that whatever.addEventListener "is not a function". Thanks, DevTools. Also, figuring out where to best shuffle the cards was extremely tricky and it took a bit to find a solution which didn't end up shuffling my array before my cards were safely paired! Can't just concat the original array once you've shuffled and sliced your initial selection, cause then you just end up with pairs with only another card between them.
-I think I must have said "Okay, so what I want to do is-" several dozen times out loud to the empty room during this. I want to go back and make it so you can click through the board generation before start the game itself. I'm sure it would be as simple as setting some booleans somewhere. But not just yet.
+I think I must have said "Okay, so what I want to do is-" several dozen times out loud to the empty room during this. I want to go back and make it so you can click through the board generation before starting the game itself. I'm sure it would be as simple as setting some booleans somewhere. But not just yet.
 
 ## Snake
 Classic.

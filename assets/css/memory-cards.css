@@ -50,6 +50,7 @@ button {
   transition: transform 0.5s;
   border-radius: 10px;
   background-color: #282828;
+  box-shadow: 5px 0 5px;
 }
 
 .card:active {

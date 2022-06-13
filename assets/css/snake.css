@@ -30,6 +30,7 @@ button {
   flex-wrap: wrap;
   border: 2px solid #282828;
   background-color: whitesmoke;
+  box-shadow: 5px 5px 15px;
 }
 
 .tile {
