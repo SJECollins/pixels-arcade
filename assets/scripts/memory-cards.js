@@ -93,9 +93,9 @@ board.appendChild(grid)
 
 function numberOfCards () {
   let selectedCards = []
-  // First, shuffle the cards so their randomly selected
+  // First, shuffle the cards so they're randomly selected
   let randomCards = cardsArray.sort(() => 0.5 - Math.random())
-  // The slice amount of cards depending on gameLevel
+  // Then slice amount of cards depending on gameLevel
   if (gameLevel === "easy") {
     selectedCards = randomCards.slice(0, 8)
   } else if (gameLevel === "medium") {

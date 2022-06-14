@@ -117,12 +117,13 @@ function startGame() {
   timeUp = false
   points = 0
   popUp()
-  setTimeout(() => timeUp = true, 30000)
+  // setTimeout(() => timeUp = true, 30000)
 
   let startTime = setInterval(() => {
     countdown--
     time.innerHTML = countdown
     if (countdown < 1) {
+      timeUp = true
       countdown = 0
       clearInterval(startTime)
       time.innerHTML = "Time up!"
