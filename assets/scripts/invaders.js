@@ -174,7 +174,7 @@ fire.addEventListener("click", () => {
   let keydown = new KeyboardEvent("keydown", {key: "ArrowUp"});
   fire.dispatchEvent(keydown);
 })
-fire.addEventListener("keydown", shoot)
+fire.addEventListener("click", shoot)
 document.addEventListener("keydown", shoot)
 document.addEventListener("keydown", moveTank)
 startButton.addEventListener("click", startGame)

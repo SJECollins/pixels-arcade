@@ -1,28 +1,66 @@
+/* Custom variables */
+:root {
+  --apple-black: #282828;
+}
+
+/* Styling for menu section of index.html */
 #game-list {
-  height: 400px;
-  width: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 50px;
-  padding: 100px 50px;
+  min-height: 60vh;
+  width: 80%;
+  margin-top: 5%;
+  margin-bottom: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  grid-gap: 20% 10%;
 }
 
 .game-selection {
-  height: 125px;
-  width: 125px;
-  margin: 25px 0;
-}
-
-.background-card {
-  background-color: #282828;
-  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
 }
 
 .game-selection img {
-  height: 100%;
   width: 100%;
-  margin-bottom: 5px;
+  height: 100%;
+  margin-bottom: 8px;
   object-fit: contain;
+}
+
+.title {
+  color: var(--apple-black);
+  font-size: 1.5rem;
+}
+
+.background-card {
+  background-color: var(--apple-black);
+  border-radius: 20px;
+}
+
+/* Media queries */
+@media (max-width: 840px),
+(max-height: 810px) {
+  .game-selection {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 520px),
+(max-height: 630px) {
+  .game-selection {
+    width: 100px;
+    height: 100px;
+  }
+  .title {
+    font-size: 0.75rem;
+  }
 }

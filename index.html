@@ -1,58 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="assets/css/main.css" rel="stylesheet">
-    <link href="assets/css/menu.css" rel="stylesheet">
-    <title>Home</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pixel Arcade is a collection of single player games for mobile and desktop browsers.">
+  <meta name="keywords" content="Pixel Arcade, games, gaming, mobile, browser, HTML, CSS, JavaScript">
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/menu.css" rel="stylesheet">
+  <title>Pixel's Arcade | Home</title>
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 </head>
 <body>
-    <header><img src="assets/images/pixel-head-green.png"><a href="index.html" alt="Navigates home"> Arcade </a><img src="assets/images/pixel-head-green.png"></header>
+  <!-- Header containing title link, logos and navbar -->
+  <header>
+    <div id="header-title">
+      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <a href="index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
+      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
+    </div>
+    <nav>
+      <ul>
+        <li>
+          <a href="rabbit.html" aria-label="Navigates to Slap-a-Rabbit game page">Slap-a-Rabbit</a>
+        </li>
+        <li>
+          <a href="rps.html" aria-label="Navigates to Rock, Paper, Scissors game page">Rock, Paper, Scissors</a>
+        </li>
+        <li>
+          <a href="cards.html" aria-label="Navigates to Dead Heads Memory Card game">Dead Heads Memory Game</a>
+        </li>
+        <li>
+          <a href="invaders.html" aria-label="Navigates to Space Invaders game page">Space Invaders</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-    <section id="main-screen">
-        <h1>Select Game:</h1>
-        <div id="game-list">
-            <div class="game-selection">
-                <a href="whack.html" aria-label="Navigates to the Slap a Rabbit game page"><img src="assets/images/whack/rabbit.png" alt="cartoon rabbit picture"></a>
-                <span class="title">Slap-a-Rabbit</span>
-            </div>           
-            <div class="game-selection background-card">
-                <a href="rps.html" aria-label="Navigates to the Rock Paper Scissors game page"><img src="assets/images/rps/rps.webp" alt="rock, paper, scissors clipart"></a>
-                <span class="title">Rock, Paper, Scissors</span>
-            </div>
-            <div class="game-selection">
-                <a href="minesweeper.html" aria-label="Navigates to Minesweeper game page"><img src="assets/images/minesweep/mine.png" alt="mine image"></a>
-                <span class="title">Mine- sweeper</span>
-            </div>
-            <div class="game-selection background-card">
-                <a href="memory-cards.html" aria-label="Navigates to memory card game page"><img src="assets/images/memory-cards/cat.webp"></a>
-                <span class="title">Memory Game</span>
-            </div>
-            <div class="game-selection">
-                <a href="snake.html" aria-label="Navigates to snake game page"><img src="assets/images/snake/snake.png"></a>
-                <span class="title">Snake</span>
-            </div>
-            <div class="game-selection background-card">
-                <a href="invaders.html" aria-label="Navigates to space invaders game page"><img src="assets/images/invaders/alien.png"></a>
-                <span class="title">Space Invaders</span>
-            </div>
-            <div class="game-selection">
-                <a href="simon.html" aria-label="Navigates to simon game page"><img src="assets/images/simon/simon.png"></a>
-                <span class="title">Simon</span>
-            </div>
-            <div class="game-selection">
-                <a href="" alt=""><img src=""></a>
-            </div>
-            <div class="game-selection">
-                <a href="" alt=""><img src=""></a>
-            </div>
-            <div class="game-selection">
-                <a href="" alt=""><img src=""></a>
-            </div>
-        </div>
-    </section>
-    
+  <!-- Main section containing the game menu-->
+  <section id="main-screen">
+    <h1>Select A Game:</h1>
+
+    <!-- Game menu -->
+    <div id="game-list">
+      <div class="game-selection">
+        <a href="rabbit.html" aria-label="Navigates to Slap-a-Rabbit game page">
+          <img src="assets/images/rabbit/rabbit.png" alt="Image of cartoon rabbit from game">
+          <p class="title">Slap-a-Rabbit</p>
+        </a>
+      </div>
+      <div class="game-selection">
+        <a href="rps.html" aria-label="Navigates to Rock Paper Scissors game page">
+          <img src="assets/images/rps/rps.webp" alt="Image for rock, paper, scissors">
+          <p class="title">Rock, Paper, Scissors</p>
+        </a>
+      </div>
+      <div class="game-selection background-card">
+        <a href="cards.html" aria-label="Navigates to Dead Heads Memory Game page">
+          <img src="assets/images/cards/cat.webp" alt="Image from memory card game">
+          <p class="title">Dead Heads Memory Game</p>
+        </a>
+      </div>
+      <div class="game-selection background-card">
+        <a href="invaders.html" aria-label="Navigates to Space Invaders game page">
+          <img src="assets/images/invaders/alien.png" alt="Image of alien from space invaders game">
+          <p class="title">Space Invaders</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer with social links, filler for now -->
+  <footer>
+    <ul class="footer-socials">
+      <li>
+          <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Find us on Facebook (opens in new tab)">Facebook</a>
+      </li>
+      <li>
+          <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Find us on Twitter (opens in new tab)">Twitter</a>
+      </li>
+      <li>
+          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="Find us on YouTube (opens in new tab)">YouTube</a>
+      </li>
+      <li>
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Find us on Instagram (opens in new tab)">Instagram</a>
+      </li>
+  </ul>
+  </footer>
 </body>
 </html>

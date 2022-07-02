@@ -1,51 +1,303 @@
+/* Import font */
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+/* Custom variables */
+:root {
+  --apple-white: #EEF1DB;
+  --apple-dark-green: #04650D;
+  --apple-light-green: #25C40D;
+  --apple-black: #282828;
 }
 
+/* Reset default browser settings */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Main styling for all pages */
 body {
-    background-color: #282828;
-    font-family: "Press Start 2P";
-    height: 100vh;
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  background-color: var(--apple-black);
+  font-family: "Press Start 2P", sans-serif;
+  max-width: 1600px;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 a {
-    text-decoration: none;
-    color: #25c40d;
+  text-decoration: none;
+  color: var(--apple-light-green);
+  transition: all 0.6s;
 }
 
+a:hover {
+  color: var(--apple-dark-green);
+}
+
+li {
+  list-style: none;
+}
+
+/* Header and navbar styling */
 header {
-    height: 10vh;
-    width: 100%;
-    font-size: 4rem;
-    text-align: center;
-    line-height: 100px;
-    position: top;
-    top: 0;
+  min-height: 10vh;
+  width: min(1200px, 90vw);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-top: 4px;
 }
 
-header > img {
-    max-width: 80px;
-    height: auto;
+#header-title {
+  font-size: 2.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 70%;
 }
 
+nav ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+nav li {
+  padding: 4px;
+  border: 4px solid var(--apple-dark-green);
+}
+
+/* Styling for main screen section */
 #main-screen {
-    width: 1000px;
-    height: 800px;
-    border-radius: 50px;
-    background-color: #EEF1DB;
-    text-align: center;
+  width: min(80vw, 100%);
+  min-height: 80vh;
+  border-radius: 60px;
+  background-color: var(--apple-white);
+  text-align: center;
+  margin-top: 4px;
+  overflow: auto;
 }
 
 h1 {
-    font-size: 2rem;
-    padding: 1rem;
+  font-size: 2rem;
+  margin: 1em auto 0;
+}
+
+#instructions {
+  margin: 10px auto;
+  cursor: pointer;
+}
+
+#instructions:hover {
+  text-decoration: underline;
+}
+
+/* Button styling */
+button {
+  background-color: var(--apple-black);
+  color: var(--apple-light-green);
+  font-size: 1rem;
+  padding: 4px 12px;
+  border-style: none;
+  border-radius: 20px;
+  margin: 5px 20px;
+  cursor: pointer;
+  transition: 0.6s;
+}
+
+button:hover {
+  background-color: var(--apple-dark-green);
+  color: var(--apple-white);
+}
+
+.selected {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+/* Styling for overlays for instructions and game over */
+.pop-up {
+  background-color: var(--apple-black);
+  color: var(--apple-light-green);
+  width: min(600px, 80vw);
+  min-height: 25vh;
+  border-radius: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+  box-shadow: 15px 15px 30px var(--apple-black);
+}
+
+#intro, #game-over {
+  display: none;
+}
+
+.pop-up-card {
+  width: 100%;
+  min-height: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pop-up-card p {
+  font-weight: 200;
+  font-size: 1em;
+  padding: 1em 0;
+}
+
+#intro {
+  color: var(--apple-white);
+}
+
+.pop-up-card a, #close-pop-up {
+  background-color: var(--apple-white);
+  color: var(--apple-black);
+  padding: 1em 2em;
+  border-radius: 10px;
+  margin: 10px 0;
+  transition: 0.6s;
+}
+
+#close-pop-up {
+  font-weight: 900;
+}
+
+#end a:hover, #close-pop-up:hover {
+  background-color: var(--apple-dark-green);
+  color: var(--apple-white);
+}
+
+/* Footer styling */
+footer {
+  height: 5rem;
+  text-align: center;
+  position: sticky;
+  top: 100vh;
+}
+
+.footer-socials > li {
+  display: inline;
+}
+
+footer a {
+  color: var(--apple-light-green);
+  padding: 0 1.5rem;
+  line-height: 5rem;
+}
+
+/* 404 styling */
+.error-page {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-page p {
+  margin: 4px 0;
+}
+
+.error-page a {
+  background-color: var(--apple-black);
+  padding: 1em 2em;
+  border-radius: 10px;
+}
+
+/* Media queries */
+/* Large screens */
+@media (min-width: 1200px) and (min-height: 1200px) {
+  html {
+    font-size: 150%;
+  }
+}
+
+/* Small screens */
+@media (max-width: 840px) {
+  #header-title {
+    font-size: 1.5rem;
+  }
+  #header-title img {
+    width: 2em;
+    height: 2em;
+  }
+  nav {
+    font-size: 0.75rem;
+  }
+  footer {
+    height: 2rem;
+  }
+  footer a {
+    font-size: 0.5rem;
+    padding: 0 0.25em;
+    line-height: 2rem;
+  }
+  button {
+    padding: 4px;
+    margin: 2px;
+  }
+}
+
+@media (max-height: 860px) {
+  .pop-up-card {
+    font-size: 0.75em;
+  }
+  .pop-up-card p {
+    margin: 5px;
+  }
+  #end a, #close-pop-up {
+    padding: 0.5em;
+    margin: 5px;
+  }
+}
+
+@media (max-width: 650px) {
+  #header-title {
+    font-size: 1rem;
+    height: 50%;
+  }
+  #header-title img {
+    width: 1.75em;
+    height: 1.75em;
+  }
+  nav {
+    font-size: 0.5rem;
+  }
+  h1 {
+    font-size: 1rem;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  #game-over {
+    width: 80vw;
+  }
+  #main-screen {
+    width: 90vw;
+    height: 90vh;
+  }
+  
+}
+
+@media (max-width: 310px) {
+  #header-title img {
+    width: 1em;
+    height: 1em;
+  }
+  #header-title {
+    font-size: 0.75rem;
+  }
 }
