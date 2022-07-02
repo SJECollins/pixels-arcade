@@ -6,7 +6,7 @@ This is for educational purposes and purely for learning and reflection as I wor
 ## Styling
 The styling is inspired by the Apple IIc.
 
-I'm using the google font Press Start 2P as it is the only font Google offers that is close to the Chicago font used on old Apple devices.
+I'm using the google font Press Start 2P as it is the only font Google offers that is close to the bitmap font used on old Apple devices.
 
 The colours used are primarily a black, beige and some greens.
 
@@ -87,6 +87,8 @@ There is a bit where when the missile goes off screen it logs an error to the co
 **02/07** Updated now to have a boss which appears about 10 seconds into the game (to account for the longer time it'll take invaders to get out of the way if user turns wrap on). Now have to kill all the invaders and the boss to end the game.
 
 The boss drops bombs and the tank has lives now. The bombs fall at a set interval but may update so it's more random? Also considering a progressive level system with different layouts of invaders, increasing speeds, different types of enemies. But lets not get ahead of ourselves.
+
+**03/07** Okay, so now there's 3 levels. The invaders and boss increase their speed when they respawn. It's rough, and it was a headache, but the rudiments are there. It plays through and it triggers win or lose correctly so. There's definitely a nicer way to do it, but it was pretty fun.
 
 ## Simon
 - [From Free Code Camp](https://www.youtube.com/watch?v=n_ec3eowFLQ&ab_channel=freeCodeCamp.org)

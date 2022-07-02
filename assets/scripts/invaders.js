@@ -35,6 +35,7 @@ let bossDirection = 1
 let bossDied = false
 let invadersDead = false
 let bombInterval
+let currentLevel = 1
 
 // Explosion sound effect
 let soundExplosion = new Audio("assets/sounds/explosion.mp3")
@@ -61,9 +62,24 @@ const squares = Array.from(document.querySelectorAll("#board div"))
 
 /**
  * Our invaders array, could create multiple arrays to call depending on level
- * From Ania Kubow (see credits)
+ * From Ania Kubow (see credits) - 02/07, update to empty array with multiple to populate
  */
-const invaders = [
+let invaders = []
+
+// invader arrays?
+invadersOne = [
+  0, 1, 2, 4, 5, 7, 8, 9,
+  16, 17, 18, 21, 22, 23,
+  30, 32, 33, 34, 35, 37, 39
+]
+
+invadersTwo = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+  15, 16, 19, 20, 23, 24,
+  31, 32, 34, 35, 37, 38,
+]
+
+invadersThree = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
   15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
   30, 31, 32, 33, 34, 35, 36, 37, 38, 39
@@ -190,7 +206,7 @@ function spawnBoss() {
       soundExplosion.play()
       setTimeout(() => squares[bombPosition].classList.remove("boom"), 200)
       clearInterval(bombId)
-      tankHealth -= 1
+      tankHealth--
       tankLives.innerHTML = tankHealth
     }
     checkEnd()
@@ -204,10 +220,10 @@ function spawnBoss() {
  function moveTank(event) {
   squares[currentPosition].classList.remove("tank")
   if ((event.key === "ArrowLeft" || event.key === "a" || event.target.id === "left") && currentPosition % width !== 0){
-    currentPosition -= 1
+    currentPosition--
   }
   if ((event.key === "ArrowRight" || event.key === "d" || event.target.id === "right") && currentPosition % width < width - 1) {
-    currentPosition += 1
+    currentPosition++
   }
   squares[currentPosition].classList.add("tank")
 } 
@@ -246,14 +262,13 @@ function shoot(event) {
       invadersRemoved.push(invaderRemoved)
       points++
       score.innerHTML = points
-      checkEnd()
     }
 
     if (squares[missilePosition].classList.contains("boss") && bossHealth > 1) {
       squares[missilePosition].classList.remove("missile")
       squares[missilePosition].classList.add("boom")
       soundExplosion.play()
-      bossHealth -= 1
+      bossHealth--
       setTimeout(() => squares[missilePosition].classList.remove("boom"), 200)
       clearInterval(missileId)
       
@@ -270,8 +285,8 @@ function shoot(event) {
       clearInterval(bombInterval)
       points++
       score.innerHTML = points
-      checkEnd()
       }
+    checkEnd()
   }
 
   if (event.key === "ArrowUp" || event.keyCode === 32 || event.target.id === "fire") {
@@ -281,7 +296,7 @@ function shoot(event) {
     setTimeout(() => {
       document.addEventListener("keydown", shoot)
       fire.addEventListener("click", shoot)
-    }, intervalTime)
+    }, 500)
   }
 }
 
@@ -303,11 +318,31 @@ function checkEnd() {
     gameEnd = "DIED"
     endGame()
   }
-      
+
   if (invadersDead && bossDied) {
+    if (currentLevel === 1) {
+      resetVariables()
+      levelTwo()
+      currentLevel++
+    } else if (currentLevel === 2) {
+      resetVariables()
+      levelThree()
+      currentLevel++
+    } else if (currentLevel === 3) {
       gameEnd = "WIN"
       endGame()
     }
+  }
+}
+
+// DRY, right?
+function resetVariables() {
+  clearInterval(invadersId)
+  clearInterval(bossId)
+  invadersDead = false
+  bossDied = false
+  bossHealth = 3
+  invadersRemoved.length = 0
 }
 
 // endGame function
@@ -325,11 +360,34 @@ function startGame() {
   soundExplosion.play()
   wrapToggle.removeEventListener("click", changeWrap)
   startButton.removeEventListener("click", startGame)
-  intervalTime = 500
-  invadersId = setInterval(moveInvaders, intervalTime)
+  levelOne()
   points = 0
   gameEnd = ""
-  
+}
+
+// Level functions
+function levelOne() {
+  invaders = invadersOne
+  intervalTime = 750
+  invadersId = setInterval(moveInvaders, intervalTime)
+  setTimeout(() => {
+    spawnBoss()
+  }, 10000)
+}
+
+function levelTwo() {
+  invaders = invadersTwo
+  intervalTime = 500
+  invadersId = setInterval(moveInvaders, intervalTime)
+  setTimeout(() => {
+    spawnBoss()
+  }, 10000)
+}
+
+function levelThree() {
+  invaders = invadersThree
+  intervalTime = 250
+  invadersId = setInterval(moveInvaders, intervalTime)
   setTimeout(() => {
     spawnBoss()
   }, 10000)
