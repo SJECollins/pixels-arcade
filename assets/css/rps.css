@@ -1,57 +1,90 @@
-#game-window {
-  width: 800px;
-  height: 600px;
-  margin: 50px auto;
+/* Custom variables */
+:root {
+  --apple-black: #282828;
+}
+
+/* Styling for overall board layout */
+#board {
+  max-width: 100%;
+  height: 70vh;
+  padding-left: 10px;
+  padding-right: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
 
+/* Styling for levels */
+#levels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.current-level {
+  font-weight: 700;
+  background-color: var(--apple-black);
+  border: none;
+}
+
+/* Styling for choices */
 #choices {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
-#computer, #user {
+#computer-choice, #user-choice {
   width: 100px;
-  height: 100px;
+  height: auto;
   margin: 10px auto;
 }
 
 .selections {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   cursor: pointer;
 }
 
-#game-over {
-  background-color: #282828;
-  color: #25c40d;
-  width: 500px;
-  height: 250px;
-  border-radius: 20px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 99;
-  display: none;
+/* Media queries */
+/* Small screens */
+@media (max-height: 860px),
+(max-width: 900px) {
+  #board {
+    margin: 0 auto;
+  }
+  .selections {
+    width: 100px;
+    height: 100px;
+  }
+  h2 {
+    font-size: 1.25em;
+  }
 }
 
-#end {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#end a {
-  background-color: #EEF1DB;
-  color: #282828;
-  padding: 1em 2em;
-  border-radius: 10px;
-  margin: 5px 0;
+@media (max-width: 650px) {
+  button {
+    padding: 4px;
+  }
+  #computer-choice,
+  #user-choice {
+    width: 75px;
+    height: auto;
+  }
+  .selections {
+    width: 75px;
+    height: 75px;
+  }
+  h2 {
+    font-size: 1em;
+  }
+  h1 {
+    margin: 10px 25px;
+  }
+  button {
+    margin: 5px
+  }
+  p, #levels > h2 {
+    font-size: 0.75em;
+  }
 }
