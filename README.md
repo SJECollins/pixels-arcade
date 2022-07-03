@@ -105,6 +105,18 @@ Anyway, for the time being just some little changes to styling and making the co
 
 **03/07** Not currently displayed
 
+## Missing Item Game
+03/07
+I can't think of a good name for it yet.
+
+I saw someone on the slack channel made a missing item game for their PP2. It looked like an interesting idea and something that hadn't occurred to me before, but obviously it fits in perfectly with the type of games I'm making for this website. And, like a fool, I figured how hard could it be? It's just displaying an array of images to a board and then having the user select the missing card, right? I could probably do that just based on everything I've done so far... right?
+
+Well, it works. I haven't done the final styling for it and I'm definitely going to not look at it for a while before I come back and do that, but man was it a headache. I did learn something interesting things about arrays and attributes, and the whole thing is filled with console.logs I have to get rid of, but boy does it feel satisfying playing through it and getting the game over overlay to pop up correctly.
+
+Unfortunately, I also discovered typos in my memory-card JS file. It's just nonsense that doesn't effect the code itself running but it will definitely get me dinged when it's evaluated. At best I'll get a pass. I knew I shouldn't have submitted while I was sick and tired.
+
+Anyway, that'll keep me awake tonight, but for now I'm done. I'll come back and finish styling another day. 
+
 ## 02/07
 
 Submitted smaller arcade project based on this idea for PP2 to CI on 30/06.
