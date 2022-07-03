@@ -42,6 +42,8 @@ From this tutorial:
 I haven't made any big changes to it yet, so will come back to this. Really, it seems like it would be very difficult to improve.
 But I need to remember to fix how the flag is displaying on the board. - have now corrected flag position
 
+**03/07** Not currently displayed
+
 ## Memory Card Game
 This should have been very easy. And then I decided to make it very difficult for myself. Because I'm an idiot.
 
@@ -73,6 +75,8 @@ Being a mobile game and mobiles no longer having buttons, I also added arrow key
 
 Also, added a timer and a game over screen, cause why not? 
 
+**03/07** Not currently displayed
+
 ## Space Invaders
 Well, I'm an idiot. 
 In this tutorial,
@@ -99,7 +103,9 @@ I think I will add a "level select" type ability to the game where you can decid
 
 Anyway, for the time being just some little changes to styling and making the code simpler.
 
-### 02/07
+**03/07** Not currently displayed
+
+## 02/07
 
 Submitted smaller arcade project based on this idea for PP2 to CI on 30/06.
 
