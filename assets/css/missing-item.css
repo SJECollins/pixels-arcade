@@ -1,0 +1,52 @@
+/* Custom variables */
+:root {
+  --apple-black: #282828;
+}
+
+#stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+
+/* User display */
+.choice-display, #placeholders {
+  max-width: 600px;
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: auto auto auto;
+}
+
+/* Grid styling */
+.grid {
+  max-width: 600px;
+  max-height: 600px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: auto auto auto;
+}
+
+/* Styling for the cards */
+.card {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin: 15px auto;
+  background: var(--apple-black) center / contain no-repeat;
+  box-shadow: 5px 0 5px;
+}
+
+.question-card {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin: 15px auto;
+  background: url("../images/missing-item/missing-logo-white.png") var(--apple-black) center / contain no-repeat;
+  box-shadow: 5px 0 5px;
+}
+
+#round {
+  display: none;
+}

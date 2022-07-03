@@ -44,25 +44,62 @@
   
       <div id="details">
         <!-- Button elements to select levels and reset game -->      
-        <div id="levels">
+        <div id="buttons">
           <div>
             <button id="start">Start</button>
             <button id="reset">Reset</button>
           </div>
         </div>
+
+        <!-- Div for choices-->
+        <div id="choices">
+          <div id="placeholders">
+            <div class="question-card"></div>
+            <div class="question-card"></div>
+            <div class="question-card"></div>
+          </div>
+        </div>
+
         <!-- Display for time, tries and correct answers -->
         <div id="stats">
-          <p>Correct: <span id="correct">0</span></p>
+          <p>Lives: <span id="lives">3</span></p>
           <p>Timer: <span id="timer">15</span></p>
-          <p>Lives: <span id="lives">5</span></p>
+          <p>Correct: <span id="correct">0</span></p>
         </div>
       </div>
 
-      <!-- Div for choices-->
-      <div id="choices"></div>
       
       <!-- Div for the board -->
       <div id="board"></div>
+
+      <!-- Instruction pop up-->
+      <div id="intro" class="pop-up">
+        <div class="pop-up-card">
+          <h2>Welcome to Missing Item Game</h2>
+          <p>You have 10 seconds to memorise 9 cards.</p>
+          <p>Then you're given three options.</p>
+          <p>Choose correctly 3 times to win.</p>
+          <button id="close-pop-up">Got It!</button>
+        </div>
+      </div>
+
+      <!-- Round result pop up-->
+      <div id="round" class="pop-up">
+        <div class="pop-up-card">
+          <h3 id="round-result"></h3>
+          <button id="next-round">Next Round</button>
+        </div>
+      </div>
+
+      <!--Game Over-->
+      <div id="game-over" class="pop-up">
+        <div id="end" class="pop-up-card">
+          <h2>Game Over!</h2>
+          <p>You <span id="end-result"></span>!</p>
+          <a href="missing-item.html">Play Again</a>
+          <a href="index.html">Home</a>
+        </div>
+      </div>
 
     </section>
   <footer>

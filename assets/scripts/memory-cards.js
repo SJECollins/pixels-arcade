@@ -147,16 +147,16 @@ function createCards() {
     card.dataset.name = item.name
     card.addEventListener("click", flipCard)
 
-    const frontFace = document.createElement('div');
-    frontFace.classList.add('front-face');
-    frontFace.style.backgroundImage = `url(${item.img})`;
+    const frontFace = document.createElement("div")
+    frontFace.classList.add("front-face")
+    frontFace.style.backgroundImage = `url(${item.img})`
 
-    const backFace = document.createElement('div');
-    backFace.classList.add('back-face');
+    const backFace = document.createElement("div")
+    backFace.classList.add("back-face")
     
-    grid.appendChild(card);
-    card.appendChild(frontFace);
-    card.appendChild(backFace);
+    grid.appendChild(card)
+    card.appendChild(frontFace)
+    card.appendChild(backFace)
   })
 }
 
