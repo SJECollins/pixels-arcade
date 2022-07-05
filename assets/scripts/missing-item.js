@@ -7,6 +7,9 @@ const placeholders = document.getElementById("placeholders")
 const endResult = document.getElementById("end-result")
 const roundResult = document.getElementById("round-result")
 const nextRound = document.getElementById("next-round")
+const reset = document.getElementById("reset")
+const openInstructions = document.getElementById("instructions")
+const closeInstructions = document.getElementById("close-pop-up")
 
 // Our cards
 const cardsArray = [
@@ -108,7 +111,6 @@ let questionCard = {
  * First thing to do is to select our cards
  */
 function firstState() {
-  console.log(cardsArray)
   clearBoard()
   gameBoard.length = 0
   displayCards.length = 0
@@ -133,8 +135,6 @@ function firstState() {
   optionCards = gameCards.splice(-2, 2)
   startButton.removeEventListener("click", firstState)
   countdownTimer()
-  console.log(gameBoard)
-  console.log(optionCards)
 }
 
 function countdownTimer() {
@@ -151,6 +151,7 @@ function countdownTimer() {
   }, 1000)
 }
 
+// Function to empty the game board between rounds
 function clearBoard() {
   while (grid.hasChildNodes()){
     grid.removeChild(grid.lastChild)
@@ -162,11 +163,10 @@ function clearBoard() {
   document.querySelector("#round").style.display="none"
 }
 
+// Select our correct card, reset the board, load remaining cards with a question card
 function secondState() {
   // Shuffle the board
   let secondBoard = gameBoard.sort(() => 0.5 - Math.random())
-  console.log(secondBoard)
-
   // Clear the existing board
   clearBoard()
   // Take a card
@@ -200,7 +200,6 @@ function secondState() {
 }
 
 function evaluateChoice(event) {
-  console.log(correctCard)
   let userPick = event.target.getAttribute("data-name")
 
   if ((userPick === correctCard.name) && correct === 2) {
@@ -228,5 +227,13 @@ function evaluateChoice(event) {
 nextRound.addEventListener("click", firstState)
 }
 
-
 startButton.addEventListener("click", firstState)
+reset.addEventListener("click", () => {
+  location.reload() 
+})
+openInstructions.addEventListener("click", () => {
+  document.querySelector("#intro").style.display="block"
+})
+closeInstructions.addEventListener("click", () => {
+  document.querySelector("#intro").style.display="none"
+})
