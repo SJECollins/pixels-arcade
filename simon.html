@@ -4,14 +4,43 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pixel Arcade is a collection of single player games for mobile and desktop browsers.">
+  <meta name="keywords" content="Pixel Arcade, games, gaming, mobile, browser, HTML, CSS, JavaScript">
   <link href="assets/css/main.css" rel="stylesheet">
   <link href="assets/css/simon.css" rel="stylesheet">
-  <title>Simon</title>
+  <title>Pixel's Arcade | Simon</title>
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 </head>
 <body>
+  <!-- Header containing title link, logos and navbar -->
   <header>
-    <img src="assets/images/pixel-head-green.png"><a href="index.html" alt="Navigates home"> Arcade </a><img src="assets/images/pixel-head-green.png">
+    <div id="header-title">
+      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <a href="index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
+      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
+    </div>
+    <nav>
+      <ul>
+        <li>
+          <a href="rabbit.html" aria-label="Navigates to Slap-a-Rabbit game page">Slap-a-Rabbit</a>
+        </li>
+        <li>
+          <a href="rps.html" aria-label="Navigates to Rock, Paper, Scissors game page">Rock, Paper, Scissors</a>
+        </li>
+        <li>
+          <a href="memory-cards.html" aria-label="Navigates to Dead Heads Memory Card game">Dead Heads Memory Game</a>
+        </li>
+        <li>
+          <a href="invaders.html" aria-label="Navigates to Space Invaders game page">Space Invaders</a>
+        </li>
+        <li>
+          <a href="missing-item.html" aria-label="Navigates to Missing Item game page">Missing Item</a>
+        </li>
+      </ul>
+    </nav>
   </header>
+
+  <!-- Main section containing the game menu-->
   <section id="main-screen">
     <h1>Simon</h1>
 
@@ -42,6 +71,23 @@
 
 
   </section>
-  <script src="assets/scripts/simon.js"></script>
+  <!-- Footer with social links, filler for now -->
+  <footer>
+    <ul class="footer-socials">
+      <li>
+          <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Find us on Facebook (opens in new tab)">Facebook</a>
+      </li>
+      <li>
+          <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Find us on Twitter (opens in new tab)">Twitter</a>
+      </li>
+      <li>
+          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="Find us on YouTube (opens in new tab)">YouTube</a>
+      </li>
+      <li>
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Find us on Instagram (opens in new tab)">Instagram</a>
+      </li>
+  </ul>
+  </footer>
+<script src="assets/scripts/simon.js"></script>
 </body>
 </html>
