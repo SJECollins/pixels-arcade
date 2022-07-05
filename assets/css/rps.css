@@ -1,8 +1,3 @@
-/* Custom variables */
-:root {
-  --apple-black: #282828;
-}
-
 /* Styling for overall board layout */
 #board {
   max-width: 100%;
