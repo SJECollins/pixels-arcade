@@ -6,18 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Pixel Arcade is a collection of single player games for mobile and desktop browsers.">
   <meta name="keywords" content="Pixel Arcade, games, gaming, mobile, browser, HTML, CSS, JavaScript">
-  <link href="assets/css/main.css" rel="stylesheet">
-  <link href="assets/css/rabbit.css" rel="stylesheet">
-  <title>Pixel's Arcade | Slap-a-Rabbit</title>
-  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link href="/assets/css/main.css" rel="stylesheet">
+  <link href="/assets/css/minesweep.css" rel="stylesheet">
+  <title>Pixel's Arcade | Home</title>
+  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 </head>
 <body>
   <!-- Header containing title link, logos and navbar -->
   <header>
     <div id="header-title">
-      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
-      <a href="index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
-      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <img src="/assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <a href="/index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
+      <img src="/assets/images/pixel-head-green.png" alt="Green pixel head logo">
     </div>
     <nav>
       <ul>
@@ -33,59 +33,23 @@
         <li>
           <a href="invaders.html" aria-label="Navigates to Space Invaders game page">Space Invaders</a>
         </li>
+        <li>
+          <a href="missing-item.html" aria-label="Navigates to Missing Item game page">Missing Item</a>
+        </li>
       </ul>
     </nav>
   </header>
 
   <!-- Main section containing the game menu-->
   <section id="main-screen">
-    <h1>Slap-a-Rabbit</h1>
-    <p id="instructions">Instructions</p>
+    <h1>Minesweeper</h1>
 
-    <!-- Buttons for level select and reset game -->
-    <button id="start-one">Level 1: Go!</button>
-    <button id="start-two">Level 2: Go!</button>
-    <button id="start-three">Level 3: Go!</button>
-    <button id="reset">Reset</button>
-    
-    <!-- Time and score divs -->
-    <div id="stats">
-      <div id="timer">
-        <h2>Time:<span id="time">0</span></h2>
-      </div>
+    <div class="subtext">Mines Left: <span class="counter"></span></div>
 
-      <div id="scoreboard">
-        <h2>Slaps:<span id="score">0</span></h2>
-      </div>
-    </div>
-
-    <!-- Div where board will be generated -->
-    <div id="board">
-    </div>
-
-    <!-- Instruction pop up-->
-    <div id="intro" class="pop-up">
-      <div class="pop-up-card">
-        <h2>Welcome to Slap-a-Rabbit!</h2>
-        <p>Select your difficulty level.</p>
-        <p>Then you have 30 seconds to slap as many rabbits as you can.</p>
-        <p>You can reset the board at any time.</p>
-        <button id="close-pop-up">Got It!</button>
-      </div>
-    </div>
-
-    <!-- Game screen div-->
-    <div id="game-over" class="pop-up">
-      <div id="end" class="pop-up-card">
-        <h2>Game Over!</h2>
-        <p>You slapped <span id="end-score">0</span> rabbits!</p>
-        <a href="rabbit.html">Play Again</a>
-        <a href="index.html">Home</a>
-      </div>
-    </div>
+    <div class="board"></div>
 
   </section>
-  <!-- Footer with social links -->
+<!-- Footer with social links, filler for now -->
   <footer>
     <ul class="footer-socials">
       <li>
@@ -102,6 +66,6 @@
       </li>
   </ul>
   </footer>
-  <script src="assets/scripts/rabbit.js"></script>
+  <script src="/assets/scripts/minesweep.js"></script>
 </body>
 </html>

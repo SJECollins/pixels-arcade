@@ -122,3 +122,7 @@ So, now I've updated the page to include the revisions I've made to the four gam
 Finished styling the Missing Item game and added the instructions pop up and now the reset button works too.
 
 Also updated the index to display all the games. Still trying to decide what to do with the navbar. Eight isn't a bad number if I want to stack the links on top of each other, but that might look a little funny.
+
+## 24/07
+
+Moved all html files into their own folder. Broke everything. Think I have everything fixed but we'll see 

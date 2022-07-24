@@ -6,18 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Pixel Arcade is a collection of single player games for mobile and desktop browsers.">
   <meta name="keywords" content="Pixel Arcade, games, gaming, mobile, browser, HTML, CSS, JavaScript">
-  <link href="assets/css/main.css" rel="stylesheet">
-  <link href="assets/css/invaders.css" rel="stylesheet">
-  <title>Pixel's Arcade | Space Invaders</title>
-  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link href="/assets/css/main.css" rel="stylesheet">
+  <link href="/assets/css/rps.css" rel="stylesheet">
+  <title>Pixel's Arcade | Rock, Paper, Scissors</title>
+  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 </head>
 <body>
   <!-- Header containing title link, logos and navbar -->
   <header>
     <div id="header-title">
-      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
-      <a href="index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
-      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <img src="/assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <a href="/index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
+      <img src="/assets/images/pixel-head-green.png" alt="Green pixel head logo">
     </div>
     <nav>
       <ul>
@@ -36,58 +36,67 @@
       </ul>
     </nav>
   </header>
-
   <!-- Main section containing the game menu-->
   <section id="main-screen">
 
-    <h1>Space Invaders</h1>
+    <h1>Rock, Paper, Scissors</h1>
     <p id="instructions">Instructions</p>
     
-    <!-- Game Buttons -->
-    <div>
-      <button id="start">Start!</button>
-      <button id="change-wrap">Wrap <span id="wrap">Off</span></button>
-      <button id="reset">Reset</button>
-    </div>
+    <!-- HTML for game -->
+    <div id="board">
+      <!-- Buttons to select best of or reset board-->
+      <div id="levels">
+        <h2>Rounds: </h2>  
+        <button id="three-rounds">Best of Three!</button>
+        <button id="five-rounds">Best of Five!</button>
+        <button id="reset">Reset</button>
+      </div>
+      
+      <!-- Display the computer and user choices next to each other-->
+      <div id="choices">
+        <div>
+          <h2>Computer Choice: </h2>
+          <img id="computer-choice" src="/assets/images/rps/rps.webp" alt="Computer's choice">
+          <p>Computer Score: <span id="computer-score">0</span></p>
+        </div>
+        <div>
+          <h2>Your Choice:</h2>
+          <img id="user-choice" src="/assets/images/rps/rps.webp" alt="User's choice">
+          <p>Your Score: <span id="user-score">0</span></p>
+        </div>
+      </div>
 
-    <!-- Stats -->
-    <div id="stats">
-      <p>Lives: <span id="tank-lives">3</span></p>
-      <p>Score: <span id="score">0</span></p>
-    </div>
-    
-    <!-- Game board -->
-    <div id="board"></div>
+      <!-- To display the results of each round-->
+      <p>Round <span id="round">1</span>: <span id="result"></span></p>
 
-    <!-- On screen controls -->
-    <div id="directions">
-      <button id="left" name="move" aria-label="left arrow"></button>
-      <button id="fire">FIRE!</button>
-      <button id="right" name="move" aria-label="right arrow"></button>
+      <!-- Options for the user to select -->
+      <h2>Select one:</h2>
+      <div id="options">
+        <img id="rock" class="selections" src="/assets/images/rps/rock.webp" alt="rock image">
+        <img id="paper" class="selections" src="/assets/images/rps/paper.webp" alt="paper image">
+        <img id="scissors" class="selections" src="/assets/images/rps/scissors.webp" alt="scissors image">
+      </div>
     </div>
 
     <!-- Instruction pop up-->
     <div id="intro" class="pop-up">
       <div class="pop-up-card">
-        <h2>Welcome to Space Invaders</h2>
-        <p>Kill the invaders, dodge the bombs and blow up the spaceship to save earth.</p>
-        <p>Move left with A or the left arrow on your keyboard or screen.</p>
-        <p>Move right with D or the right arrow on your keyboard or screen.</p>
-        <p>Fire with space, the up arrow or the fire button on screen.</p>
-        <p>Toggle the wrap button if you prefer the invaders wrap around the screen.</p>
+        <h2>Welcome to Rock, Paper, Scissors</h2>
+        <p>Is your luck better than a computers?</p>
+        <p>Choose between best of three or best of five to find out.</p>
+        <p>Select the images at the bottom of the board to pick your weapon.</p>
         <p>You can reset the board at any time.</p>
         <button id="close-pop-up">Got It!</button>
       </div>
     </div>
 
-    <!-- Game Over -->
+    <!-- Game Over-->
     <div id="game-over" class="pop-up">
       <div id="end" class="pop-up-card">
         <h2>Game Over!</h2>
-        <p>YOU <span id="result"></span></p>
-        <p>You killed <span id="end-score">0</span> invaders!</p>
-        <a href="invaders.html">Play Again</a>
-        <a href="index.html">Home</a>
+        <p id="end-score">0</p>
+        <a href="rps.html">Play Again</a>
+        <a href="/index.html">Home</a>
       </div>
     </div>
 
@@ -109,6 +118,6 @@
       </li>
   </ul>
   </footer>
-  <script src="assets/scripts/invaders.js"></script>
+  <script src="/assets/scripts/rps.js"></script>
 </body>
 </html>

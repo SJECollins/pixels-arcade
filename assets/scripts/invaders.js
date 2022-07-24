@@ -38,7 +38,7 @@ let bombInterval
 let currentLevel = 1
 
 // Explosion sound effect
-let soundExplosion = new Audio("assets/sounds/explosion.mp3")
+let soundExplosion = new Audio("/assets/sounds/explosion.mp3")
 soundExplosion.volume = 0.1
 soundExplosion.playbackRate = 4
 
@@ -70,7 +70,7 @@ let invaders = []
 invadersOne = [
   0, 1, 2, 4, 5, 7, 8, 9,
   16, 17, 18, 21, 22, 23,
-  30, 32, 33, 34, 35, 37, 39
+  30, 32, 34, 35, 37, 39
 ]
 
 invadersTwo = [

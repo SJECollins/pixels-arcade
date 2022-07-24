@@ -6,18 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Pixel Arcade is a collection of single player games for mobile and desktop browsers.">
   <meta name="keywords" content="Pixel Arcade, games, gaming, mobile, browser, HTML, CSS, JavaScript">
-  <link href="assets/css/main.css" rel="stylesheet">
-  <link href="assets/css/simon.css" rel="stylesheet">
-  <title>Pixel's Arcade | Simon</title>
-  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link href="/assets/css/main.css" rel="stylesheet">
+  <link href="/assets/css/snake.css" rel="stylesheet">
+  <title>Pixel's Arcade | Snake</title>
+  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 </head>
 <body>
   <!-- Header containing title link, logos and navbar -->
   <header>
     <div id="header-title">
-      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
-      <a href="index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
-      <img src="assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <img src="/assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <a href="/index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
+      <img src="/assets/images/pixel-head-green.png" alt="Green pixel head logo">
     </div>
     <nav>
       <ul>
@@ -42,36 +42,37 @@
 
   <!-- Main section containing the game menu-->
   <section id="main-screen">
-    <h1>Simon</h1>
+    <h1>Snake</h1>
 
     <div id="details">
-      <div>
-        <label for="strict">Strict mode: </label>
-        <input type="checkbox" id="strict">
-        <button id="start">Start!</button>
-      </div>
-      <p>Turn: <span id="score">0</span></p>
+      <p2>Score: <span id="score">0</span></p2>
+      <button id="start">Start!</button>
+      <p2>Time: <span id="time">0</span></p2>
     </div>
 
     <div id="game-over">
       <div id="end">
           <h2>Game Over!</h2>
-          <p>You survived for <span id="end-time">0</span> rounds!</p>
-          <a href="simon.html">Level Select</a>
-          <a href="index.html">Home</a>
+          <p>You survived for <span id="end-time">0</span> seconds and ate <span id="end-score">0</span> pellets!</p>
+          <a href="snake.html">Level Select</a>
+          <a href="/index.html">Home</a>
       </div>
     </div>
 
-    <div id="board">
-      <div id="topleft" class="colour"></div>
-      <div id="topright" class="colour"></div>
-      <div id="bottomleft" class="colour"></div>
-      <div id="bottomright" class="colour"></div>
+    <div id="board"></div>
+
+    <div id="directions">
+      <button onclick="turnNorth()" id="north"></button>
+      <div>
+        <button onclick="turnWest()" id="west"></button>
+        <button onclick="turnEast()" id="east"></button>
+      </div>
+      <button onclick="turnSouth()" id="south"></button>
     </div>
 
-
   </section>
-  <!-- Footer with social links, filler for now -->
+  
+<!-- Footer with social links, filler for now -->
   <footer>
     <ul class="footer-socials">
       <li>
@@ -88,6 +89,6 @@
       </li>
   </ul>
   </footer>
-<script src="assets/scripts/simon.js"></script>
+<script src="/assets/scripts/snake.js"></script>
 </body>
 </html>
