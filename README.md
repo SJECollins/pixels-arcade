@@ -111,6 +111,16 @@ Unfortunately, I also discovered typos in my memory-card JS file. It's just nons
 
 Anyway, that'll keep me awake tonight, but for now I'm done. I'll come back and finish styling another day. 
 
+## Anagram Game
+24/07
+I haven't updated this in a few weeks. I just finished my PP3 for CI this morning (or at least until my mentor meeting tomorrow) and figured I'd update this project with something simple.
+
+I don't know where exactly I got the idea for an anagram, but the basics of it turned out to be fairly straightforward. I have a few categories of words in lists. The pickAnagram function chooses a random number then if/else statements select a category based on the random number and also saves the category title to display on screen. The function then selects a random word from the chosen category. The random word gets passed to the scramble function and the scrambled word gets displayed on screen. THEN, theres a function that compares the random word with the user input. If the player gets 5 right in a row, they win. But if they get one wrong they lose.
+
+I'd like to fine tune this so you can't get the same category multiple times. It's tricky. I'm still working on that. Overall the game needs to be styled more. And I'd like to display the correct word in the round display - that should be easy. AND I think it would be fun to have an option to play against a timer. I haven't thought that one through yet, but it's on the list.
+
+Not super impressive, but not a bad Sunday afternoon. And I learned a little about user inputs in JS, which was interesting after doing a whole Python project that involved user inputs in the terminal.
+
 ## 02/07
 
 Submitted smaller arcade project based on this idea for PP2 to CI on 30/06.
