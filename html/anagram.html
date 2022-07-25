@@ -46,7 +46,7 @@
       <div id="user-input">
         <label>Enter your guess: </label>
         <input type="text" id="user-guess">
-        <button id="guess-button">ENTER</button>
+        <button type="submit" id="guess-button">Enter</button>
       </div>
 
       <!-- Stats -->
@@ -75,6 +75,7 @@
     <div id="round" class="pop-up">
       <div class="pop-up-card">
         <h3 id="round-result"></h3>
+        <h3>The word was <span class="right-word"></span></h3>
         <button id="next-round">Next Round</button>
       </div>
     </div>
@@ -84,6 +85,7 @@
       <div id="end" class="pop-up-card">
         <h2>Game Over!</h2>
         <p>YOU <span id="result"></span></p>
+        <h3>The word was <span class="right-word"></span></h3>
         <a href="anagram.html">Play Again</a>
         <a href="/index.html">Home</a>
       </div>

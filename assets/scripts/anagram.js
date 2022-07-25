@@ -11,6 +11,7 @@ const nextRound = document.getElementById("next-round")
 const roundDisplay = document.getElementById("round")
 const openInstructions = document.getElementById("instructions")
 const closeInstructions = document.getElementById("close-pop-up")
+const rightAnswer = document.querySelectorAll(".right-word")
 
 let usedCat = []
 let randWord = ""
@@ -82,14 +83,28 @@ function compareAnswer() {
   let answer = userGuess.value.trim().toLowerCase()
   console.log(answer)
   console.log(randWord)
+
+  let rightWord = randWord.charAt(0).toUpperCase() + randWord.slice(1)
+
+  rightAnswer.forEach((item) => {
+    item.innerHTML = rightWord
+  })
+  
   if (randWord === answer && points < 5) {
     roundResult.innerHTML = "Correct!"
     points++
     score.innerHTML = points
     roundDisplay.style.display="block"
     nextRound.addEventListener("click", playRound)
+    guessButton.removeEventListener("click", compareAnswer)
+    userGuess.removeEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault()
+        guessButton.click()
+      }
+    })
   } else if (randWord === answer && points === 5) {
-    result.innerHTML === "WIN!"
+    result.innerHTML = "WIN!"
     document.querySelector("#game-over").style.display="block"
     guessButton.removeEventListener("click", compareAnswer)
     points = 1
@@ -105,6 +120,18 @@ function playRound() {
   roundDisplay.style.display="none"
   userGuess.value = ""
   guessButton.addEventListener("click", compareAnswer)
+  guessButton.addEventListener("mouseover", () => {
+    guessButton.innerHTML = "Sure?"
+  })
+  guessButton.addEventListener("mouseout", () => {
+    guessButton.innerHTML = "Enter"
+  })
+  userGuess.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault()
+      guessButton.click()
+    }
+  })
   pickAnagram()
   category.innerHTML = catTitle
   anagram.innerHTML = scramWord
