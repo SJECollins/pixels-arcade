@@ -121,6 +121,12 @@ I'd like to fine tune this so you can't get the same category multiple times. It
 
 Not super impressive, but not a bad Sunday afternoon. And I learned a little about user inputs in JS, which was interesting after doing a whole Python project that involved user inputs in the terminal.
 
+25/07
+Update the UI a little. Now there's mouseover/mouseout events to the enter button. And the user can submit there answer by clicking enter when in the input field. Also update the input field so it's a line rather than a box and the text is centered. And the game-over/round pop-ups display the correct word. 
+
+Why doesn't JS have a .capitalize() function? So silly...
+
+# General
 ## 02/07
 
 Submitted smaller arcade project based on this idea for PP2 to CI on 30/06.
