@@ -7,14 +7,14 @@
   margin-left: auto;
   margin-right: auto;
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
   grid-template-rows: auto auto;
   grid-gap: 20% 10%;
 }
 
 .game-selection {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   margin: 0 auto;
 }
 

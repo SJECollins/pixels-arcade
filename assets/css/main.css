@@ -81,7 +81,7 @@ nav li {
   background-color: var(--apple-white);
   text-align: center;
   margin-top: 4px;
-  overflow: auto;
+  overflow: hidden;
 }
 
 h1 {
