@@ -103,6 +103,10 @@ Anyway, for the time being just some little changes to styling and making the co
 
 I also renamed the sections of the board to reflect that I'm going to add more sections.
 
+Okay, a couple of hours later and now there are board options: 4, 6 and 9 squares. With the background resizing to fit. I removed the border for the board as it didn't look great.
+
+There's also a checkbox for speed - so the flash timer is half what it was. And options for number of rounds: ten, twenty or "endless" (it's really only to 200 at the moment). I haven't styled the checkboxes or radio buttons yet. That's something to come back to and fiddle with. Sometimes you just need a reason to poke at a project and then get other ideas for changes.
+
 ## Missing Item Game
 03/07
 I can't think of a good name for it yet.
