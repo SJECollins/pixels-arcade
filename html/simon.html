@@ -46,8 +46,22 @@
 
     <div id="details">
       <div>
-        <label for="strict">Strict mode: </label>
+        <div id="board-options">
+          <button id="foursquares">4 Squares</button>
+          <button id="sixsquares">6 Squares</button>
+          <button id="ninesquares">9 Squares</button>
+          <button id="reset">Reset</button>
+        </div>
+        <label for="strict">Strict: </label>
         <input type="checkbox" id="strict">
+        <label for="faster">Speed: </label>
+        <input type="checkbox" id="faster">
+        <label for="to-ten">To 10: </label>
+        <input name="rounds" type="radio" id="to-ten" checked>
+        <label for="to-twenty">To 20: </label>
+        <input name="rounds" type="radio" id="to-twenty">
+        <label for="endless">Endless: </label>
+        <input name="rounds" type="radio" id="endless">
         <button id="start">Start!</button>
       </div>
       <p>Turn: <span id="score">0</span></p>
@@ -57,7 +71,7 @@
       <div id="end">
           <h2>Game Over!</h2>
           <p>You survived for <span id="end-time">0</span> rounds!</p>
-          <a href="simon.html">Level Select</a>
+          <a href="simon.html">Play Again</a>
           <a href="/index.html">Home</a>
       </div>
     </div>
@@ -67,6 +81,11 @@
       <div id="secondcolor" class="colour"></div>
       <div id="thirdcolor" class="colour"></div>
       <div id="fourthcolor" class="colour"></div>
+      <div id="fifthcolor" class="colour"></div>
+      <div id="sixthcolor" class="colour"></div>
+      <div id="seventhcolor" class="colour"></div>
+      <div id="eighthcolor" class="colour"></div>
+      <div id="ninthcolor" class="colour"></div>
     </div>
 
   </section>
