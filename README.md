@@ -99,6 +99,10 @@ I think I will add a "level select" type ability to the game where you can decid
 
 Anyway, for the time being just some little changes to styling and making the code simpler.
 
+**16/08** Some changes for bug fixing, etc. There was an issue where you could click all over the board while the computer was doing it's turn, which caused a bug where the board would flash "no" but still run through the array of flashes, and then also somehow the speed of the computer's turn would increase? It was a little bit of a disaster if you're the kind of person (me) who liked messing. So - also to make expanding easier - I put all the board's event listeners into functions so I could add and remove them around the computer's turn and now you can't be a jerk who clicks all over the board while the computer is doing it's turn. I think, there's surely another way to break it, I'll just have to poke at it some more. But I feel better about it now anyway.
+
+I also renamed the sections of the board to reflect that I'm going to add more sections.
+
 ## Missing Item Game
 03/07
 I can't think of a good name for it yet.

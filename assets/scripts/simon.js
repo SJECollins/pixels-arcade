@@ -1,8 +1,8 @@
 const counter = document.querySelector("#score")
-const topLeft = document.querySelector("#topleft")
-const topRight = document.querySelector("#topright")
-const bottomLeft = document.querySelector("#bottomleft")
-const bottomRight = document.querySelector("#bottomright")
+const firstColor = document.querySelector("#firstcolor")
+const secondColor = document.querySelector("#secondcolor")
+const thirdColor = document.querySelector("#thirdcolor")
+const fourthColor = document.querySelector("#fourthcolor")
 const strictButton = document.querySelector("#strict")
 const start = document.querySelector("#start")
 
@@ -18,11 +18,7 @@ let win
 let rounds = 20
 
 strictButton.addEventListener("click", () => {
-  if (strictButton.checked === true) {
-      strict = true
-  } else {
-      strict = false
-  }
+  strict = strictButton.checked
 })
 
 function play() {
@@ -49,9 +45,14 @@ function gameTurn() {
       clearInterval(intervalId)
       computerTurn = false
       clearColor()
+      setTimeout(() => {
+        addListeners()
+      }, 250)
+      addListeners()
   }
 
   if (computerTurn) {
+      removeListeners()
       clearColor()
       setTimeout(() => {
           if (order[flash] === 1) one()
@@ -59,87 +60,98 @@ function gameTurn() {
           if (order[flash] === 3) three()
           if (order[flash] === 4) four()
           flash++;
+          
       }, 200)
   }
 }
 
 function one() {
-  topLeft.style.backgroundColor = "lightgreen"
+  firstColor.style.backgroundColor = "lightgreen"
 }
 
 function two() {
-  topRight.style.backgroundColor = "tomato"
+  secondColor.style.backgroundColor = "tomato"
 }
 
 function three() {
-  bottomLeft.style.backgroundColor = "yellow"
+  thirdColor.style.backgroundColor = "yellow"
 }
 
 function four() {
-  bottomRight.style.backgroundColor = "lightskyblue"
+  fourthColor.style.backgroundColor = "lightskyblue"
 }
 
 function clearColor() {
-  topLeft.style.backgroundColor = "#04650d"
-  topRight.style.backgroundColor = "#c40d0d"
-  bottomLeft.style.backgroundColor = "#b4c40d"
-  bottomRight.style.backgroundColor = "#0d29c4"
+  firstColor.style.backgroundColor = "#04650d"
+  secondColor.style.backgroundColor = "#c40d0d"
+  thirdColor.style.backgroundColor = "#b4c40d"
+  fourthColor.style.backgroundColor = "#0d29c4"
 }
 
 function flashColor() {
-  topLeft.style.backgroundColor = "#25c40d"
-  topRight.style.backgroundColor = "#ea0707"
-  bottomLeft.style.backgroundColor = "#fbff00"
-  bottomRight.style.backgroundColor = "#003aff"
+  firstColor.style.backgroundColor = "#25c40d"
+  secondColor.style.backgroundColor = "#ea0707"
+  thirdColor.style.backgroundColor = "#fbff00"
+  fourthColor.style.backgroundColor = "#003aff"
 }
 
-topLeft.addEventListener("click", () => {
-      playerOrder.push(1)
-      check()
-      one()
-      if (!win) {
-          setTimeout(() => {
-              clearColor()
-          }, 300)
-      }
-  }
-)
+function addListeners() {
+    firstColor.addEventListener("click", oneClick)
+    secondColor.addEventListener("click", twoClick)
+    thirdColor.addEventListener("click", threeClick)
+    fourthColor.addEventListener("click", fourClick)
+}
 
-topRight.addEventListener("click", () => {
-      playerOrder.push(2)
-      check()
-      two()
-      if (!win) {
-          setTimeout(() => {
-              clearColor()
-          }, 300)
-      }
-  }
-)
+function removeListeners() {
+    firstColor.removeEventListener("click", oneClick)
+    secondColor.removeEventListener("click", twoClick)
+    thirdColor.removeEventListener("click", threeClick)
+    fourthColor.removeEventListener("click", fourClick)
+}
 
-bottomLeft.addEventListener("click", () => {
-      playerOrder.push(3)
-      check()
-      three()
-      if (!win) {
-          setTimeout(() => {
-              clearColor()
-          }, 300)
-      }
-  }
-)
+function oneClick() {
+    playerOrder.push(1)
+    check()
+    one()
+    if (!win) {
+        setTimeout(() => {
+            clearColor()
+        }, 300)
+    }
+}
 
-bottomRight.addEventListener("click", () => {
-      playerOrder.push(4)
-      check()
-      four()
-      if (!win) {
-          setTimeout(() => {
-              clearColor()
-          }, 300)
-      }
+function twoClick() {
+    playerOrder.push(2)
+    check()
+    two()
+    if (!win) {
+        setTimeout(() => {
+            clearColor()
+        }, 300)
+    }
+}
+
+function threeClick() {
+  playerOrder.push(3)
+  check()
+  three()
+  if (!win) {
+      setTimeout(() => {
+          clearColor()
+      }, 300)
   }
-)
+}
+
+function fourClick() {
+    playerOrder.push(4)
+    check()
+    four()
+    if (!win) {
+        setTimeout(() => {
+            clearColor()
+        }, 300)
+    }
+  }
 
 function check() {
   if (playerOrder[playerOrder.length - 1] != order[playerOrder.length - 1]) 
@@ -152,20 +164,15 @@ function check() {
   if (good === false) {
       flashColor()
       counter.innerHTML = "NO"
-      setTimeout(() => {
-          counter.innerHTML = turn
-          clearColor()
-
-          if (strict) {
-            endGame()
-          } else {
-              computerTurn = true
-              flash = 0
-              playerOrder = []
-              good = true
-              intervalId = setInterval(gameTurn, 800)
-          }
-      }, 800)
+      if (strict) {
+        endGame()
+      } else {
+          computerTurn = true
+          flash = 0
+          playerOrder = []
+          good = true
+          intervalId = setInterval(gameTurn, 800)
+      }
   }
 
   if (turn === playerOrder.length && good && !win) {
