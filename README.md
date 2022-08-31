@@ -80,7 +80,7 @@ In this tutorial,
 
 Ania generates the board with a simple for loop. She uses a pretty interesting function to move the invaders left and right across the screen.
 
-Honestly, the code is largely unchanged. I styled it a bit and clumsily added buttons to control the game on screen. AND in the process learned to create keyboard events from clicking buttons.
+Honestly, the code is largely unchanged. I styled it a bit and clumsily added buttons to control the game on screen. AND in the process learned to create keyboard events from clicking buttons (which I no longer use).
 
 There is a bit where when the missile goes off screen it logs an error to the console. SO, I need to fix that. The game is still playable with that though. It's probably a case of finding the zero index and remove the class missile? I'm not sure exactly   -- okay, so it was trickier than I though and probably not the best fix, but the simplest way I found was to remove the missile and clear the interval when it reached the top row. HOWEVER, this obviously would prevent killing enemies in the top row. Which is something to consider if I expand on it... I just couldn't watch those errors ticking up anymore!
 
@@ -89,6 +89,8 @@ There is a bit where when the missile goes off screen it logs an error to the co
 The boss drops bombs and the tank has lives now. The bombs fall at a set interval but may update so it's more random? Also considering a progressive level system with different layouts of invaders, increasing speeds, different types of enemies. But lets not get ahead of ourselves.
 
 **03/07** Okay, so now there's 3 levels. The invaders and boss increase their speed when they respawn. It's rough, and it was a headache, but the rudiments are there. It plays through and it triggers win or lose correctly so. There's definitely a nicer way to do it, but it was pretty fun.
+
+**31/08** Updated to fix a bug in level 2. Was scratching my head over why the right hand side of the invaders were wrapping when they reached the right hand side of the screen. Duh, because I was using invaders.length and the length of that array was one less than the other two. A bit hackily, I changed the array, so their pattern is different to what it was before. Obviously, there's a way to keep the pattern I wanted originally and prevent the wrapping (probably implementing an if statement changing the for loop depending on current level), but my hacky way was a quick way to fix it. And it's nice to pop in a fix a bug quickly when I'm working on something else.
 
 ## Simon
 - [From Free Code Camp](https://www.youtube.com/watch?v=n_ec3eowFLQ&ab_channel=freeCodeCamp.org)
