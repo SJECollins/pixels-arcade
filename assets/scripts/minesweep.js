@@ -1,14 +1,77 @@
 const boardElement = document.querySelector(".board")
 const counter = document.querySelector(".counter")
+const startOne = document.getElementById("start-one")
+const startTwo = document.getElementById("start-two")
+const startThree = document.getElementById("start-three")
+const reset = document.getElementById("reset")
+const openInstructions = document.getElementById("instructions")
+const closeInstructions = document.getElementById("close-pop-up")
 
-const boardSize = 10
-const numberMines = 10
+let endGame = document.getElementById("end-game")
+let endScore = document.getElementById("end-score")
+
+let boardSize
+let numberMines
 
 const tileStatus = {
   hidden: "hidden",
   mine: "mine",
   number: "number",
   marked: "marked",
+}
+
+function levelOne() {
+  startOne.classList.add("selected")
+  boardSize = 10
+  numberMines = 10
+  startGame(boardSize, numberMines)
+}
+
+function levelTwo() {
+  startTwo.classList.add("selected")
+  boardSize = 15
+  numberMines = 30
+  startGame(boardSize, numberMines)
+}
+
+function levelThree() {
+  startThree.classList.add("selected")
+  boardSize = 20
+  numberMines = 40
+  startGame(boardSize, numberMines)
+}
+
+function disableButtons() {
+  startOne.removeEventListener("click", levelOne)
+  startTwo.removeEventListener("click", levelTwo)
+  startThree.removeEventListener("click", levelThree)
+  setTimeout(() => {
+    startOne.addEventListener("click", levelOne)
+    startTwo.addEventListener("click", levelTwo)
+    startThree.addEventListener("click", levelThree)
+  }, 30000)
+}
+
+function startGame(boardSize, numberMines) {
+  let board = createBoard(boardSize, numberMines)
+  setBoard(boardSize, numberMines)
+  createBoard(boardSize, numberMines)
+
+  board.forEach(row => {
+    row.forEach(tile => {
+      boardElement.append(tile.element)
+      tile.element.addEventListener("click", () => {
+        revealTile(board, tile)
+        checkGameEnd(board)
+      })
+      tile.element.addEventListener("contextmenu", event => {
+        event.preventDefault()
+        markTile(tile)
+        minesLeft(board)
+      })
+    })
+  })
+  disableButtons()
 }
 
 // Creating the board, takes 2 parameters - size of board and number of mines
@@ -21,7 +84,7 @@ function createBoard(boardSize, numberMines) {
     const row = []
 
     // Our y direction
-    for (let y = 0; y < boardSize; y++) {
+    for (let y = 0; y < (boardSize); y++) {
       
       // Create the tile
       const element = document.createElement("div")
@@ -48,22 +111,12 @@ function createBoard(boardSize, numberMines) {
   return board
 }
 
-const board = createBoard(boardSize, numberMines)
-
-board.forEach(row => {
-  row.forEach(tile => {
-    boardElement.append(tile.element)
-    tile.element.addEventListener("click", () => {
-      revealTile(board, tile)
-      checkGameEnd()
-    })
-    tile.element.addEventListener("contextmenu", event => {
-      event.preventDefault()
-      markTile(tile)
-      minesLeft()
-    })
-  })
-})
+function minesLeft(board) {
+  const markedTiles = board.reduce((count, row) => {
+    return count + row.filter(tile => tile.status === tileStatus.marked).length
+  }, 0)
+  counter.innerHTML = numberMines - markedTiles
+}
 
 function randomNumber(size) {
   return Math.floor(Math.random() * size)
@@ -102,13 +155,6 @@ function markTile(tile) {
   }
 }
 
-function minesLeft() {
-  const markedTiles = board.reduce((count, row) => {
-    return count + row.filter(tile => tile.status === tileStatus.marked).length
-  }, 0)
-  counter.innerHTML = numberMines - markedTiles
-}
-
 function revealTile(board, tile) {
   if (tile.status !== tileStatus.hidden) {
     return
@@ -143,7 +189,7 @@ function nearbyTiles(board, {x, y}) {
   return tiles
 }
 
-function checkGameEnd() {
+function checkGameEnd(board) {
   const win = checkWin(board)
   const lose = checkLose(board)
 
@@ -154,10 +200,17 @@ function checkGameEnd() {
 
   if (win) {
     counter.innerHTML = "You win"
+
+    endGame.innerHTML = "You won!"
+    endScore.innerHTML = `You cleared ${numberMines} mines!`
+    document.querySelector("#game-over").style.display="block"
   }
 
   if (lose) {
     counter.innerHTML = "You lose!"
+    endGame.innerHTML = "You lost..."
+    document.querySelector("#game-over").style.display="block"
+
     board.forEach(row => {
       row.forEach(tile => {
         if (tile.status === tileStatus.marked) markTile(tile)
@@ -190,5 +243,20 @@ function checkLose(board) {
   })
 }
 
-boardElement.style.setProperty("--size", boardSize)
-counter.innerHTML = numberMines
+function setBoard(boardSize, numberMines) {
+  boardElement.style.setProperty("--size", boardSize)
+  counter.innerHTML = numberMines
+}
+
+startOne.addEventListener("click", levelOne)
+startTwo.addEventListener("click", levelTwo)
+startThree.addEventListener("click", levelThree)
+reset.addEventListener("click", () => {
+  location.reload() 
+})
+openInstructions.addEventListener("click", () => {
+  document.querySelector("#intro").style.display="block"
+})
+closeInstructions.addEventListener("click", () => {
+  document.querySelector("#intro").style.display="none"
+})

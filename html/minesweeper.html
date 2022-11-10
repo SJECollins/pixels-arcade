@@ -43,10 +43,40 @@
   <!-- Main section containing the game menu-->
   <section id="main-screen">
     <h1>Minesweeper</h1>
+    <p id="instructions">Instructions</p>
+
+    <button id="start-one">Level 1: Go!</button>
+    <button id="start-two">Level 2: Go!</button>
+    <button id="start-three">Level 3: Go!</button>
+    <button id="reset">Reset</button>
 
     <div class="subtext">Mines Left: <span class="counter"></span></div>
 
     <div class="board"></div>
+
+    <!-- Instruction pop up-->
+    <div id="intro" class="pop-up">
+      <div class="pop-up-card">
+        <h2>Welcome to Minesweeper</h2>
+        <p>Select the board size</p>
+        <p>Clear tiles with left click</p>
+        <p>Mark mines with right click</p>
+        <p>Don't hit any mines!</p>
+        <p>You can reset the board at any time.</p>
+        <button id="close-pop-up">Got It!</button>
+      </div>
+    </div>
+
+    <!-- Game screen div-->
+    <div id="game-over" class="pop-up">
+      <div id="end" class="pop-up-card">
+        <h2>Game Over!</h2>
+        <p><span id="end-game"></span></p>
+        <p id="end-score"></p>
+        <a href="minesweeper.html">Play Again</a>
+        <a href="/index.html">Home</a>
+      </div>
+    </div>
 
   </section>
 <!-- Footer with social links, filler for now -->
