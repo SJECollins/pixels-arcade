@@ -8,6 +8,16 @@ let player = "Stranger"
 let i = 0
 let speed = 100
 
+let gameVars = {
+    player: "Stranger",
+    window_closed: false,
+    door_open: false,
+    stool_out: false,
+    shadow_delayed: false,
+}
+
+let pickUps = []
+
 function typewriter(text) {
     let output = text
     if (i < output.length) {
