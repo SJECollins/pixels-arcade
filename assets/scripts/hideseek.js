@@ -7,6 +7,7 @@ const userBtn = document.getElementById("user-answer")
 let player = "Stranger"
 let i = 0
 let speed = 100
+let roomIndex = 1
 
 let gameVars = {
     player: "",
@@ -35,46 +36,42 @@ function clearInput() {
     input.value = ""
 }
 
-function userInput() {
-    let userText = input.value.trim().toLowerCase()
-    return userText
-}
-
 start.addEventListener("click", () => {
    startGame()
 })
 
 function startGame() {
     showGameRoom(1)
+    userBtn.addEventListener("click", compareChoice, false)
 }
 
 function showGameRoom(roomIndex) {
     i = 0
-	const gameRoom = gameRooms.find(gameRoom => gameRoom.room === roomIndex)
-    const roomText = gameRoom.text
+    clearOutput()
+	let gameRoom = gameRooms.find(gameRoom => gameRoom.room === roomIndex)
+    let roomText = gameRoom.text
     typewriter(roomText)
-    userBtn.addEventListener("click", () => {
-        compareChoice(gameRoom)
-    })
+    console.log("This is the roomtext: " + roomText)
+    console.log("This is the roomIndex leaving the func: " + gameRoom.room)
+    console.log(gameRoom)
 } 
 
-function compareChoice(gameRoom) {
+function compareChoice() {
     let userChoice = input.value.trim().toLowerCase()
-    console.log(userChoice)
-    console.log(gameRoom.room)
-
+	let gameRoom = gameRooms.find(gameRoom => gameRoom.room === roomIndex)
+    console.log("This is the userChoice: " + userChoice)
+    console.log("This is the roomIndex coming into the function: " + gameRoom.room)
     let options = gameRoom.options
+    console.log("These are the room options: " + options)
     console.log(options)
     if (options.some(option => option.choice === userChoice)){
         for (const option of options) {
-        console.log(option)
-        if (option.choice === userChoice) {
-            let roomIndex = option.nextRoom
-            console.log(roomIndex)
-            clearOutput()
-            return showGameRoom(roomIndex)
+            if (option.choice === userChoice) {
+                roomIndex = option.nextRoom
+                console.log("This is the nextRoom: " + roomIndex)
+                return showGameRoom(roomIndex)
+                }
             }
-        }
     } else {
         display.innerHTML += "That is not an option. Try again.<br>"
             return showGameRoom(gameRoom.room)
