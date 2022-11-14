@@ -4,13 +4,12 @@ const display = document.getElementById("message")
 const input = document.getElementById("user-input")
 const userBtn = document.getElementById("user-answer")
 
-let player = "Stranger"
 let i = 0
 let speed = 100
 let roomIndex = 1
 
 let gameVars = {
-    player: "",
+    player: "Stranger",
     window_closed: false,
     door_open: false,
     stool_out: false,
@@ -37,11 +36,39 @@ function clearInput() {
 }
 
 start.addEventListener("click", () => {
-   startGame()
+   getPlayer()
 })
+
+function getPlayer() {
+    typewriter("Hello, what's your name?")
+    userBtn.addEventListener("click", getName, false)
+}
+
+function getName() {
+    let username = input.value.trim()
+    gameVars.player = username[0].toUpperCase() + username.slice(1).toLowerCase();
+    console.log(username)
+    console.log(gameVars.player)
+    if (username === null) {
+        gameVars.player = "Stranger"
+        console.log(username)
+        console.log(gameVars.player)
+        console.log("Didn't take input")
+        userBtn.removeEventListener("click", getName)
+        return startGame()
+    } else {
+        gameVars.player = username
+        userBtn.removeEventListener("click", getName)
+        console.log(username)
+        console.log(gameVars.player)
+        console.log("Took input")
+        return startGame()
+    }
+}
 
 function startGame() {
     showGameRoom(1)
+    console.log(gameVars.player)
     userBtn.addEventListener("click", compareChoice, false)
 }
 
@@ -78,10 +105,10 @@ function compareChoice() {
     }
 }
 
-const gameRooms = [
+let gameRooms = [
     {
         room: 1,
-        text: "Do you want to play a game?",
+        text: `Welcome, do you want to play a game?`,
         options: [
             {
                 choice: "a",
