@@ -8,6 +8,8 @@ let i = 0
 let speed = 100
 let roomIndex = 1
 
+// let gameRooms = import('./hideseek_story.js')
+
 let gameVars = {
     player: "Stranger",
     window_closed: false,
@@ -40,28 +42,25 @@ start.addEventListener("click", () => {
 })
 
 function getPlayer() {
+    clearOutput()
     typewriter("Hello, what's your name?")
     userBtn.addEventListener("click", getName, false)
 }
 
 function getName() {
     let username = input.value.trim()
-    gameVars.player = username[0].toUpperCase() + username.slice(1).toLowerCase();
     console.log(username)
     console.log(gameVars.player)
-    if (username === null) {
+    if (username == undefined || username == null || username == "") {
         gameVars.player = "Stranger"
-        console.log(username)
-        console.log(gameVars.player)
-        console.log("Didn't take input")
         userBtn.removeEventListener("click", getName)
+        clearInput()
         return startGame()
     } else {
-        gameVars.player = username
+        gameVars.player = username[0].toUpperCase() + username.slice(1).toLowerCase();
         userBtn.removeEventListener("click", getName)
-        console.log(username)
-        console.log(gameVars.player)
         console.log("Took input")
+        clearInput()
         return startGame()
     }
 }
@@ -76,8 +75,14 @@ function showGameRoom(roomIndex) {
     i = 0
     clearOutput()
 	let gameRoom = gameRooms.find(gameRoom => gameRoom.room === roomIndex)
-    let roomText = gameRoom.text
-    typewriter(roomText)
+    let roomText
+    if (typeof gameRoom.text === "function") {
+        roomText = gameRoom.text()
+        typewriter(roomText)
+    } else {
+        roomText = gameRoom.text
+        typewriter(roomText)
+    }
     console.log("This is the roomtext: " + roomText)
     console.log("This is the roomIndex leaving the func: " + gameRoom.room)
     console.log(gameRoom)
@@ -108,7 +113,9 @@ function compareChoice() {
 let gameRooms = [
     {
         room: 1,
-        text: `Welcome, do you want to play a game?`,
+        text: () => {
+            return `Welcome ${gameVars.player}, do you want to play a game?`
+        },
         options: [
             {
                 choice: "a",
