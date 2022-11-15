@@ -4,11 +4,11 @@ const display = document.getElementById("message")
 const input = document.getElementById("user-input")
 const userBtn = document.getElementById("user-answer")
 
+
+// Variables
 let i = 0
 let speed = 100
 let roomIndex = 1
-
-// let gameRooms = import('./hideseek_story.js')
 
 let gameVars = {
     player: "Stranger",
@@ -19,6 +19,10 @@ let gameVars = {
 }
 
 let pickUps = []
+
+/**
+ * Functions affecting output
+ */
 
 function typewriter(text) {
     let output = text
@@ -37,13 +41,12 @@ function clearInput() {
     input.value = ""
 }
 
-start.addEventListener("click", () => {
-   getPlayer()
-})
+// Game functions
 
 function getPlayer() {
     clearOutput()
     typewriter("Hello, what's your name?")
+    start.removeEventListener("click", getPlayer)
     userBtn.addEventListener("click", getName, false)
 }
 
@@ -109,6 +112,22 @@ function compareChoice() {
             return showGameRoom(gameRoom.room)
     }
 }
+
+// Eventlisteners
+start.addEventListener("click", () => {
+    getPlayer()
+})
+reset.addEventListener("click", () => {
+    location.reload()
+})
+openInstructions.addEventListener("click", () => {
+    document.querySelector("#intro").style.display="block"
+})
+  closeInstructions.addEventListener("click", () => {
+    document.querySelector("#intro").style.display="none"
+})
+
+// Game object
 
 let gameRooms = [
     {
