@@ -53,13 +53,13 @@ function playFive() {
 
 function userChoice() {
   if (userPick === "rock") {
-    user.src = "/assets/images/rps/rock-right.webp"
+    user.src = "../assets/images/rps/rock-right.webp"
   }
   if (userPick === "paper") {
-    user.src = "/assets/images/rps/paper-right.webp"
+    user.src = "../assets/images/rps/paper-right.webp"
   }
   if (userPick === "scissors") {
-    user.src = "/assets/images/rps/scissors-right.webp"
+    user.src = "../assets/images/rps/scissors-right.webp"
   }
 }
 
@@ -75,15 +75,15 @@ function computerChoice() {
   const randomChoice = Math.floor(Math.random() * choices.length)
   if (randomChoice === 0) {
     computerPick = "rock"
-    computer.src = "/assets/images/rps/rock-left.webp"
+    computer.src = "../assets/images/rps/rock-left.webp"
   }
   if (randomChoice === 1) {
     computerPick = "paper"
-    computer.src = "/assets/images/rps/paper-left.webp"
+    computer.src = "../assets/images/rps/paper-left.webp"
   }
   if (randomChoice === 2) {
     computerPick = "scissors"
-    computer.src = "/assets/images/rps/scissors-left.webp"
+    computer.src = "../assets/images/rps/scissors-left.webp"
   }
 }
 

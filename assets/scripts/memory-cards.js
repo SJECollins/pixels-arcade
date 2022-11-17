@@ -19,67 +19,67 @@ let endTime = document.getElementById("end-time")
 const cardsArray = [
   {
     name: "cat",
-    img: "/assets/images/memory-cards/cat.webp",
+    img: "../assets/images/memory-cards/cat.webp",
   },
   {
     name: "cow",
-    img: "/assets/images/memory-cards/cow.webp",
+    img: "../assets/images/memory-cards/cow.webp",
   },
   {
     name: "gorilla",
-    img: "/assets/images/memory-cards/gorilla.webp",
+    img: "../assets/images/memory-cards/gorilla.webp",
   },
   {
     name: "elephant",
-    img: "/assets/images/memory-cards/elephant.webp",
+    img: "../assets/images/memory-cards/elephant.webp",
   },
   {
     name: "hippo",
-    img: "/assets/images/memory-cards/hippo.webp",
+    img: "../assets/images/memory-cards/hippo.webp",
   },
   {
     name: "lion",
-    img: "/assets/images/memory-cards/lion.webp",
+    img: "../assets/images/memory-cards/lion.webp",
   },
   {
     name: "parrot",
-    img: "/assets/images/memory-cards/parrot.webp",
+    img: "../assets/images/memory-cards/parrot.webp",
   },
   {
     name: "bat",
-    img: "/assets/images/memory-cards/bat.webp",
+    img: "../assets/images/memory-cards/bat.webp",
   },
   {
     name: "chameleon",
-    img: "/assets/images/memory-cards/chameleon.webp",
+    img: "../assets/images/memory-cards/chameleon.webp",
   },
   {
     name: "deer",
-    img: "/assets/images/memory-cards/deer.webp",
+    img: "../assets/images/memory-cards/deer.webp",
   },
   {
     name: "frog",
-    img: "/assets/images/memory-cards/frog.webp",
+    img: "../assets/images/memory-cards/frog.webp",
   },
   {
     name: "ram",
-    img: "/assets/images/memory-cards/ram.webp",
+    img: "../assets/images/memory-cards/ram.webp",
   },
   {
     name: "raven",
-    img: "/assets/images/memory-cards/raven.webp",
+    img: "../assets/images/memory-cards/raven.webp",
   },
   {
     name: "sabre",
-    img: "/assets/images/memory-cards/sabre.webp",
+    img: "../assets/images/memory-cards/sabre.webp",
   },
   {
     name: "turtle",
-    img: "/assets/images/memory-cards/turtle.webp",
+    img: "../assets/images/memory-cards/turtle.webp",
   },
   {
     name: "walrus",
-    img: "/assets/images/memory-cards/walrus.webp",
+    img: "../assets/images/memory-cards/walrus.webp",
   },
 ]
 
@@ -96,7 +96,7 @@ let secondCard
 let gameCards = []
 
 // Flip sound
-let soundFlip = new Audio("/assets/sounds/flip.mp3")
+let soundFlip = new Audio("../assets/sounds/flip.mp3")
 soundFlip.volume = 0.5
 soundFlip.playbackRate = 5
 

@@ -23,7 +23,7 @@ let holes = []
 let rabbits = []
 
 // Hit sound
-let soundHit = new Audio("/assets/sounds/hit.mp3")
+let soundHit = new Audio("../assets/sounds/hit.mp3")
 soundHit.volume = 0.3
 soundHit.playbackRate = 1.5
 
@@ -153,11 +153,11 @@ function popUp() {
  function slap(){
   points++
   score.innerHTML = points
-  this.style.backgroundImage = "url('/assets/images/rabbit/rabbit-bonk.png')"
+  this.style.backgroundImage = "url('../assets/images/rabbit/rabbit-bonk.png')"
   this.style.pointerEvents = "none"
   soundHit.play()
   setTimeout(() => {
-    this.style.backgroundImage = "url('/assets/images/rabbit/rabbit.png')"
+    this.style.backgroundImage = "url('../assets/images/rabbit/rabbit.png')"
     this.style.pointerEvents = "all"
   }, 900)
 }

@@ -38,7 +38,7 @@ let bombInterval
 let currentLevel = 1
 
 // Explosion sound effect
-let soundExplosion = new Audio("/assets/sounds/explosion.mp3")
+let soundExplosion = new Audio("../assets/sounds/explosion.mp3")
 soundExplosion.volume = 0.1
 soundExplosion.playbackRate = 4
 

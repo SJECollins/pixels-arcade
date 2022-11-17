@@ -49,19 +49,19 @@ button {
 }
 
 #north {
-  background: url("/assets/images/snake/up.png") center / cover no-repeat;
+  background: url("../assets/images/snake/up.png") center / cover no-repeat;
 }
 
 #west {
-  background: url("/assets/images/snake/left.png") center / cover no-repeat;
+  background: url("../assets/images/snake/left.png") center / cover no-repeat;
 }
 
 #east {
-  background: url("/assets/images/snake/right.png") center / cover no-repeat;
+  background: url("../assets/images/snake/right.png") center / cover no-repeat;
 }
 
 #south {
-  background: url("/assets/images/snake/down.png") center / cover no-repeat;
+  background: url("../assets/images/snake/down.png") center / cover no-repeat;
 }
 
 #game-over {

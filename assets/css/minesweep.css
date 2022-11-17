@@ -28,10 +28,10 @@
 }
 
 .board > [data-status="mine"] {
-  background-image: url("/assets/images/minesweep/mine.png");
+  background-image: url("../assets/images/minesweep/mine.png");
   background-size: contain;
 }
 
 .board > [data-status="marked"] {
-  background: url("/assets/images/minesweep/flag.png") center / contain no-repeat;
+  background: url("../assets/images/minesweep/flag.png") center / contain no-repeat;
 }
