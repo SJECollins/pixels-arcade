@@ -1,3 +1,83 @@
+let gameRooms = [
+    {
+        room: 0,
+        text: () => {
+            `Goodbye, ${gameVars.player}...`
+        },
+        options: [
+            {
+                choice: "a",
+                nextRoom: 3,
+            },
+            {
+                choice: "b",
+                nextRoom: 3,
+            }
+        ]
+    },
+    {
+        room: 1,
+        text: () => {
+            return `Welcome ${gameVars.player}, do you want to play a game? Yes / No.
+
+            You can type "quit" at any time to end the game.`
+        },
+        options: [
+            {
+                choice: "yes",
+                nextRoom: 2,
+            },
+            {
+                choice: "no",
+                nextRoom: 0,
+            }
+        ]
+    },
+    {
+        room: 2,
+        text: "Well, you made it to the next room.",
+        options: [
+            {
+                choice: "a",
+                nextRoom: 3,
+            },
+            {
+                choice: "b",
+                nextRoom: 3,
+            }
+        ]
+    },
+    {
+        room: 3,
+        text: "And then the next room.",
+        options: [
+            {
+                choice: "a",
+                nextRoom: 4,
+            },
+            {
+                choice: "b",
+                nextRoom: 4,
+            }
+        ]
+    },
+    {
+        room: 4,
+        text: "And this is another room.",
+        options: [
+            {
+                choice: "a",
+                nextRoom: 5,
+            },
+            {
+                choice: "b",
+                nextRoom: 5,
+            }
+        ]
+    },
+
+]
+
 const reset = document.getElementById("reset")
 const start = document.getElementById("start")
 const display = document.getElementById("message")
@@ -126,67 +206,3 @@ openInstructions.addEventListener("click", () => {
   closeInstructions.addEventListener("click", () => {
     document.querySelector("#intro").style.display="none"
 })
-
-// Game object
-
-let gameRooms = [
-    {
-        room: 1,
-        text: () => {
-            return `Welcome ${gameVars.player}, do you want to play a game?`
-        },
-        options: [
-            {
-                choice: "a",
-                nextRoom: 2,
-            },
-            {
-                choice: "b",
-                nextRoom: 2,
-            }
-        ]
-    },
-    {
-        room: 2,
-        text: "Well, you made it to the next room.",
-        options: [
-            {
-                choice: "a",
-                nextRoom: 3,
-            },
-            {
-                choice: "b",
-                nextRoom: 3,
-            }
-        ]
-    },
-    {
-        room: 3,
-        text: "And then the next room.",
-        options: [
-            {
-                choice: "a",
-                nextRoom: 4,
-            },
-            {
-                choice: "b",
-                nextRoom: 4,
-            }
-        ]
-    },
-    {
-        room: 4,
-        text: "And this is another room.",
-        options: [
-            {
-                choice: "a",
-                nextRoom: 5,
-            },
-            {
-                choice: "b",
-                nextRoom: 5,
-            }
-        ]
-    },
-
-]
