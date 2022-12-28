@@ -39,18 +39,19 @@ window.addEventListener("load", function() {
     let bgTrees = []
     let trees = []
     let lastTime = 0
+    let incSpeed = 0
     let enemyTimer = 0
-    let enemyInterval = 1000
+    let enemyInterval = 800
     let bananaTimer = 0
     let bananaInterval = 800
-    let randomEnemyInterval = Math.random() * 1000 + 400
+    let randomEnemyInterval = Math.random() * 800 + 500
     let randomBananaInterval = Math.random() * 1000 + 2000
     let bgTreeTimer = 0
     let treeTimer = 0
-    let bgTreeInterval = 500
+    let bgTreeInterval = 400
     let treeInterval = 800
-    let randomBgTreeInterval = Math.random() * 800 + 800
-    let randomTreeInterval = Math.random() * 1000 + 2000
+    let randomBgTreeInterval = Math.random() * 800 + 500
+    let randomTreeInterval = Math.random() * 1000 + 1500
     let gameOver = false
 
     canvas.width = gameWidth
@@ -106,7 +107,7 @@ window.addEventListener("load", function() {
         }
         jump(e) {
             if (e && this.y == 164) {
-                // Only jump if even AND player on ground to prevent double jump
+                // Only jump if event AND player on ground to prevent double jump
                 this.yvelocity -= 10
             }
             this.y += this.yvelocity
@@ -124,8 +125,6 @@ window.addEventListener("load", function() {
             }
         }
     }
-
-    document.addEventListener("keydown", monkeyJump)
 
     function monkeyJump(e) {
         console.log(e.code)
@@ -152,8 +151,8 @@ window.addEventListener("load", function() {
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
             context.drawImage(this.img, this.x + this.width, this.y, this.width, this.height)
         }
-        update() {
-            this.x -= this.speed
+        update(incSpeed) {
+            this.x -= this.speed + incSpeed
             // Reset image when scrolled off screen
             if (this.x < 0 - this.width) {
                 this.x = 0
@@ -175,8 +174,8 @@ window.addEventListener("load", function() {
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
             context.drawImage(this.img, this.x + this.width, this.y, this.width, this.height)
         }
-        update() {
-            this.x -= this.speed
+        update(incSpeed) {
+            this.x -= this.speed + incSpeed
             // Reset image when scrolled off screen
             if (this.x < 0 - this.width) {
                 this.x = 0
@@ -185,14 +184,14 @@ window.addEventListener("load", function() {
     }
 
     class BackgroundTree {
-        constructor(gameWidth, gameHeight, treeImg) {
+        constructor(gameWidth, gameHeight, treeImg, incSpeed) {
             this.gameWidth = gameWidth
             this.img = treeImg
             this.x = this.gameWidth
             this.y = gameHeight - 202
             this.width = 128
             this.height = 202
-            this.speed = 2
+            this.speed = 2 + incSpeed
             this.markedForDeletion = false
         }
         draw(context) {
@@ -207,14 +206,14 @@ window.addEventListener("load", function() {
     }
 
     class Tree {
-        constructor(gameWidth, gameHeight, treeImg) {
+        constructor(gameWidth, gameHeight, treeImg, incSpeed) {
             this.gameWidth = gameWidth
             this.img = treeImg
             this.x = this.gameWidth
             this.y = gameHeight - 202
             this.width = 128
             this.height = 202
-            this.speed = 4
+            this.speed = 3.5 + incSpeed
             this.markedForDeletion = false
         }
         draw(context) {
@@ -229,7 +228,7 @@ window.addEventListener("load", function() {
     }
 
     class Enemy {
-        constructor(gameWidth, enemyY, enemyImg) {
+        constructor(gameWidth, enemyY, enemyImg, incSpeed) {
             this.gameWidth = gameWidth
             this.width = tileSize
             this.height = tileSize
@@ -237,7 +236,7 @@ window.addEventListener("load", function() {
             this.x = this.gameWidth
             this.y = enemyY
             this.frameX = 0
-            this.speed = 5
+            this.speed = 5 + incSpeed
             this.frameCount = 3
             this.fps = 15
             this.frameTimer = 0
@@ -266,7 +265,7 @@ window.addEventListener("load", function() {
     }
 
     class Banana {
-        constructor(gameWidth) {
+        constructor(gameWidth, incSpeed) {
             this.gameWidth = gameWidth
             this.width = tileSize
             this.height = tileSize
@@ -275,7 +274,7 @@ window.addEventListener("load", function() {
             this.y = 166
             this.markedForDeletion = false
             this.collected = false
-            this.speed = 4
+            this.speed = 4 + incSpeed
         }
         draw(context) {
             if (!this.collected) {
@@ -292,7 +291,7 @@ window.addEventListener("load", function() {
 
     function handleBananas(deltaTime) {
         if (bananaTimer > bananaInterval + randomBananaInterval) {
-            bananas.push(new Banana(gameWidth))
+            bananas.push(new Banana(gameWidth, incSpeed))
             randomBananaInterval = Math.random() * 1000 + 200
             bananaTimer = 0
         } else {
@@ -309,11 +308,11 @@ window.addEventListener("load", function() {
         if (enemyTimer > enemyInterval + randomEnemyInterval) {
             let newEnemy = Math.random() >= 0.5 ? "spider" : "wasp"
             if (newEnemy == "spider") {
-                enemies.push(new Enemy(gameWidth, 170, spiderImg))
+                enemies.push(new Enemy(gameWidth, 170, spiderImg, incSpeed))
             } else {
-                enemies.push(new Enemy(gameWidth, 90, waspImg))
+                enemies.push(new Enemy(gameWidth, 90, waspImg, incSpeed))
             }
-            randomEnemyInterval = Math.random() * 1000 + 500
+            randomEnemyInterval = Math.random() * 800 + 500
             enemyTimer = 0
         } else {
             enemyTimer += deltaTime
@@ -329,11 +328,11 @@ window.addEventListener("load", function() {
         if (bgTreeTimer > bgTreeInterval + randomBgTreeInterval) {
             let newTree = Math.random() >= 0.5 ? "treeOne" : "treeTwo"
             if (newTree == "treeOne") {
-                bgTrees.push(new BackgroundTree(gameWidth, gameHeight, treebigbgImg))
+                bgTrees.push(new BackgroundTree(gameWidth, gameHeight, treebigbgImg, incSpeed))
             } else {
-                bgTrees.push(new BackgroundTree(gameWidth, gameHeight, treebigbgtwoImg))
+                bgTrees.push(new BackgroundTree(gameWidth, gameHeight, treebigbgtwoImg, incSpeed))
             }
-            randomBgTreeInterval = Math.random() * 800 + 800
+            randomBgTreeInterval = Math.random() * 800 + 500
             bgTreeTimer = 0
         } else {
             bgTreeTimer += deltaTime
@@ -348,12 +347,12 @@ window.addEventListener("load", function() {
     function handleTrees(deltaTime) {
         if (treeTimer > treeInterval + randomTreeInterval) {
             let newTree = Math.random() < 0.5 ? "treeOne" : "treeTwo"
-            if (newTree = "treeOne") {
-                trees.push(new Tree(gameWidth, gameHeight, treebigImg))
+            if (newTree == "treeOne") {
+                trees.push(new Tree(gameWidth, gameHeight, treebigImg, incSpeed))
             } else {
-                trees.push(new Tree(gameWidth, gameHeight, treesmImg))
+                trees.push(new Tree(gameWidth, gameHeight, treesmImg, incSpeed))
             }
-            randomTreeInterval = Math.random() * 1000 + 2000
+            randomTreeInterval = Math.random() * 1000 + 1500
             treeTimer = 0
         } else {
             treeTimer += deltaTime
@@ -378,6 +377,10 @@ window.addEventListener("load", function() {
                 endScore.innerHTML = score
                 document.querySelector("#game-over").style.display="block"
                 startBtn.addEventListener("click", startGame)
+                document.removeEventListener("keydown", monkeyJump)
+                canvas.removeEventListener("touchend", (e) => {
+                    player.jump(e)
+                })
             }
         }, 1000)
     }
@@ -399,27 +402,33 @@ window.addEventListener("load", function() {
         // timeStamp value autogenerated by requestAnimationFrame which generates timeStamp and passes to function it calls
         const deltaTime = timeStamp - lastTime
         lastTime = timeStamp
+        incSpeed += 0.001
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
-        background.update()
-        handleBgTrees(deltaTime)
-        handleTrees(deltaTime)
+        background.update(incSpeed)
+        handleBgTrees(deltaTime, incSpeed)
+        handleTrees(deltaTime, incSpeed)
         branch.draw(ctx)
-        branch.update()
+        branch.update(incSpeed)
         player.draw(ctx, deltaTime, enemies)
         player.jump()
-        handleEnemies(deltaTime)
-        handleBananas(deltaTime)
+        handleEnemies(deltaTime, incSpeed)
+        handleBananas(deltaTime, incSpeed)
         displayStatus(ctx)
         if (!gameOver) {
             requestAnimationFrame(animate)
         }
+        console.log(incSpeed)
     }
     
     function startGame() {
         handleScore()
         animate(0)
         startBtn.removeEventListener("click", startGame)
+        document.addEventListener("keydown", monkeyJump)
+        document.addEventListener("touchend", (e) => {
+            player.jump(e)
+        })
     }
 
     startBtn.addEventListener("click", startGame)
