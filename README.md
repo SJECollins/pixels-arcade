@@ -138,6 +138,17 @@ Update the UI a little. Now there's mouseover/mouseout events to the enter butto
 
 Why doesn't JS have a .capitalize() function? So silly...
 
+## Monkey run
+28/12
+- [Franks Laboratory SideScroller](https://www.youtube.com/watch?v=7JtLHJbm0kA&ab_channel=Frankslaboratory)
+
+Instead of working on rebuilding my python project in JS, I spent the day building a silly infinite runner. The bones are based on the above tutorial using classes and methods to create the elements and draw them to the canvas.
+
+I expanded on it a little bit with two types of enemies, bananas to collect for extra points and the background has a sort-of parallax. The speed of all the elements also increases over time. And it works on mobile.
+
+I still have to tweak the banana points and there's a slight lag occasionally, but right now it runs.
+
+
 # General
 ## 02/07
 
