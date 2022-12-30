@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pixel Arcade is a collection of single player games for mobile and desktop browsers.">
+  <meta name="keywords" content="Pixel Arcade, games, gaming, mobile, browser, HTML, CSS, JavaScript">
+  <link href="../assets/css/main.css" rel="stylesheet">
+  <link href="../assets/css/survive.css" rel="stylesheet">
+  <title>Pixel's Arcade | Survive The Horde</title>
+  <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+  <!-- Header containing title link, logos and navbar -->
+  <header>
+    <div id="header-title">
+      <img src="../assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <a href="../index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
+      <img src="../assets/images/pixel-head-green.png" alt="Green pixel head logo">
+    </div>
+  </header>
+    <!-- Main section containing the game menu-->
+    <section id="main-screen">
+
+      <h1>Survive The Horde</h1>
+      <p id="instructions">Instructions</p>
+
+      <!-- Game Buttons -->
+      <div>
+        <button id="start">Start!</button>
+        <button id="reset">Reset</button>
+      </div>
+
+      <!-- Stats -->
+      <div id="stats">
+        <p>Wave: <span id="wave">0</span></p>
+        <p>Score: <span id="score">0</span></p>
+      </div>
+
+      <!-- Canvas for game -->
+      <canvas width="320" height="320" id="canvas"></canvas>
+
+      <!-- Instruction pop up-->
+      <div id="intro" class="pop-up">
+          <div class="pop-up-card">
+          <h2>Welcome to Survive The Horde!</h2>
+          <p>Kill the zombies.</p>
+          <p>Survive as many swarms as you can!</p>
+          <button id="close-pop-up">Got It!</button>
+          </div>
+      </div>
+
+      <!-- Game Over -->
+      <div id="game-over" class="pop-up">
+          <div id="end" class="pop-up-card">
+              <h2>Game Over!</h2>
+              <p>You survived: <span id="wave-count"></span> waves.</p>
+              <p>And killed: <span id="result"></span> zombies</p>
+              <a href="zombies.html">Play Again</a>
+              <a href="../index.html">Home</a>
+          </div>
+      </div>
+  
+    </section>
+    <!-- Footer with social links -->
+    <footer>
+      <ul class="footer-socials">
+        <li>
+            <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Find us on Facebook (opens in new tab)">Facebook</a>
+        </li>
+        <li>
+            <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Find us on Twitter (opens in new tab)">Twitter</a>
+        </li>
+        <li>
+            <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="Find us on YouTube (opens in new tab)">YouTube</a>
+        </li>
+        <li>
+            <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Find us on Instagram (opens in new tab)">Instagram</a>
+        </li>
+    </ul>
+    </footer>
+    <script src="../assets/scripts/survive.js"></script>
+  </body>
+  </html>
