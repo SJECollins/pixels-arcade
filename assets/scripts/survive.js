@@ -45,12 +45,12 @@ window.addEventListener("load", function() {
             this.frameX = 0
             this.frameY = 0
             this.frameCount = 3
-            this.fps = 20
+            this.fps = 6
             this.frameTimer = 0
             this.frameInterval = 1000/this.fps
             this.moveX = 0
             this.moveY = 0
-            this.rotate = 0
+            this.shooting = false
         }
         draw(context, deltaTime, zombies) {
             zombies.forEach(zombie => {
@@ -99,26 +99,26 @@ window.addEventListener("load", function() {
             let speedX = 0
             let speedY = 0
             if (input.keys.indexOf("Space") > -1) {
-                const delay = 2000
+                this.shooting = true
                 const damage = 5
                 if (this.frameY == 0) {
-                    speedY = -2
+                    speedY = 4
                     bulletX = this.x + this.width / 2
                     bulletY = this.y + this.width
                 } else if (this.frameY == 32) {
-                    speedX = -2
-                    bulletX = this.x
-                    bulletY = this.y + this.width / 2
-                } else if (this.frameY == 64) {
-                    speedX = +2
+                    speedX = 4
                     bulletX = this.x + this.width
                     bulletY = this.y + this.width / 2
+                } else if (this.frameY == 64) {
+                    speedX = -4
+                    bulletX = this.x
+                    bulletY = this.y + this.width / 2
                 } else {
-                    speedY = -2
+                    speedY = -4
                     bulletX = this.x + this.width / 2
                     bulletY = this.y
                 }
-                handleBullets(bulletX, bulletY, speedX, speedY, delay, damage, deltaTime)
+                handleBullets(bulletX, bulletY, speedX, speedY, damage)
             }
         }
     }
@@ -159,35 +159,46 @@ window.addEventListener("load", function() {
             this.speedY = speedY
             this.damage = damage
             this.width = 2
-            this.height = 4
+            this.height = 2
             this.color = "white"
             this.markedForDeletion = false
         }
-        draw(ctx) {
+        draw(context) {
+            context.strokeStyle = "black"
+            context.beginPath()
+            context.arc(this.x + this.width, this.y + this.height, this.width, 0, Math.PI * 2)
+            context.stroke()
             if (!this.markedForDeletion) {
-                ctx.fillStyle = this.color
-                ctx.fillRect(this.x, this.y, this.width, this.height)
+                context.fillStyle = this.color
+                context.fillRect(this.x, this.y, this.width, this.height)
             }
         }
         update() {
             this.x += this.speedX
             this.y += this.speedY
-            // if (this.x < 0 - this.gameWidth || this.y < 0 - this.gameWidth) {
-            //     this.markedForDeletion = true
-            // }
+            if (this.x < 0 - this.gameWidth || this.y < 0 - this.gameWidth) {
+                this.markedForDeletion = true
+            }
         }
     }
 
-    function handleBullets(bulletX, bulletY, speedX, speedY, delay, damage, deltaTime) {
-        console.log("Is being called")
-        if (bulletInterval <= 0) {
-            console.log("new bullet")
+    function handleBullets(bulletX, bulletY, speedX, speedY, damage) {
+        if (bulletInterval <= 0 && player.shooting) {
             bullets.push(new Bullet(bulletX, bulletY, speedX, speedY, damage))
-            bulletInterval += delay
+            bulletInterval += 100
+            player.shooting = false
+        } else if (bulletInterval > 0) {
+            bulletInterval--
+            player.shooting = false
         } else {
-            console.log("no bullet")
+            bulletInterval = 0
+            player.shooting = false
         }
-
+        bullets.forEach(bullet => {
+            bullet.draw(ctx)
+            bullet.update()
+        })
+        bullets = bullets.filter(bullet => !bullet.markedForDeletion)
     }
 
 
@@ -214,19 +225,24 @@ window.addEventListener("load", function() {
             this.y = spawnY
             this.img = zombieImg
             this.frameX = 0
+            this.frameY = 0
             this.frameCount = 3
-            this.fps = 20
+            this.fps = 10
             this.frameTimer = 0
             this.frameInterval = 1000/this.fps
-            this.speed = 1
+            this.speed = 0.5
             this.markedForDeletion = false
         }
         draw(context) {
+            context.strokeStyle = "black"
+            context.beginPath()
+            context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2)
+            context.stroke()
             if (!this.markedForDeletion) {
-                context.drawImage(this.img, this.frameX * this.width, 0, this.width, this.height, this.x, this.y, this.width, this.height)
+                context.drawImage(this.img, this.frameX * this.width, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
             }
         }
-        update(deltaTime) {
+        update(deltaTime, bullets, player) {
             if (this.frameTimer > this.frameInterval) {
                 if (this.frameX >= this.frameCount) {
                     this.frameX = 0
@@ -237,14 +253,40 @@ window.addEventListener("load", function() {
             } else {
                 this.frameTimer += deltaTime
             }
-            this.x -= this.speed
-            if (this.x < 0 - this.width) {
-                this.markedForDeletion = true
+            // this.x -= this.speed
+            bullets.forEach(bullet => {
+                const distanceX = bullet.x - this.x
+                const distanceY = bullet.y - this.y
+                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
+                if (distance < bullet.width + this.width / 2) {
+                    this.markedForDeletion = true
+                    console.log("dead")
+                }
+            })
+            // Chase player
+            let distToPlayerX = player.x - this.x
+            let distToPlayerY = player.y - this.y
+            let distToCover = Math.sqrt(distToPlayerX * distToPlayerX + distToPlayerY * distToPlayerY)
+            if (distToCover) {
+                distToPlayerX /= distToCover
+                distToPlayerY /= distToCover
+            }
+            this.x += distToPlayerX * this.speed
+            this.y += distToPlayerY * this.speed
+            let angle = Math.atan2(distToPlayerX, distToPlayerY)
+            if (angle >= -2.5 && angle < -1) {
+                this.frameY = 32
+            } else if (angle >= -1 && angle <= 1) {
+                this.frameY = 0
+            } else if (angle > 1 && angle <= 2.5) {
+                this.frameY = 64
+            } else {
+                this.frameY = 96
             }
         }
     }
 
-    function handleZombies(deltaTime) {
+    function handleZombies(deltaTime, bullets, player) {
         let spawnX = 0
         let spawnY = 0
         if (maxZombies != 0) {
@@ -269,7 +311,7 @@ window.addEventListener("load", function() {
         }
         zombies.forEach(zombie => {
             zombie.draw(ctx)
-            zombie.update(deltaTime)
+            zombie.update(deltaTime, bullets, player)
         })
         zombies = zombies.filter(zombie => !zombie.markedForDeletion)
     }
@@ -282,13 +324,13 @@ window.addEventListener("load", function() {
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime
         lastTime = timeStamp
-        bulletInterval -= deltaTime
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
         player.draw(ctx, deltaTime, zombies)
         player.update(input)
         player.shoot(input, deltaTime, handleBullets)
-        handleZombies(deltaTime)
+        handleZombies(deltaTime, bullets, player)
+        handleBullets()
         ctx.drawImage(fogImg, 0, 0, gameWidth, gameHeight)
         if (!gameOver) {
             requestAnimationFrame(animate)
@@ -304,7 +346,9 @@ window.addEventListener("load", function() {
         })   
     }
 
-    // Check wave
+    // Check wave / status
+    // Need a function to check level and wave
+    // When maxZombies hits zero, increase num of zoms, wave and level
 
     startBtn.addEventListener("click", startGame)
     reset.addEventListener("click", () => {
