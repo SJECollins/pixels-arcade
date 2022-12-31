@@ -84,16 +84,16 @@ window.addEventListener("load", function() {
             // Move player and update frameY
             this.x += this.moveX
             this.y += this.moveY
-            if (input.keys.indexOf("KeyD") > -1) {
+            if (input.keys.indexOf("KeyD") > -1 || input.keys.indexOf("right") > -1) {
                 this.moveX = 1
                 this.frameY = 32
-            } else if (input.keys.indexOf("KeyA") > -1) {
+            } else if (input.keys.indexOf("KeyA") > -1 || input.keys.indexOf("left") > -1) {
                 this.moveX = -1
                 this.frameY = 64
-            } else if (input.keys.indexOf("KeyW") > -1) {
+            } else if (input.keys.indexOf("KeyW") > -1 || input.keys.indexOf("up") > -1) {
                 this.moveY = -1
                 this.frameY = 96
-            } else if (input.keys.indexOf("KeyS") > -1) {
+            } else if (input.keys.indexOf("KeyS") > -1 || input.keys.indexOf("down") > -1) {
                 this.moveY = 1
                 this.frameY = 0
             } else {
@@ -107,7 +107,7 @@ window.addEventListener("load", function() {
             let bulletY = 0
             let speedX = 0
             let speedY = 0
-            if (input.keys.indexOf("Space") > -1) {
+            if (input.keys.indexOf("Space") > -1 || input.keys.indexOf("fire") > -1) {
                 this.shooting = true
                 const damage = 5
                 if (this.frameY == 0) {
@@ -146,6 +146,16 @@ window.addEventListener("load", function() {
                         this.keys.push(e.code)
                      }
             })
+            window.addEventListener("mousedown", (e) => {
+                if ((e.target.id == "left"||
+                     e.target.id == "up" ||
+                     e.target.id == "down" ||
+                     e.target.id == "right" ||
+                     e.target.id == "fire")
+                     && this.keys.indexOf(e.target.id) === -1) {
+                        this.keys.push(e.target.id)
+                     }
+            })
             window.addEventListener("keyup", (e) => {
                 if (e.code == "KeyW" ||
                     e.code == "KeyD" ||
@@ -154,7 +164,16 @@ window.addEventListener("load", function() {
                     e.code == "Space") {
                     this.keys.splice(this.keys.indexOf(e.code), 1)
                     }
-            })    
+            })
+            window.addEventListener("mouseup", (e) => {
+                if (e.target.id == "left"||
+                    e.target.id == "up" ||
+                    e.target.id == "down" ||
+                    e.target.id == "right" ||
+                    e.target.id == "fire") {
+                    this.keys.splice(this.keys.indexOf(e.target.id), 1)
+                    }
+            })
         }
     }
 

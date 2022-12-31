@@ -10,3 +10,49 @@
     border: 4px solid var(--apple-black);
     box-shadow: 0 10px 15px;
 }
+
+/* Styling for on screen controls */
+#directions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#arrows {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+#arrows button {
+    border-style: none;
+    height: 80px;
+    width: 80px;
+    touch-action: manipulation;
+}
+
+#left {
+    background: url("../images/snake/left.png") center / cover no-repeat;
+}
+
+#up {
+    background: url("../images/snake/up.png") center / cover no-repeat;
+}
+
+#down{
+    background: url("../images/snake/down.png") center / cover no-repeat;
+}
+
+#right {
+    background: url("../images/snake/right.png") center / cover no-repeat;
+}
+
+#fire {
+    background-color: var(--apple-black);
+    color: var(--apple-light-green);
+    font-weight: 700;
+}
