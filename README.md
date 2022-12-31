@@ -138,6 +138,9 @@ Update the UI a little. Now there's mouseover/mouseout events to the enter butto
 
 Why doesn't JS have a .capitalize() function? So silly...
 
+31/12
+Fixed to check if category already used in the game. Categories should now only be used once per game.
+
 ## Monkey Run
 28/12
 - [Franks Laboratory SideScroller](https://www.youtube.com/watch?v=7JtLHJbm0kA&ab_channel=Frankslaboratory)
