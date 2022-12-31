@@ -8,6 +8,8 @@ window.addEventListener("load", function() {
     const openInstructions = document.getElementById("instructions")
     const closeInstructions = document.getElementById("close-pop-up")
     const endScore = document.getElementById("result")
+    const bananaDisplay = document.getElementById("bananas")
+    const secondDisplay = document.getElementById("seconds")
 
     const monkeyImg = new Image()
     monkeyImg.src = "../assets/images/monkeyrun/monk.png"
@@ -34,6 +36,7 @@ window.addEventListener("load", function() {
     const gameHeight = 256
     const tileSize = 32
     let score = 0
+    let bananasCollected = 0
     let enemies = []
     let bananas = []
     let bgTrees = []
@@ -57,6 +60,7 @@ window.addEventListener("load", function() {
     canvas.width = gameWidth
     canvas.height = gameHeight
 
+    // Player class
     class Player {
         constructor() {
             this.width = tileSize
@@ -74,7 +78,7 @@ window.addEventListener("load", function() {
         }
         draw(context, deltaTime, enemies) {
             console.log(this.y)
-            // Collision detection
+            // Collision detection with enemies
             enemies.forEach(enemy => {
                 const distanceX = enemy.x - this.x
                 const distanceY = enemy.y - this.y
@@ -83,6 +87,7 @@ window.addEventListener("load", function() {
                     gameOver = true
                 }
             })
+            // Collisiont detection with bananas
             bananas.forEach(banana => {
                 const distanceX = banana.x - this.x
                 const distanceY = banana.y - this.y
@@ -111,11 +116,11 @@ window.addEventListener("load", function() {
             }
             this.y += this.yvelocity
             if (this.y !== 164) {
-                // If player is not on ground
+                // If player is not on ground, add gravity, set frameX
                 this.yvelocity += this.gravity
-                console.log(this.y)
                 this.frameX = 1
             } else if (this.y == 164) {
+                // If player on ground, no velocity
                 this.yvelocity = 0
             }
             if (this.y > 164) {
@@ -125,17 +130,17 @@ window.addEventListener("load", function() {
         }
     }
 
+    // Monkey jump function to check inputs
     function monkeyJump(e) {
         console.log(e.code)
         if (e.code !== "Space" && e.code !== "ArrowUp") {
-            console.log("hit other button")
             return
         } else {
-            console.log("hit button")
             player.jump(e)            
         }
     }
 
+    // Background class
     class Background {
         constructor() {
             this.img = bgImg
@@ -151,6 +156,7 @@ window.addEventListener("load", function() {
             context.drawImage(this.img, this.x + this.width, this.y, this.width, this.height)
         }
         update(incSpeed) {
+            // Increase speed over time
             this.x -= this.speed + incSpeed
             // Reset image when scrolled off screen
             if (this.x < 0 - this.width) {
@@ -159,6 +165,7 @@ window.addEventListener("load", function() {
         }
     }
 
+    // Branch class
     class Branch {
         constructor() {
             this.img = branchImg
@@ -169,11 +176,12 @@ window.addEventListener("load", function() {
             this.speed = 4
         }
         draw(context) {
-            // Draw bg twice to create illusion of endlessly scrolling background
+            // Draw branch twice to create illusion of endlessly scrolling background
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
             context.drawImage(this.img, this.x + this.width, this.y, this.width, this.height)
         }
         update(incSpeed) {
+            // Increase speed over time
             this.x -= this.speed + incSpeed
             // Reset image when scrolled off screen
             if (this.x < 0 - this.width) {
@@ -182,6 +190,7 @@ window.addEventListener("load", function() {
         }
     }
 
+    // Background tree class
     class BackgroundTree {
         constructor(gameWidth, gameHeight, treeImg, incSpeed) {
             this.gameWidth = gameWidth
@@ -194,16 +203,19 @@ window.addEventListener("load", function() {
             this.markedForDeletion = false
         }
         draw(context) {
+            // Draw tree
             context.drawImage(this.img, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height)                            
         }
         update() {
             this.x -= this.speed
+            // Delete when off the screen
             if (this.x < 0 - this.width) {
                 this.markedForDeletion = true
             }
         }
     }
 
+    // Tree class
     class Tree {
         constructor(gameWidth, gameHeight, treeImg, incSpeed) {
             this.gameWidth = gameWidth
@@ -216,16 +228,19 @@ window.addEventListener("load", function() {
             this.markedForDeletion = false
         }
         draw(context) {
+            // Draw tree
             context.drawImage(this.img, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height)                    
         }
         update() {
             this.x -= this.speed
+            // Delete when off the screen
             if (this.x < 0 - this.width) {
                 this.markedForDeletion = true
             }
         }
     }
 
+    // Enemy class
     class Enemy {
         constructor(gameWidth, enemyY, enemyImg, incSpeed) {
             this.gameWidth = gameWidth
@@ -243,9 +258,11 @@ window.addEventListener("load", function() {
             this.markedForDeletion = false
         }
         draw(context) {
+            // Draw enemy
             context.drawImage(this.img, this.frameX * this.width, 0, this.width, this.height, this.x, this.y, this.width, this.height)
         }
         update(deltaTime) {
+            // Update frames
             if (this.frameTimer > this.frameInterval) {
                 if (this.frameX >= this.frameCount) {
                     this.frameX = 0
@@ -257,12 +274,14 @@ window.addEventListener("load", function() {
                 this.frameTimer += deltaTime
             }
             this.x -= this.speed
+            // Delete when off the screen
             if (this.x < 0 - this.width) {
                 this.markedForDeletion = true
             }
         }
     }
 
+    // Banana class
     class Banana {
         constructor(gameWidth, incSpeed) {
             this.gameWidth = gameWidth
@@ -276,38 +295,48 @@ window.addEventListener("load", function() {
             this.speed = 4 + incSpeed
         }
         draw(context) {
+            // Draw if not collected
             if (!this.collected) {
                 context.drawImage(this.img, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height)                
             }
         }
         update() {
             this.x -= this.speed
+            // Delete when off the screen
             if (this.x < 0 - this.width) {
                 this.markedForDeletion = true
             }
         }
     }
 
+    // Function to handle bananas
     function handleBananas(deltaTime) {
         if (bananaTimer > bananaInterval + randomBananaInterval) {
+            // If timer over interval + randominterval, spawn banana and reset timer
             bananas.push(new Banana(gameWidth, incSpeed))
             randomBananaInterval = Math.random() * 1000 + 200
             bananaTimer = 0
         } else {
+            // Add to timer
             bananaTimer += deltaTime
         }
+        // Draw and update bananas, increase score for each banana collected
         bananas.forEach(banana => {
             banana.draw(ctx)
             banana.update()
-            if (banana.markedForDeletion) {
+            if (banana.collected) {
                 score += 10
+                bananasCollected++
             }
         })
-        bananas = bananas.filter(banana => !banana.markedForDeletion)
+        // Filter banana array to only include those not marked for delection
+        bananas = bananas.filter(banana => !banana.markedForDeletion && !banana.collected)
     }
 
+    // Function to handle enemies
     function handleEnemies(deltaTime) {
         if (enemyTimer > enemyInterval + randomEnemyInterval) {
+            // When timer ready, choose between spider and wasp and spawn one, reset timer
             let newEnemy = Math.random() >= 0.5 ? "spider" : "wasp"
             if (newEnemy == "spider") {
                 enemies.push(new Enemy(gameWidth, 170, spiderImg, incSpeed))
@@ -317,15 +346,19 @@ window.addEventListener("load", function() {
             randomEnemyInterval = Math.random() * 800 + 500
             enemyTimer = 0
         } else {
+            // Count up timer
             enemyTimer += deltaTime
         }
+        // For each enemy draw and update
         enemies.forEach(enemy => {
             enemy.draw(ctx)
             enemy.update(deltaTime)
         })
+        // Filter enemy array to remove deleted
         enemies = enemies.filter(enemy => !enemy.markedForDeletion)
     }
 
+    // Function to handle background trees, choosing which image to use
     function handleBgTrees(deltaTime) {
         if (bgTreeTimer > bgTreeInterval + randomBgTreeInterval) {
             let newTree = Math.random() >= 0.5 ? "treeOne" : "treeTwo"
@@ -346,6 +379,7 @@ window.addEventListener("load", function() {
         bgTrees = bgTrees.filter(tree => !tree.markedForDeletion)
     }
 
+    // Same as above but for closer trees
     function handleTrees(deltaTime) {
         if (treeTimer > treeInterval + randomTreeInterval) {
             let newTree = Math.random() < 0.5 ? "treeOne" : "treeTwo"
@@ -366,6 +400,7 @@ window.addEventListener("load", function() {
         trees = trees.filter(tree => !tree.markedForDeletion)
     }
 
+    // Function to handle score, check for gameover etc
     function handleScore() {
         let time = 0
         let startTime = setInterval(() => {
@@ -378,6 +413,8 @@ window.addEventListener("load", function() {
                 timer.innerHTML = "GAME OVER!"
                 endScore.innerHTML = score
                 document.querySelector("#game-over").style.display="block"
+                bananaDisplay.innerHTML = bananasCollected
+                secondDisplay.innerHTML = time
                 startBtn.addEventListener("click", startGame)
                 document.removeEventListener("keydown", monkeyJump)
                 canvas.removeEventListener("touchend", (e) => {
