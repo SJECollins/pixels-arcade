@@ -89,7 +89,6 @@ window.addEventListener("load", function() {
                 const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
                 if (distance < banana.width / 4 + this.width / 4) {
                     banana.collected = true
-                    score++
                 }
             })
             // Animation
@@ -108,7 +107,7 @@ window.addEventListener("load", function() {
         jump(e) {
             if (e && this.y == 164) {
                 // Only jump if event AND player on ground to prevent double jump
-                this.yvelocity -= 10
+                this.yvelocity -= 9
             }
             this.y += this.yvelocity
             if (this.y !== 164) {
@@ -178,7 +177,7 @@ window.addEventListener("load", function() {
             this.x -= this.speed + incSpeed
             // Reset image when scrolled off screen
             if (this.x < 0 - this.width) {
-                this.x = 0
+                this.x = this.x - (0 - this.width)
             }
         }
     }
@@ -271,7 +270,7 @@ window.addEventListener("load", function() {
             this.height = tileSize
             this.img = bananaImg
             this.x = this.gameWidth
-            this.y = 166
+            this.y = 170
             this.markedForDeletion = false
             this.collected = false
             this.speed = 4 + incSpeed
@@ -300,6 +299,9 @@ window.addEventListener("load", function() {
         bananas.forEach(banana => {
             banana.draw(ctx)
             banana.update()
+            if (banana.markedForDeletion) {
+                score += 10
+            }
         })
         bananas = bananas.filter(banana => !banana.markedForDeletion)
     }
