@@ -134,7 +134,7 @@ I'd like to fine tune this so you can't get the same category multiple times. It
 Not super impressive, but not a bad Sunday afternoon. And I learned a little about user inputs in JS, which was interesting after doing a whole Python project that involved user inputs in the terminal.
 
 25/07
-Update the UI a little. Now there's mouseover/mouseout events to the enter button. And the user can submit there answer by clicking enter when in the input field. Also update the input field so it's a line rather than a box and the text is centered. And the game-over/round pop-ups display the correct word. 
+Update the UI a little. Now there's mouseover/mouseout events to the enter button. And the user can submit there answer by clicking enter when in the input field. Also update the input field so it's a line rather than a box and the text is centered. And the game-over/round pop-ups display the correct word.
 
 Why doesn't JS have a .capitalize() function? So silly...
 
@@ -157,7 +157,7 @@ I still have to tweak the banana points and there's a slight lag occasionally, b
 
 Actually mainly structered using Monkey Run logic, I did look at the Coding With Adam tutorial above to figure out how to shoot bullets for this.
 
-A wave-based, top-down shooter using HTML5 canvas and JS. Zombies spawn in the fog and chase the player around the screen, and you shoot them to survive. More zombies spawn per wave. So far there's no true win condition, theoretically you could play it forever?? Would probably break.
+A wave-based, top-down shooter using HTML5 canvas and JS. Zombies spawn in the fog and chase the player around the screen, and you shoot them to survive. More zombies spawn per wave. So far there's no true win condition, theoretically you could play it forever?? Would probably break. Added mobile controls that sort of work, haha.
 
 May revisit to fix collision. There's a little bit of weirdness with the bullet collision at the moment.
 
