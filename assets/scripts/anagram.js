@@ -41,6 +41,7 @@ function pickAnagram() {
 
   let newCat = []
 
+  // Get our category, display the title
   if (randCat === 0) {
     newCat = animals.slice()
     catTitle = "Animals"
@@ -58,16 +59,18 @@ function pickAnagram() {
     catTitle = "Books"
   }
 
-  console.log(newCat)
-  usedCat.push(randCat)
-  console.log(usedCat)
-  // Pick a random word or title from the chosen category
-  randWord = newCat[Math.floor(Math.random() * 10)]
-  console.log(randWord)
-  scramble()
+  // Check if already used the category, pick again if so
+  if (usedCat.includes(randCat)) {
+    pickAnagram()
+  } else {
+    // If not already used, add to our usedCat and pick a random word from it
+    usedCat.push(randCat)
+    randWord = newCat[Math.floor(Math.random() * 10)]
+    scramble()
+  }
 }
 
-// Function scramble to anagram
+// Function to scramble the word
 function scramble() {
   let arr = randWord.split("")
 
@@ -80,16 +83,18 @@ function scramble() {
 
 // Function to compare answers and display round/gameover pop up
 function compareAnswer() {
+  // Get the user's answer
   let answer = userGuess.value.trim().toLowerCase()
-  console.log(answer)
-  console.log(randWord)
 
+  // Set the right word, capitalise it
   let rightWord = randWord.charAt(0).toUpperCase() + randWord.slice(1)
 
+  // Display our right word
   rightAnswer.forEach((item) => {
     item.innerHTML = rightWord
   })
   
+  // Comparing guesses, displaying points etc
   if (randWord === answer && points < 5) {
     roundResult.innerHTML = "Correct!"
     points++
@@ -116,6 +121,7 @@ function compareAnswer() {
   }
 }
 
+// Function to play a round
 function playRound() {
   roundDisplay.style.display="none"
   userGuess.value = ""
