@@ -138,15 +138,31 @@ Update the UI a little. Now there's mouseover/mouseout events to the enter butto
 
 Why doesn't JS have a .capitalize() function? So silly...
 
-## Monkey run
+## Monkey Run
 28/12
 - [Franks Laboratory SideScroller](https://www.youtube.com/watch?v=7JtLHJbm0kA&ab_channel=Frankslaboratory)
 
 Instead of working on rebuilding my python project in JS, I spent the day building a silly infinite runner. The bones are based on the above tutorial using classes and methods to create the elements and draw them to the canvas.
 
-I expanded on it a little bit with two types of enemies, bananas to collect for extra points and the background has a sort-of parallax. The speed of all the elements also increases over time. And it works on mobile.
+I expanded on it a little bit with two types of enemies, bananas to collect for extra points and the background has a sort-of parallax effect. The speed of all the elements also increases over time. And it works on mobile.
 
 I still have to tweak the banana points and there's a slight lag occasionally, but right now it runs.
+
+## Survive The Horde
+31/12
+- [Coding With Adam](https://www.youtube.com/watch?v=i7FzA4NavDs&ab_channel=CodingWithAdam)
+
+Actually mainly structered using Monkey Run logic, I did look at the Coding With Adam tutorial above to figure out how to shoot bullets for this.
+
+A wave-based, top-down shooter using HTML5 canvas and JS. Zombies spawn in the fog and chase the player around the screen, and you shoot them to survive. More zombies spawn per wave. So far there's no true win condition, theoretically you could play it forever?? Would probably break.
+
+May revisit to fix collision. There's a little bit of weirdness with the bullet collision at the moment.
+
+Also might increase zombie speed per wave.
+
+Could add something weird like a giant zombie boss after x amt of waves?
+
+Lots of fun things to do. Nice project for end of year.
 
 
 # General
