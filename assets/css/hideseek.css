@@ -12,8 +12,9 @@
     height: 85%;
     padding: 1.5em 0;
     margin: 0 auto;
-    /* text-align: left; */
+    text-align: left;
     font-size: 0.75rem;
+    line-height: 1.5;
     color: var(--apple-light-green);
     overflow-y: auto;
     border-bottom: 2px dotted var(--apple-dark-green);
