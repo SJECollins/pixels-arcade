@@ -44,6 +44,8 @@ From this tutorial:
 I haven't made any big changes to it yet, so will come back to this. Really, it seems like it would be very difficult to improve.
 But I need to remember to fix how the flag is displaying on the board. - have now corrected flag position
 
+-- I can't remember when I updated this, but it's now got 3 levels with more bombs.
+
 ## Memory Card Game
 This should have been very easy. And then I decided to make it very difficult for myself. Because I'm an idiot.
 
@@ -167,6 +169,15 @@ Could add something weird like a giant zombie boss after x amt of waves?
 
 Lots of fun things to do. Nice project for end of year.
 
+## Hide & Seek
+02/01/2023
+
+A "port"(?) of a python project submitted for CI's PP3. Originally a text adventure game written in python to play in the terminal, now it runs in a mock terminal in the browser. I think the typewriter effect was the easiest part of it.
+
+The biggest headache was switching between rooms and changing variables passed on user choices. But, eventually, it started to work. I'm sure there are bugs, but I managed to get to one simple ending and one tricky ending cleanly so I'm gonna step away for now.
+
+I think it could use some refactoring. And I would like to rework handling user inputs so you can play just with the keyboard, but right now it's not completely broken and that'll do.
+
 
 # General
 ## 02/07
@@ -184,3 +195,7 @@ Also updated the index to display all the games. Still trying to decide what to 
 ## 24/07
 
 Moved all html files into their own folder. Broke everything. Think I have everything fixed but we'll see 
+
+## 02/01
+
+Remove commented out code for menu and unused social media links. Need to revisit menu in the header - some sort of drop down?? A search? We'll see
