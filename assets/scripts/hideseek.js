@@ -3,7 +3,7 @@ let gameRooms = [
         // Player quits
         room: 0,
         text: () => {
-            gameOver = true
+            gameVars.gameOver = true
             return `Goodbye, ${gameVars.player}...`
         },
     },
@@ -11,7 +11,8 @@ let gameRooms = [
         // Welcome player
         room: 1,
         text: () => {
-            return `Welcome ${gameVars.player}, do you want to play a game? Yes / No.`
+            return `Welcome ${gameVars.player}, do you want to play a game?
+            Yes / No.`
         },
         options: [
             {
@@ -187,8 +188,8 @@ let gameRooms = [
         // Check closet, choose item
         room: 9,
         text: `For some reason, you decide to investigate the quiet closet.
-        You try to peek\nthrough the slats of the closet door, but see nothing except darkness. Slowly, you open the closet and peer inside.\n
-        "As expected, there is only the regular assortment of clutter - coats, shoes, golf clubs, your old teddy bear 'Burt'.
+        You try to peek through the slats of the closet door, but see nothing except darkness. Slowly, you open the closet and peer inside.\n
+        As expected, there is only the regular assortment of clutter - coats, shoes, golf clubs, your old teddy bear 'Burt'.
         
         You decide to:
         [A] Take Burt with you, you haven't spent much time together lately.
@@ -224,8 +225,8 @@ let gameRooms = [
                 You think it came from inside the door. It was so quiet though. Maybe it was just your mind playing tricks on you?
 
                 You:
-                [A] Ignore it. It was just the wind.
-                [B] Investigate.`
+                [A] Investigate.
+                [B] Ignore it. It was just the wind.`
             } else if (pickUps.includes("club")) {
                 return `You nod at Burt, but pull a long golf club from the bag in the back of the closet. The metal feels cold in your hands.
                 You continue down the hallway and pass the master bedroom on your right.\n
@@ -235,8 +236,8 @@ let gameRooms = [
                 You think it came from inside the door. It was so quiet though. Maybe it was just your mind playing tricks on you?
 
                 You:
-                [A] Ignore it. It was just the wind.
-                [B] Investigate.`
+                [A] Investigate.
+                [B] Ignore it. It was just the wind.`
             } else {
                 return `You continue down the hallway and pass the master bedroom on your right.\n
                 "${gameVars.player}..."
@@ -270,7 +271,9 @@ let gameRooms = [
         The door knob feels cool on your hand. Gingerly, you turn it. The door creaks as you push it open a crack.
         Peering inside, the room is so dark you can only see the outline of the duvet on the bed.
         Nothing is stirring in the room. You cannot hear a sound.
-        Relieved, you leave the door open a crack and continue towards the kitchen...`,
+        Relieved, you leave the door open a crack and continue towards the kitchen...
+        
+        `,
         options: [
             {
                 choice: "a",
@@ -288,16 +291,16 @@ let gameRooms = [
                     The kettle is tucked right in under the cabinets on the counter.
 
                     You think:
-                    [A] You can reach it if you stretch.
-                    [B] There's a stool here somewhere.`                    
+                    [A] There's a stool here somewhere.
+                    [B] You can reach it if you stretch.`                    
                 } else {
                     return `You continue on towards the kitchen. It is as quiet as the rest of the house. Moonlight filters in through the windows and illuminates the room.
                     The tiles feel like ice under your bare feet. You hug Burt closely.
                     The kettle is tucked right in under the cabinets on the counter.
 
                     You think:
-                    [A] You can reach it if you stretch.
-                    [B] There's a stool here somewhere.`                    
+                    [A] There's a stool here somewhere.
+                    [B] You can reach it if you stretch.`                    
                 }
             } else {
                 return `You continue on towards the kitchen. It is as quiet as the rest of the house. Moonlight filters in through the windows and illuminates the room.
@@ -305,8 +308,8 @@ let gameRooms = [
                 The kettle is tucked right in under the cabinets on the counter.
 
                 You think:
-                [A] You can reach it if you stretch.
-                [B] There's a stool here somewhere.`
+                [A] There's a stool here somewhere.
+                [B] You can reach it if you stretch.`
             }
         },
         options: [
@@ -329,7 +332,9 @@ let gameRooms = [
         text: `You think you remember the stool by the backdoor. You walk past the island in the middle of the kitchen, past the table and find the stool next to the door, beside your wellies.
         You glance at the door quickly as you retrieve the stool. It looks locked to you. Of course it is.
         You bring the stool back over to the counter and step up on it.
-        You can easily pull the kettle out from under the cabinet...`,
+        You can easily pull the kettle out from under the cabinet...
+        
+        `,
         options: [
             {
                 choice: "a",
@@ -344,15 +349,21 @@ let gameRooms = [
                 let index = pickUps.indexOf("teddy")
                 pickUps.splice(index, 1)
                 return `You think your arms are long enough. The counter is a little wide, though. So, you pop Burt on the counter to free your hands.
-                On your toes, leaning on the counter with one hand, you reach out for the kettle. You can just about pull it out from under the cabinet.`
+                On your toes, leaning on the counter with one hand, you reach out for the kettle. You can just about pull it out from under the cabinet.
+                
+                `
             } else if (pickUps.includes("club")) {
                 let index = pickUps.indexOf("club")
                 pickUps.splice(index, 1)
                 return `You think your arms are long enough. The counter is a little wide, though. So, you place the golf club down to free your hands.
-                On your toes, leaning on the counter with one hand, you reach out for the kettle. You can just about pull it out from under the cabinet.`
+                On your toes, leaning on the counter with one hand, you reach out for the kettle. You can just about pull it out from under the cabinet.
+                
+                `
             } else {
                 return `You think your arms are long enough. The counter is a little wide, though.
-                On your toes, leaning on the counter with one hand, you reach out for the kettle. You can just about pull it out from under the cabinet.`
+                On your toes, leaning on the counter with one hand, you reach out for the kettle. You can just about pull it out from under the cabinet.
+                
+                `
             }
         },
         options: [
@@ -370,13 +381,17 @@ let gameRooms = [
                 Your favourite mug is sitting on the edge of the sink where you left it that afternoon. You collect it.
                 The tea bags and sugar are much easier to reach than the kettle. You place a tea bag in your mug. You take a spoon from the drawer and place it next to your cup.\n
                 You walk over to the fridge to get the milk. You open the door and take out the milk carton. As the fridge door closes, you can see the back door. It is slightly open.\n
-                But, it was just closed?`
+                But, it was just closed?
+                
+                `
             } else {
                 return `You flick the switch on the kettle and the little light above it comes on. It starts a low rumble. While the kettle boils, you collect your ingredients.
                 Your favourite mug is sitting on the edge of the sink where you left it that afternoon. You collect it.
                 The tea bags and sugar are much easier to reach than the kettle. You place a tea bag in your mug. You take a spoon from the drawer and place it next to your cup.\n
                 You walk over to the fridge to get the milk. You open the door and take out the milk carton. As the fridge door closes, you can see the back door. It is slightly open.\n
-                Was that open before?`
+                Was that open before?
+                
+                `
             }
         },
         options: [
@@ -429,14 +444,23 @@ let gameRooms = [
         room: 18,
         text: () => {
             if (pickUps.includes("teddy")) {
+                let thisRoom = gameRooms.findIndex(current => current.room === 18)
+                gameRooms[thisRoom].options[0].nextRoom = 20
                 let index = pickUps.indexOf("teddy")
                 pickUps.splice(index, 1)
-                this.options[0].nextRoom = 20
                 return `You open your mouth, but then in a panic you toss Burt at the figure. The shadow stops and catches him. 
-                While it's distracted, you make a break for it.`
+                While it's distracted, you make a break for it.
+                
+                `
             } else if (pickUps.includes("club")) {
                 return `The figure reaches for you. Impulsively, you swing the golf club that is still in your hands. 
-                You miss and the shadow continues to advance...`
+                You miss and the shadow continues to advance...
+                
+                `
+            } else {
+                return `The shadow approaches.
+                
+                `
             }
         },
         options: [
@@ -468,7 +492,7 @@ let gameRooms = [
         room: 20,
         text: () => {
             if (gameVars.stoolOut) {
-                if (pickUps.includes("slipper")) {
+                if (pickUps.includes("slippers")) {
                     if (pickUps.includes("teddy")) {
                         let index = pickUps.indexOf("teddy")
                         pickUps.splice(index, 1)
@@ -476,21 +500,30 @@ let gameRooms = [
                         "${gameVars.player}," the figure growls.\n
                         You run through the kitchen and hop over the stool as you go. As you leap, the bunny ears of your fluffy slippers catch on the stool and you fall! 
                         You collapse on the kitchen tiles and the shadow looms over you.\n
-                        In a panic, you throw Burt at the shadowy figure. It catches him. As it seems to stare at Burt in confusion , you kick your slippers off and run for the hallway.`
+                        In a panic, you throw Burt at the shadowy figure. It catches him. As it seems to stare at Burt in confusion , you kick your slippers off and run for the hallway.
+                        
+                        `
                     } else {
-                        this.options[0].nextRoom = 19
+                        let thisRoom = gameRooms.findIndex(current => current.room === 20)
+                        gameRooms[thisRoom].options[0].nextRoom = 19
                         return `You turn and run.\n
                         "${gameVars.player}," the figure growls.\n
                         You run through the kitchen and hop over the stool as you go. As you leap, the bunny ears of your fluffy slippers catch on the stool and you fall! 
-                        You collapse on the kitchen tiles and the shadow looms over you.`
+                        You collapse on the kitchen tiles and the shadow looms over you.
+                        
+                        `
                     }
                 } else {
                     gameVars.shadowDelayed = true
-                    return `You run through the kitchen, hopping over the stool as you go. The figure follows, but as you reach the hallway, you glance back and see it stumble over your step stool and fall on the kitchen tiles.`
+                    return `You run through the kitchen, hopping over the stool as you go. The figure follows, but as you reach the hallway, you glance back and see it stumble over your step stool and fall on the kitchen tiles.
+                    
+                    `
                 }
             } else {
                 return `You turn and run.\n
-                "${gameVars.player}," the figure growls.`
+                "${gameVars.player}," the figure growls.
+                
+                `
             }
         },
         options: [
@@ -550,19 +583,26 @@ let gameRooms = [
         text: () => {
             if (gameVars.shadowDelayed) {
                 if (gameVars.doorOpen) {
-                    this.options[0].nextRoom = 23
+                    let thisRoom = gameRooms.findIndex(current => current.room === 22)
+                    gameRooms[thisRoom].options[0].nextRoom = 23
                     return `The master bedroom is closest so you race for the door.
                     You slip through the open door.\n
                     Expecting safety, you realise the mound of blankets you saw earlier is just that - blankets. The room is empty.
-                    You have no time to wonder why, so you dive underneath the bed.`
+                    You have no time to wonder why, so you dive underneath the bed.
+                    
+                    `
                 } else {
-                    this.options[0].nextRoom = 24
-                    return `The master bedroom is closest so you race for the door.`
+                    let thisRoom = gameRooms.findIndex(current => current.room === 22)
+                    gameRooms[thisRoom].options[0].nextRoom = 24
+                    return `The master bedroom is closest so you race for the door.
+                    
+                    `
                 }
             } else {
-                this.options[0].nextRoom = 19
                 return `The master bedroom is closest so you race for the door.
-                You almost reach the door, but the shadowy figure is right behind you.`
+                You almost reach the door, but the shadowy figure is right behind you.
+                
+                `
             }
         },
         options: [
@@ -575,9 +615,9 @@ let gameRooms = [
     {
         // User hides - reusable?
         room: 23,
-        text: `An eternity passes as you hide in the darkness. Is it still out there?\n"
-        You think you hear something pass by the door, but did you just imagine that?\n"
-        How much longer can you wait?\n"
+        text: `An eternity passes as you hide in the darkness. Is it still out there?\n
+        You think you hear something pass by the door, but did you just imagine that?\n
+        How much longer can you wait?\n
         You think you can hear a sound coming from the kitchen.
         
         You decide to:
@@ -617,7 +657,9 @@ let gameRooms = [
         // Stay hidden, die
         room: 25,
         text: `You stay frozen in fear where you are.
-        A cold chill runs up your spine and, suddenly, you see it before you.`,
+        A cold chill runs up your spine and, suddenly, you see it before you.
+        
+        `,
         options: [
             {
                 choice: "a",
@@ -630,14 +672,20 @@ let gameRooms = [
         room: 26,
         text: () => {
             if (gameVars.shadowDelayed) {
-                this.options[0].nextRoom = 23
-                return `You race for the closet, diving through the slatted doors and pulling them closed behind you. Hastily, you cover yourself in a pile of winter coats. You put your hand to your mouth and try to stay as quiet as you can.\n"
-                All you can hear is your own breathing.`
-            } else {
-                this.options[0].nextRoom = 25
-                return `You race for the closet, diving through the slatted doors and pulling them closed behind you. Hastily, you cover yourself in a pile of winter coats. You put your hand to your mouth and try to stay as quiet as you can.\n"
+                let thisRoom = gameRooms.findIndex(current => current.room === 26)
+                gameRooms[thisRoom].options[0].nextRoom = 23
+                return `You race for the closet, diving through the slatted doors and pulling them closed behind you. Hastily, you cover yourself in a pile of winter coats. You put your hand to your mouth and try to stay as quiet as you can.\n
                 All you can hear is your own breathing.
-                Only seconds pass before the closet door slowly opens.`
+                
+                `
+            } else {
+                let thisRoom = gameRooms.findIndex(current => current.room === 26)
+                gameRooms[thisRoom].options[0].nextRoom = 25
+                return `You race for the closet, diving through the slatted doors and pulling them closed behind you. Hastily, you cover yourself in a pile of winter coats. You put your hand to your mouth and try to stay as quiet as you can.\n
+                All you can hear is your own breathing.
+                Only seconds pass before the closet door slowly opens.
+                
+                `
             }
         },
         options: [
@@ -654,17 +702,21 @@ let gameRooms = [
             if (pickUps.includes("teddy")) {
                 let index = pickUps.indexOf("teddy")
                 pickUps.splice(index, 1)
-                this.options[0].nextRoom = 25
+                let thisRoom = gameRooms.findIndex(current => current.room === 27)
+                gameRooms[thisRoom].options[0].nextRoom = 25
                 return `You race for the front door, hoping to escape from the house.You pull on the handle. The door won't budge.\n
                 "${gameVars.player}," whispers the shadowy figure as it approaches.\n
                 You fumble with the door and, too late, realise the bolt at the top is locked, out of reach.
                 In a panic, you throw Burt at the shadowy figure. It catches him.
-                As it seems to stare at Burt in confusion, you run for your bedroom.`
+                As it seems to stare at Burt in confusion, you run for your bedroom.
+                
+                `
             } else {
-                this.options[0].nextRoom = 19
                 return `You race for the front door, hoping to escape from the house.You pull on the handle. The door won't budge.\n
                 "${gameVars.player}," whispers the shadowy figure as it approaches.\n
-                You fumble with the door and, too late, realise the bolt at the top is locked, out of reach.`
+                You fumble with the door and, too late, realise the bolt at the top is locked, out of reach.
+                
+                `
             }
         },
         options: [
@@ -705,7 +757,9 @@ let gameRooms = [
             return `You dive head first under your bed and curl yourself into as small of a ball as you can.\n
             You cover your mouth and try to quiet your breathing.\n
             "${gameVars.player}."\n
-            The bedroom door creaks open slowly.`
+            The bedroom door creaks open slowly.
+            
+            `
         },
         options: [
             {
@@ -720,22 +774,27 @@ let gameRooms = [
         text: () => {
             if (gameVars.windowClosed) {
                 if (pickUps.includes("club")) {
-                    this.options[0].nextRoom = 31
                     return `You run over to the window and try to slide it open, but it's jammed. You can't force it.
                     The golf club! You still have it!
                     You can hear the door slowly open behind you.\
                     "${gameVars.player}," the shadow softly growls.
-                    You swing the club..`
+                    You swing the club and smash the window!
+                    
+                    `
                 } else {
-                    this.options[0].nextRoom = 19
+                    let thisRoom = gameRooms.findIndex(current => current.room === 30)
+                    gameRooms[thisRoom].options[0].nextRoom = 19
                     return `You run over to the window and try to slide it open.
                     It's jammed. Pushing with all your strength, you can't force it open.\n
-                    You turn as the bedroom door slowly opens and try to make yourself as small as you can in the corner of the room...`
+                    You turn as the bedroom door slowly opens and try to make yourself as small as you can in the corner of the room...
+                    
+                    `
                 }
             } else {
-                this.options[0].nextRoom = 31
                 return `You run over to the window. It's still open a crack. You slide it open even wider as you hear your bedroom door slowly open behind you.\n
-                "${gameVars.player}," the shadow softly growls...`
+                "${gameVars.player}," the shadow softly growls...
+                
+                `
             }
         },
         options: [
@@ -762,15 +821,21 @@ let gameRooms = [
         room: 32,
         text: () => {
             if (pickUps.includes("teddy")) {
-                this.options[0].nextRoom = 33
+                let thisRoom = gameRooms.findIndex(current => current.room === 32)
+                gameRooms[thisRoom].options[0].nextRoom = 33
                 return `You dive into your bed and pull the covers up over your head.
                 You close your eyes and try as hard as you can to fall back to sleep.
-                You hug Burt close.`
+                You hug Burt close.
+                
+                `
             } else {
-                this.options[0].nextRoom = 25
+                let thisRoom = gameRooms.findIndex(current => current.room === 32)
+                gameRooms[thisRoom].options[0].nextRoom = 25
                 return `You dive into your bed and pull the covers up over your head.
                 You close your eyes and try as hard as you can to fall back to sleep.
-                You can hear it. The bedroom creaks open. You lift the edge of your blankets and peek out with one eye.`
+                You can hear it. The bedroom creaks open. You lift the edge of your blankets and peek out with one eye.
+                
+                `
             }
         },
         options: [
@@ -799,6 +864,8 @@ const openInstructions = document.getElementById("instructions")
 const closeInstructions = document.getElementById("close-pop-up")
 const reset = document.getElementById("reset")
 const start = document.getElementById("start")
+const fastText = document.getElementById("fast-text")
+const slowText = document.getElementById("slow-text")
 const display = document.getElementById("message")
 const input = document.getElementById("user-input")
 const userBtn = document.getElementById("user-answer")
@@ -807,7 +874,6 @@ const userBtn = document.getElementById("user-answer")
 let i = 0
 let speed = 50
 let roomIndex = 1
-let gameOver = false
 
 let gameVars = {
     player: "Stranger",
@@ -816,6 +882,7 @@ let gameVars = {
     doorOpen: false,
     stoolOut: false,
     shadowDelayed: false,
+    gameOver: false,
 }
 
 let pickUps = []
@@ -842,11 +909,11 @@ function typewriter(text, roomIndex) {
             let gameRoom = gameRooms.find(gameRoom => gameRoom.room === roomIndex)
             if ("options" in gameRoom) {
                 if (gameRoom.options.length == 1) {
-                    roomIndex = gameRoom.options[0].nextRoom
-                    return showGameRoom(roomIndex)
+                    let roomChoice = gameRoom.options[0].choice
+                    return noChoice(roomChoice)
                 }
             } else {
-                if (!gameOver) {
+                if (!gameVars.gameOver) {
                     setTimeout(() => {
                         return showGameRoom(0)
                     }, 2000)                       
@@ -910,6 +977,7 @@ function showGameRoom(roomIndex) {
     input.focus()
 	let gameRoom = gameRooms.find(gameRoom => gameRoom.room === roomIndex)
     console.log(gameRoom)
+    console.log(pickUps)
     let roomText
     if (typeof gameRoom.text === "function") {
         roomText = gameRoom.text()
@@ -924,16 +992,18 @@ function compareChoice() {
     let userChoice = input.value.trim().toLowerCase()
 	let gameRoom = gameRooms.find(gameRoom => gameRoom.room === roomIndex)
     let options = gameRoom.options
+    console.log(options)
+    console.log(gameRoom)
     if (userChoice == "quit") {
         return showGameRoom(0)
     } else {
         if (options.some(option => option.choice === userChoice)){
             for (const option of options) {
                 if (option.choice === userChoice) {
-                    if (option.choice.includes("pickUp")) {
+                    if ("pickUp" in option) {
                         console.log(option.pickUp)
                         pickUps.push(option.pickUp)
-                    } else if (option.choice.includes("updateVar")) {
+                    } else if ("updateVar" in option) {
                         option.updateVar()
                     }
                     roomIndex = option.nextRoom
@@ -951,8 +1021,33 @@ function compareChoice() {
     }
 }
 
+function noChoice(autoChoice) {
+    let choice = autoChoice
+	let gameRoom = gameRooms.find(gameRoom => gameRoom.room === roomIndex)
+    let option = gameRoom.options[0]
+    console.log(option)
+    console.log(gameRoom)
+    if (option.choice === choice) {
+        if ("pickUp" in option) {
+            console.log(option.pickUp)
+            pickUps.push(option.pickUp)
+        } else if ("updateVar" in option) {
+            option.updateVar()
+        }
+        roomIndex = option.nextRoom
+        console.log("This is the nextRoom: " + roomIndex)
+        return showGameRoom(roomIndex)
+    }
+}
+
 
 // Eventlisteners
+fastText.addEventListener("click", () => {
+    speed = 50
+})
+slowText.addEventListener("click", () => {
+    speed = 100
+})
 start.addEventListener("click", getPlayer)
 reset.addEventListener("click", () => {
     location.reload()

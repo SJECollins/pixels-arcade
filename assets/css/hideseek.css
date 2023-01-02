@@ -1,3 +1,10 @@
+#text-speed {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .terminal {
     background-color: var(--apple-black);
     width: 700px;
