@@ -186,10 +186,6 @@ footer {
   top: 100vh;
 }
 
-.footer-socials > li {
-  display: inline;
-}
-
 footer a {
   color: var(--apple-light-green);
   padding: 0 1.5rem;
