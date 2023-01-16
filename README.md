@@ -178,6 +178,19 @@ The biggest headache was switching between rooms and changing variables passed o
 
 I think it could use some refactoring. And I would like to rework handling user inputs so you can play just with the keyboard, but right now it's not completely broken and that'll do.
 
+## Breakout
+16/02/2023
+
+- [Conor Bailey](https://www.youtube.com/watch?v=ifJLNsG57hQ&ab_channel=ConorBailey)
+
+I actually made a version of this based off an Ania Kubow tutorial about six months ago but there was an annoying, persistent issue with how the ball moved when it hit blocks when travelling in a particular x&y that was driving me mad so I shelved it. After looking at some html5 canvas games I wondered if it would work better using that and I had a look at this tutorial.
+
+It's largely the same as above, with similar speed progression as you clear the screen, but it also adds a new row of blocks. And when you lose, the action pauses for the pop up of your score rather than an endless cycle of restarting. I like how he has a high score in local storage, I may steal that and apply it to other games.
+
+The size of the game is also dependent on window size so it's sort of mobile-friendly-ish. Has the usual arrows at the bottom.
+
+I do want to consider adjusting the speed a bit and adding an end game.
+
 
 # General
 ## 02/07
@@ -199,3 +212,7 @@ Moved all html files into their own folder. Broke everything. Think I have every
 ## 02/01
 
 Remove commented out code for menu and unused social media links. Need to revisit menu in the header - some sort of drop down?? A search? We'll see
+
+## 16/01
+
+Added menu to header for all pages for quicker navigation.
