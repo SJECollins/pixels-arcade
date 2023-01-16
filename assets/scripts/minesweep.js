@@ -4,8 +4,6 @@ const startOne = document.getElementById("start-one")
 const startTwo = document.getElementById("start-two")
 const startThree = document.getElementById("start-three")
 const reset = document.getElementById("reset")
-const openInstructions = document.getElementById("instructions")
-const closeInstructions = document.getElementById("close-pop-up")
 
 let endGame = document.getElementById("end-game")
 let endScore = document.getElementById("end-score")
@@ -253,10 +251,4 @@ startTwo.addEventListener("click", levelTwo)
 startThree.addEventListener("click", levelThree)
 reset.addEventListener("click", () => {
   location.reload() 
-})
-openInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="block"
-})
-closeInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="none"
 })

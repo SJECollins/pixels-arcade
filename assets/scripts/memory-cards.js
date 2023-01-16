@@ -3,8 +3,6 @@ const levelEasy = document.getElementById("easy")
 const levelMedium = document.getElementById("medium")
 const levelHard = document.getElementById("hard")
 const reset = document.getElementById("reset")
-const openInstructions = document.getElementById("instructions")
-const closeInstructions = document.getElementById("close-pop-up")
 
 let timer = document.getElementById("timer")
 let matches = document.getElementById("matches")
@@ -307,10 +305,4 @@ levelMedium.addEventListener("click", levelTwo)
 levelHard.addEventListener("click", levelThree)
 reset.addEventListener("click", () => {
   location.reload() 
-})
-openInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="block"
-})
-closeInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="none"
 })

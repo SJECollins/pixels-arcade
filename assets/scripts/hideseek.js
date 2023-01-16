@@ -860,8 +860,6 @@ let gameRooms = [
     }
 ]
 
-const openInstructions = document.getElementById("instructions")
-const closeInstructions = document.getElementById("close-pop-up")
 const reset = document.getElementById("reset")
 const start = document.getElementById("start")
 const fastText = document.getElementById("fast-text")
@@ -1051,10 +1049,4 @@ slowText.addEventListener("click", () => {
 start.addEventListener("click", getPlayer)
 reset.addEventListener("click", () => {
     location.reload()
-})
-openInstructions.addEventListener("click", () => {
-    document.querySelector("#intro").style.display="block"
-})
-  closeInstructions.addEventListener("click", () => {
-    document.querySelector("#intro").style.display="none"
 })

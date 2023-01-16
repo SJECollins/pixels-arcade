@@ -11,8 +11,6 @@ const left = document.getElementById("left")
 const right = document.getElementById("right")
 const wrap = document.getElementById("wrap")
 const tankLives = document.getElementById("tank-lives")
-const openInstructions = document.getElementById("instructions")
-const closeInstructions = document.getElementById("close-pop-up")
 
 // Our global variables
 let currentPosition = 217
@@ -405,9 +403,3 @@ reset.addEventListener("click", () => {
   location.reload() 
 })
 wrapToggle.addEventListener("click", changeWrap)
-openInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="block"
-})
-closeInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="none"
-})

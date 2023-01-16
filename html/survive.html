@@ -19,9 +19,61 @@
       <a href="../index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
       <img src="../assets/images/pixel-head-green.png" alt="Green pixel head logo">
     </div>
+    <div id="header-menu">
+      <button id="open-menu" type="button" aria-label="Open menu">Menu</button>
+    </div>
   </header>
     <!-- Main section containing the game menu-->
     <section id="main-screen">
+
+      <!-- Menu modal -->
+      <div class="menu-pop-up">
+        <div class="menu-pop-up-card">
+          <h2>Menu</h2>
+          <ol>
+            <li>
+              <a href="../index.html" aria-label="Home screen">Home</a>
+            </li>
+            <li>
+              <a href="../html/anagram.html" aria-label="Anagram game">Anagram Game</a>
+            </li>
+            <li>
+              <a href="../html/hide-seek.html" aria-label="Hide & Seek text adventure game">Hide & Seek</a>
+            </li>
+            <li>
+              <a href="../html/invaders.html" aria-label="Space Invaders game">Space Invaders</a>
+            </li>
+            <li>
+              <a href="../html/memory-cards.html" aria-label="Dead Heads memory card game">Dead Heads Memory Game</a>
+            </li>
+            <li>
+              <a href="../html/minesweeper.html" aria-label="Minesweeper game">Minesweeper</a>
+            </li>
+            <li>
+              <a href="../html/missing-item.html" aria-label="Missing Item game">Missing Item Game</a>
+            </li>
+            <li>
+              <a href="../html/monkey-run.html" aria-label="Monkey Run game">Monkey Run</a>
+            </li>
+            <li>
+              <a href="../html/rps.html" aria-label="Rock, Paper, Scissors game">Rock Paper Scissors</a>
+            </li>
+            <li>
+              <a href="../html/rabbit.html" aria-label="Slap-a-Rabbit game">Slap-a-Rabbit</a>
+            </li>
+            <li>
+              <a href="../html/simon.html" aria-label="Simon game">Simon</a>
+            </li>
+            <li>
+              <a href="../html/snake.html" aria-label="Snake game">Snake</a>
+            </li>
+            <li>
+              <a href="../html/survive.html" aria-label="Survive the Horder game">Survive the Horde</a>
+            </li>
+          </ol>
+        </div>
+        <button id="close-menu" type="button" aria-label="Close">Close</button>
+      </div>
 
       <h1>Survive The Horde</h1>
       <p id="instructions">Instructions</p>
@@ -80,5 +132,6 @@
     <footer>
     </footer>
     <script src="../assets/scripts/survive.js"></script>
+    <script src="../assets/scripts/popups.js"></script>
   </body>
   </html>

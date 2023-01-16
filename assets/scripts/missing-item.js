@@ -8,8 +8,6 @@ const endResult = document.getElementById("end-result")
 const roundResult = document.getElementById("round-result")
 const nextRound = document.getElementById("next-round")
 const reset = document.getElementById("reset")
-const openInstructions = document.getElementById("instructions")
-const closeInstructions = document.getElementById("close-pop-up")
 
 // Our cards
 const cardsArray = [
@@ -230,10 +228,4 @@ nextRound.addEventListener("click", firstState)
 startButton.addEventListener("click", firstState)
 reset.addEventListener("click", () => {
   location.reload() 
-})
-openInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="block"
-})
-closeInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="none"
 })

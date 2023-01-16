@@ -9,8 +9,6 @@ const guessButton = document.getElementById("guess-button")
 const roundResult = document.getElementById("round-result")
 const nextRound = document.getElementById("next-round")
 const roundDisplay = document.getElementById("round")
-const openInstructions = document.getElementById("instructions")
-const closeInstructions = document.getElementById("close-pop-up")
 const rightAnswer = document.querySelectorAll(".right-word")
 
 let usedCat = []
@@ -146,10 +144,4 @@ function playRound() {
 startButton.addEventListener("click", playRound)
 reset.addEventListener("click", () => {
   location.reload()
-})
-openInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="block"
-})
-closeInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="none"
 })

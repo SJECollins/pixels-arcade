@@ -5,8 +5,6 @@ window.addEventListener("load", function() {
     const reset = document.getElementById("reset")
     const currentWave = document.getElementById("wave")
     const scoreDisplay = document.getElementById("score")
-    const openInstructions = document.getElementById("instructions")
-    const closeInstructions = document.getElementById("close-pop-up")
     const endWave = document.getElementById("wave-count")
     const endResult = document.getElementById("result")
 
@@ -409,10 +407,4 @@ window.addEventListener("load", function() {
     reset.addEventListener("click", () => {
     location.reload() 
     })
-    openInstructions.addEventListener("click", () => {
-    document.querySelector("#intro").style.display="block"
-    })
-    closeInstructions.addEventListener("click", () => {
-    document.querySelector("#intro").style.display="none"
-    })   
 })

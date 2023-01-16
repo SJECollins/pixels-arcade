@@ -5,8 +5,6 @@ window.addEventListener("load", function() {
     const reset = document.getElementById("reset")
     const timer = document.getElementById("time")
     const scoreDisplay = document.getElementById("score")
-    const openInstructions = document.getElementById("instructions")
-    const closeInstructions = document.getElementById("close-pop-up")
     const endScore = document.getElementById("result")
     const bananaDisplay = document.getElementById("bananas")
     const secondDisplay = document.getElementById("seconds")
@@ -473,12 +471,6 @@ window.addEventListener("load", function() {
     startBtn.addEventListener("click", startGame)
     reset.addEventListener("click", () => {
     location.reload() 
-    })
-    openInstructions.addEventListener("click", () => {
-    document.querySelector("#intro").style.display="block"
-    })
-    closeInstructions.addEventListener("click", () => {
-    document.querySelector("#intro").style.display="none"
-    })   
+    }) 
 })
  

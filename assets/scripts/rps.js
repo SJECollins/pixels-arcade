@@ -8,8 +8,6 @@ const roundResult = document.getElementById("result")
 const endScore = document.getElementById("end-score")
 const gameOver = document.querySelector("#game-over")
 const reset = document.getElementById("reset")
-const openInstructions = document.getElementById("instructions")
-const closeInstructions = document.getElementById("close-pop-up")
 
 const choices = document.querySelectorAll(".selections")
 const threeRounds = document.getElementById("three-rounds")
@@ -141,10 +139,4 @@ threeRounds.addEventListener("click", playThree)
 fiveRounds.addEventListener("click", playFive)
 reset.addEventListener("click", () => {
   location.reload() 
-})
-openInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="block"
-})
-closeInstructions.addEventListener("click", () => {
-  document.querySelector("#intro").style.display="none"
 })
