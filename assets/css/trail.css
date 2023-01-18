@@ -55,7 +55,9 @@
     align-items: center;
 }
 
-#game-choices button, #close-game-pop-up {
+#game-choices button,
+#enter-chars,
+#close-game-pop-up {
     background-color: var(--apple-white);
     color: var(--apple-black);
     padding: 0.5em 1.5em;
@@ -64,11 +66,29 @@
     transition: 0.6s;
 }
 
-#game-choices button:hover, #close-game-pop-up:hover {
+#game-choices button:hover,
+#enter-chars:hover,
+#close-game-pop-up:hover {
     background-color: var(--apple-dark-green);
     color: var(--apple-white);
 }
 
 #game-pop-up {
     display: none;
+}
+
+#char-pop-up {
+    display: none;
+}
+
+#char-pop-up input {
+    border: 0;
+    outline: 0;
+    margin: 8px;
+    color: var(--apple-light-green);
+    font-family: "Press Start 2P";
+    border-bottom: 2px solid var(--apple-dark-green);
+    background: transparent;
+    font-size: 1rem;
+    text-align: center;
 }

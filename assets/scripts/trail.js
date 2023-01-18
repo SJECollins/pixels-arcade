@@ -21,7 +21,12 @@ window.addEventListener("load", () => {
     const paceNormBtn = document.getElementById("pace-normal")
     const paceFastBtn = document.getElementById("pace-fast")
 
-    // Game Pop Up
+    // Game Pop Ups
+    const createCharPop = document.getElementById("char-pop-up")
+    const charOneName = document.getElementById("first-char")
+    const charSecName = document.getElementById("second-char")
+    const charThirdName = document.getElementById("third-char")
+    const enterChars = document.getElementById("enter-chars")
     const gamePopUp = document.getElementById("game-pop-up")
     const gamePopText = document.getElementById("game-text")
     const gameChoices = document.getElementById("game-choices")
@@ -34,7 +39,12 @@ window.addEventListener("load", () => {
     bgSkyImg.src = "../assets/images/trail/backgroundsky.png"
     const rainImg = new Image()
     rainImg.src = "../assets/images/trail/rain.png"
-
+    const charOneImg = new Image()
+    charOneImg.src = "../assets/images/trail/charonecomp.png"
+    const charTwoImg = new Image()
+    charTwoImg.src = "../assets/images/trail/chartwocomp.png"
+    const charThreeImg = new Image()
+    charThreeImg.src = "../assets/images/trail/charthreecomp.png"
 
     // Game variables
     const gameWidth = 512
@@ -51,6 +61,7 @@ window.addEventListener("load", () => {
     let randomObstacleInterval = Math.random() * 2000 + 10000
     let gameOver = false
     let gamePaused = false
+    let weather = 'raining'
 
     // Game Stats
     let gameStats = {
@@ -66,12 +77,15 @@ window.addEventListener("load", () => {
 
 
     // Array of characters (should be 3 max)
-    let gameChars = {}
+    let gameChars = []
 
-    // Character constructor
+    const characterImages = [charOneImg, charTwoImg, charThreeImg]
+
+    // Characters
     class Character {
-        constructor() {
-            this.name = ''
+        constructor(charName, charSheet, spawnX, spawnY) {
+            this.name = charName
+            this.img = charSheet
             this.health = 10
             this.food = 10
             this.water = 10
@@ -79,6 +93,38 @@ window.addEventListener("load", () => {
             this.mood = 10
             this.injury = []
             this.alive = true
+            this.width = 32
+            this.height = 64
+            this.x = spawnX
+            this.y = spawnY
+            this.frameX = 0
+            this.frameY = 0
+            this.frameCount = 5
+            this.frameTimer = 0
+            this.fps = 6
+            this.frameInterval = 1000/this.fps
+        }
+        draw(context) {
+            if (this.alive){
+                context.drawImage(this.img, this.frameX * this.width, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
+
+            }
+        }
+        update(deltaTime) {
+            // Update frames
+            if (this.frameTimer > this.frameInterval) {
+                if (this.frameX >= this.frameCount) {
+                    this.frameX = 0
+                } else {
+                    this.frameX++
+                }
+                this.frameTimer = 0
+            } else {
+                this.frameTimer += deltaTime
+            }
+            if (weather == 'raining') {
+                this.frameY = 128
+            }      
         }
         updateHealth() {
             // Check health against other stats for each character
@@ -91,6 +137,40 @@ window.addEventListener("load", () => {
         }
     }
 
+    // Create character function to be called at start
+    enterChars.addEventListener("click", createCharacters)
+
+    function createCharacters() {
+        const characters = document.getElementsByName('characters')
+        let names = []
+        let posX = 180
+        let posY = 42
+        for (let i = 0; i < characters.length; i++) {
+            if (characters[i].value !== ''){
+                names.push(characters[i].value)
+            }
+        }
+        for (let i = 0; i < names.length; i++) {
+            let spawnX = posX += 32
+            let spawnY = posY += 32
+            gameChars.push(new Character(names[i], characterImages[i], spawnX, spawnY))
+            console.log(gameChars)
+        }
+        console.log(gameChars[0])
+        // Remove eventlistener just to be safe
+        createCharPop.style.display="none"
+        enterChars.removeEventListener("click", createCharacters)
+    }
+
+    // Handle Characters - for now, just draw, but need to manage health, mood, food, etc
+    function handleCharacters(ctx, deltaTime) {
+        gameChars.forEach(char => {
+            char.draw(ctx)
+            char.update(deltaTime)
+        })
+    }
+
+    // Background
     class Background {
         constructor() {
             this.img = bgSkyImg
@@ -194,13 +274,20 @@ window.addEventListener("load", () => {
         background.update()
         ground.draw(ctx)
         ground.update()
-        sky.draw(ctx)
-        sky.update()
+        handleCharacters(ctx, deltaTime)
+        if (weather == 'raining') {
+            sky.draw(ctx)
+            sky.update()    
+        }
         if (!gameOver && !gamePaused) {
-        requestAnimationFrame(runGame)
+            requestAnimationFrame(runGame)
         }
     }
 
-    runGame()
+    startBtn.addEventListener("click", () => {
+        runGame()
+        createCharPop.style.display="block"
+        console.log("clicked")
+    })
 
 })
