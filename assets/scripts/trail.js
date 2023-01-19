@@ -44,6 +44,8 @@ window.addEventListener("load", () => {
     charTwoImg.src = "../assets/images/trail/chartwocomp.png"
     const charThreeImg = new Image()
     charThreeImg.src = "../assets/images/trail/charthreecomp.png"
+    const treeImg = new Image()
+    treeImg.src = "../assets/images/trail/trees.png"
 
     // Game variables
     const gameWidth = 512
@@ -51,15 +53,21 @@ window.addEventListener("load", () => {
     let lastTime = 0
     let dayTimer = 0
     let dayCounter = 0
-    let fgTimer = 0
-    let fgInterval = 1000
-    let randomFgInterval = Math.random() * 1000 + 1000
+    let kmsToGo = 100
+    let treeFgTimer = 0
+    let treeBgTimer = 0
+    let treeInterval = 1000
+    let randTreeInterval = Math.random() * 2000 + 1500
     let obstacleTimer = 0
     let obstacleInterval = 2000
     let randomObstacleInterval = Math.random() * 2000 + 10000
 
+    let bgTrees = []
+    let fgTrees = []
+
     // Game Stats
     let gameStats = {
+        kph: 3,
         pace: 2,
         food: 10,
         water: 10,
@@ -105,7 +113,6 @@ window.addEventListener("load", () => {
         draw(context) {
             if (this.alive){
                 context.drawImage(this.img, this.frameX * this.width, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
-
             }
         }
         update(deltaTime) {
@@ -156,7 +163,15 @@ window.addEventListener("load", () => {
                 }
                 if (this.rest < 7) {
                     this.health -= 1
-                }          
+                }
+                // If out of food, worsen thirst
+                if (this.food <= 0) {
+                    this.water -= 1
+                }
+                // If thirst or health at zero, die
+                if (this.water <= 0 || this.health <= 0 ) {
+                    this.alive = false
+                }
             }
         }
         updateMood() {
@@ -189,10 +204,6 @@ window.addEventListener("load", () => {
                 }            
             }
         }
-        rest() {
-            // Update rest, food and water
-
-        }
     }
 
     // Create character function to be called at start - add event listeners for options
@@ -220,6 +231,8 @@ window.addEventListener("load", () => {
         paceNormBtn.addEventListener("click", handlePace)
         paceFastBtn.addEventListener("click", handlePace)
         dayTimer = 0
+        treeBgTimer = 0
+        treeFgTimer = 0
         gameStats.pace = 2
         createCharPop.style.display="none"
         foodDisplay.innerHTML = gameStats.food
@@ -276,6 +289,64 @@ window.addEventListener("load", () => {
                 this.x = 0
             }
         }
+    }
+
+    class Tree {
+        constructor(spawnY, spawnSpeed, spawnFrame) {
+            this.img = treeImg
+            this.gameWidth = gameWidth
+            this.x = this.gameWidth
+            this.y = spawnY
+            this.width = 32
+            this.height = 192
+            this.frameX = spawnFrame
+            this.speed = spawnSpeed
+            this.markedForDeletion = false
+        }
+        draw(context) {
+            context.drawImage(this.img, this.frameX, 0, this.width, this.height, this.x, this.y, this.width, this.height)
+        }
+        update() {
+            this.x -= this.speed * gameStats.pace
+            if (this.x < 0 - this.width) {
+                this.markedForDeletion = true
+            }
+        }
+    }
+
+    // Handle trees
+    function handleBgTrees(deltaTime) {
+        if (treeBgTimer > treeInterval + randTreeInterval) {
+            let frameX = (Math.floor(Math.random() * 6)) * 32
+            console.log("background")
+            bgTrees.push(new Tree(0, 0.4, frameX))
+            randTreeInterval = Math.random() * 2000 + 1500
+            treeBgTimer = 0
+        } else {
+            treeBgTimer += deltaTime
+        }
+        bgTrees.forEach(tree => {
+            tree.draw(ctx)
+            tree.update()
+        })
+        bgTrees = bgTrees.filter(tree => !tree.markedForDeletion)        
+    }
+
+    function handleFgTrees(deltaTime) {
+        if (treeFgTimer > treeInterval + randTreeInterval) {
+            let frameX = (Math.floor(Math.random() * 6)) * 32
+            console.log("foreground")
+            fgTrees.push(new Tree(96, 0.6, frameX))
+            randTreeInterval = Math.random() * 2000 + 1500
+            treeFgTimer = 0
+        } else {
+            treeFgTimer += deltaTime
+        }
+        fgTrees.forEach(tree => {
+            tree.draw(ctx)
+            tree.update()
+        })
+        fgTrees = fgTrees.filter(tree => !tree.markedForDeletion)        
     }
 
     class Sky {
@@ -557,6 +628,18 @@ window.addEventListener("load", () => {
         })
     }
 
+    // Check for end conditions...
+    function checkEnd() {
+        if (dayCounter > 1) {
+            if (kmsToGo <= 0) {
+                gameStats.gameOver = true
+            }
+            if (!gameChars.length) {
+                gameStats.gameOver = true
+            }            
+        }
+    }
+
 
     const background = new Background()
     const sky = new Sky()
@@ -565,12 +648,15 @@ window.addEventListener("load", () => {
     function runGame(timeStamp) {
         const deltaTime = timeStamp - lastTime
         lastTime = timeStamp
+        // kmsToGo -= (gameStats.kph + gameStats.pace)
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
         background.update()
+        handleBgTrees(deltaTime)
         ground.draw(ctx)
         ground.update()
         handleCharacters(ctx, deltaTime)
+        handleFgTrees(deltaTime)
         if (gameStats.weather == 'Rain') {
             sky.draw(ctx)
             sky.update()    
@@ -578,6 +664,7 @@ window.addEventListener("load", () => {
         if (!gameStats.gamePaused) {
             manageDays()
         }
+        checkEnd()
         if (!gameStats.gameOver) {
             requestAnimationFrame(runGame)
         }
