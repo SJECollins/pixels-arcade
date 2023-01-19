@@ -57,6 +57,7 @@
 
 #game-choices button,
 #enter-chars,
+#rest-options,
 #close-game-pop-up {
     background-color: var(--apple-white);
     color: var(--apple-black);
@@ -68,6 +69,7 @@
 
 #game-choices button:hover,
 #enter-chars:hover,
+#rest-options:hover,
 #close-game-pop-up:hover {
     background-color: var(--apple-dark-green);
     color: var(--apple-white);
@@ -81,6 +83,11 @@
     display: none;
 }
 
+#rest-pop-up {
+    display: none;
+}
+
+#rest-pop-up input,
 #char-pop-up input {
     border: 0;
     outline: 0;
@@ -91,4 +98,17 @@
     background: transparent;
     font-size: 1rem;
     text-align: center;
+}
+
+fieldset {
+    margin: 8px 8px 8px -4px;
+    padding: 8px;
+    border-color: var(--apple-dark-green);
+}
+
+fieldset div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    accent-color: var(--apple-light-green);
 }

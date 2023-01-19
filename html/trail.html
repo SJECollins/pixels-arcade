@@ -99,7 +99,7 @@
                     <p>Day: <span id="day-display">0</span></p>
                 </div>
                 <div id="weather">
-                    <p>Weather: <span id="weather-display">Good</span></p>
+                    <p>Weather: <span id="weather-display">Fine</span></p>
                 </div>
                 <div id="food">
                     <p>Food: <span id="food-display">0</span>kg</p>
@@ -155,6 +155,59 @@
                 <label for="third-char">Third Character:</label>
                 <input type="text" id="third-char" name="characters">
                 <button id="enter-chars">Enter</button>
+            </div>
+        </div>
+
+        <!-- Rest pop up-->
+        <div id="rest-pop-up" class="pop-up">
+            <div class="pop-up-card">
+                <h2>Resting...</h2>
+                <fieldset id="eating">
+                    <legend>Eat</legend>
+                    <div>
+                        <label for="eat-nothing">Nothing:</label>
+                        <input type="radio" value="nothing" name="eating" id="eat-nothing" checked>
+                    </div>
+                    <div>
+                        <label for="eat-small">Small meal:</label>
+                        <input type="radio" value="small-meal" name="eating" id="eat-small">                        
+                    </div>
+                    <div>
+                        <label for="eat-large">Large meal:</label>
+                        <input type="radio" value="large-meal" name="eating" id="eat-large">                        
+                    </div>
+                </fieldset>
+                <fieldset id="drinking">
+                    <legend>Drink</legend>
+                    <div>
+                        <label for="drinks-nothing">Nothing:</label>
+                        <input type="radio" value="nothing" name="drinking" id="drink-nothing" checked>                        
+                    </div>
+                    <div>
+                        <label for="drinks-small">Small drink:</label>
+                        <input type="radio" value="small-drink" name="drinking" id="drink-small">                        
+                    </div>
+                    <div>
+                        <label for="drinks-large">Large drink:</label>
+                        <input type="radio" value="large-drink" name="drinking" id="drink-large">                        
+                    </div>
+                </fieldset>
+                <fieldset id="resting">
+                    <legend>Sleep</legend>
+                    <div>
+                        <label for="no-sleep">No sleep:</label>
+                        <input type="radio" value="nothing" name="resting" id="no-sleep" checked>                        
+                    </div>
+                    <div>
+                        <label for="short-sleep">Short sleep:</label>
+                        <input type="radio" value="short-sleep" name="resting" id="short-sleep">                        
+                    </div>
+                    <div>
+                        <label for="long-sleep">Long sleep:</label>
+                        <input type="radio" value="long-sleep" name="resting" id="long-sleep">                        
+                    </div>
+                </fieldset>
+                <button id="rest-options">Okay</button>
             </div>
         </div>
 
