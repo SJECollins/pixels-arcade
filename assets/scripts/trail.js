@@ -155,14 +155,20 @@ window.addEventListener("load", () => {
                 if (this.rest > 10) {
                     this.rest = 10
                 }
-                // Reduce health when other stats below threshold
-                if (this.food < 7) {
+                if (this.health > 10) {
+                    this.health = 10
+                }
+                // Reduce health when other stats below threshold (or increase if food above)
+                // Cap health loss so can only die if no water, then if runs out of water, dies
+                if (this.food < 7 && this.health >= 2) {
                     this.health -= 1
+                } else {
+                    this.health += 1
                 }
                 if (this.water < 7) {
                     this.health -= 1
                 }
-                if (this.rest < 7) {
+                if (this.rest < 7 && this.health >= 2) {
                     this.health -= 1
                 }
                 // If out of food, worsen thirst
@@ -602,6 +608,7 @@ window.addEventListener("load", () => {
                 }
                 break;
         }
+        gameChars.forEach(char => char.updateMood())
         dayDisplay.innerHTML = dayCounter
         foodDisplay.innerHTML = gameStats.food
         waterDisplay.innerHTML = gameStats.water
@@ -614,6 +621,13 @@ window.addEventListener("load", () => {
     function openScavenge() {
         gameStats.gamePaused = true
         gamePopUp.style.display="block"
+        
+        // call scavenge function
+        // probably check character health?
+        // Also could select num of chars to send?
+        // Also also, chars who don't scavenge could rest?
+        // Also also also, chars who scavenge decrease stats??
+        // Lots to think about...
 
         closePopBtn.addEventListener("click", () => {
             gameStats.gamePaused = false
