@@ -66,6 +66,10 @@ window.addEventListener("load", () => {
     let bgTrees = []
     let fgTrees = []
 
+    // How to manage inventory???
+    let inventory = []
+    let pickUps = ['medkit', 'hatchet', 'knife', 'map', 'blanket']
+
     // Game Stats
     let gameStats = {
         kph: 3,
@@ -76,11 +80,6 @@ window.addEventListener("load", () => {
         gameOver: false,
         gamePaused: false,
     }
-
-    // How to manage inventory???
-    let inventory = ["medkit", "blanket"]
-    let pickUps = []
-
 
     // Array of characters (should be 3 max)
     let gameChars = []
@@ -621,18 +620,148 @@ window.addEventListener("load", () => {
     function openScavenge() {
         gameStats.gamePaused = true
         gamePopUp.style.display="block"
-        
-        // call scavenge function
-        // probably check character health?
-        // Also could select num of chars to send?
-        // Also also, chars who don't scavenge could rest?
-        // Also also also, chars who scavenge decrease stats??
-        // Lots to think about...
 
+        gamePopText.insertAdjacentHTML(
+            "afterbegin",
+            "<h2>Scavenging</h2><p>Who will scavenge and who will rest...</p>")
+
+        gameChars.forEach((char) => {
+            if (char.health <= 2){
+                gamePopText.insertAdjacentHTML("beforeend", `
+                <fieldset id="${char.name}-scav-options">
+                <legend>${char.name}</legend>
+                <label for="${char.name}-scav-rest">Rest</label>
+                <input type="radio" value="rest" name="${char.name}-scav-options" id="${char.name}-scav-rest" checked>
+                <p>${char.name} is unable to scavenge...</p>
+                </fieldset>`)           
+            } else {
+                gamePopText.insertAdjacentHTML("beforeend", `
+                <fieldset id="${char.name}-scav-options">
+                <legend>${char.name}</legend>
+                <label for="${char.name}-scav-rest">Rest</label>
+                <input type="radio" value="rest" name="${char.name}-scav-options" id="${char.name}-scav-rest" checked>
+                <label for="${char.name}-scav-scav">Scavenge</label>
+                <input type="radio" value="scavenge" name="${char.name}-scav-options" id="${char.name}-scav-scav">
+                </fieldset>`)
+            }
+        })
+
+        gameChoices.insertAdjacentHTML("afterbegin", "<button id='go-scavenge'>Scavenge</button>")
+        gameChoices.addEventListener("click", (e) => {
+            if (e.target && e.target.id == "go-scavenge") {
+                handleScavenge()
+                gameChoices.innerHTML = ""
+            }
+        })
+
+        closePopBtn.innerHTML = "Close"
         closePopBtn.addEventListener("click", () => {
+            gamePopText.innerHTML = ""
+            gameChoices.innerHTML = ""
             gameStats.gamePaused = false
             gamePopUp.style.display="none"
         })
+    }
+
+    function handleScavenge() {
+        closePopBtn.innerHTML = "Okay"
+        // Get our options for scavenging and resting
+        let scavOptions = []
+        gameChars.forEach(char => {
+            let option = document.querySelector(`input[name="${char.name}-scav-options"]:checked`)
+            let name = option.id.split("-")[0]
+            let value = option.value
+            scavOptions.push({name: name, job: value})
+        })
+        let rested = scavOptions.filter(option => option.job == "rest").map(option => option.name)
+        let scavenged = scavOptions.filter(option => option.job == "scavenge").map(option => option.name)
+
+        // Deal with our options
+        if (scavenged.length == 0) {
+            // If player decides not to scavenge for some reason
+            gameChars.forEach((char) => {
+                if (char.rest <= 5) {
+                    char.rest += 5
+                } else {
+                    char.rest = 10
+                }
+            })
+            gamePopText.innerHTML = "<p>Everybody rested...</p>"
+        } else {
+            // If player sends characters to scavenge
+            let result = Math.floor(Math.random() * 6)
+            if (result == 0) {
+                // Good outcome!
+                let foundWater = Math.floor(Math.random() * 4) + 4
+                let foundFood = Math.floor(Math.random() * 4) + 4
+                let randItem = pickUps[Math.floor(Math.random() * pickUps.length)]
+                gameStats.water += foundWater
+                gameStats.food += foundFood
+                inventory.push(randItem)
+                if (!rested.length) {
+                    gamePopText.innerHTML = `
+                    <h2>Scavenging went well...</h2>
+                    <p>${scavenged} found ${foundWater}l of water, ${foundFood}kg of food, and a ${randItem}.</p>`  
+                } else {
+                    gamePopText.innerHTML = `
+                    <h2>Scavenging went well...</h2>
+                    <p>${scavenged} found ${foundWater}l of water, ${foundFood}kg of food, and a ${randItem}.</p>
+                    <p>${rested} rested.</p>`                      
+                }               
+            } else if (result == 1) {
+                // Bad outcome!
+                let foundWater = 1
+                let foundFood = 1
+                gameStats.water += foundWater
+                gameStats.food += foundFood
+                if (!rested.length) {
+                    gamePopText.innerHTML = `
+                    <h2>Scavenging went poorly...</h2>
+                    <p>${scavenged} found ${foundWater}l of water and ${foundFood}kg of food.</p>`  
+                } else {
+                    gamePopText.innerHTML = `
+                    <h2>Scavenging went poorly...</h2>
+                    <p>${scavenged} found ${foundWater}l of water and ${foundFood}kg of food.</p>
+                    <p>${rested} rested.</p>`                      
+                }       
+            } else {
+                // Eh, okay outcome
+                let foundWater = Math.floor(Math.random() * 2) + 2
+                let foundFood = Math.floor(Math.random() * 2) + 2
+                gameStats.water += foundWater
+                gameStats.food += foundFood
+                if (!rested.length) {
+                    gamePopText.innerHTML = `
+                    <h2>Scavenging went okay...</h2>
+                    <p>${scavenged} found ${foundWater}l of water and ${foundFood}kg of food.</p>`  
+                } else {
+                    gamePopText.innerHTML = `
+                    <h2>Scavenging went okay...</h2>
+                    <p>${scavenged} found ${foundWater}l of water and ${foundFood}kg of food.</p>
+                    <p>${rested} rested.</p>`                      
+                }      
+            }
+            // Recharge resting characters
+            if (rested.length) {
+                gameChars.forEach((char) => {
+                    if (rested.includes(gameChars.name)) {
+                        if (char.rest <= 5) {
+                            char.rest += 5
+                        } else {
+                            char.rest = 10
+                        }                        
+                    }
+                })
+            }
+        }
+        // Regardless if all rested or all scavenged, time will pass
+        if (dayTimer <= 7999) {
+            dayTimer += 2000
+        } else {
+            let time = 10000 - dayTimer
+            dayTimer = 0 + time
+            dayCounter++
+        }
     }
 
     // Handle inventory
@@ -656,6 +785,7 @@ window.addEventListener("load", () => {
             `          
         }
         closePopBtn.addEventListener("click", () => {
+            gamePopText.innerHTML = ""
             gameStats.gamePaused = false
             gamePopUp.style.display="none"
         })
@@ -677,7 +807,6 @@ window.addEventListener("load", () => {
                 `<p>${char.name} is ${char.status}.</p>`)
             }
         })
-
         closePopBtn.addEventListener("click", () => {
             gameStats.gamePaused = false
             gamePopText.innerHTML = ""
