@@ -17,6 +17,7 @@ window.addEventListener("load", () => {
     const checkInvBtn = document.getElementById("check-inventory")
     const scavengeBtn = document.getElementById("scavenge")
     const restBtn = document.getElementById("rest")
+    const statBtn = document.getElementById("status")
     const paceSlowBtn = document.getElementById("pace-slow")
     const paceNormBtn = document.getElementById("pace-normal")
     const paceFastBtn = document.getElementById("pace-fast")
@@ -77,7 +78,7 @@ window.addEventListener("load", () => {
     }
 
     // How to manage inventory???
-    let inventory = []
+    let inventory = ["medkit", "blanket"]
     let pickUps = []
 
 
@@ -184,23 +185,20 @@ window.addEventListener("load", () => {
                         // Prevent mood going above 5 when health is low
                     this.mood = 4
                 }
-                if (this.food < 5 && !this.status.includes("Hungry")) {
+                if (this.food <= 5 && !this.status.includes("Hungry")) {
                     this.status.push("Hungry")
                 } else if (this.food > 5 && this.status.includes("Hungry")) {
-                    let index = this.status.indexOf("Hungry")
-                    this.status.splice(index, 1)
+                    this.status = this.status.filter(stat => stat != "Hungry")
                 }
-                if (this.water < 5 && !this.status.includes("Thirsty")) {
+                if (this.water <= 5 && !this.status.includes("Thirsty")) {
                     this.status.push("Thirsty")
-                } else if (this.food > 5 && this.status.includes("Thirsty")) {
-                    let index = this.status.indexOf("Thirsty")
-                    this.status.splice(index, 1)
+                } else if (this.water > 5 && this.status.includes("Thirsty")) {
+                    this.status = this.status.filter(stat => stat != "Thirsty")
                 }
-                if (this.rest < 5 && !this.status.includes("Tired")) {
+                if (this.rest <= 5 && !this.status.includes("Tired")) {
                     this.status.push("Tired")
-                } else if (this.food > 5 && this.status.includes("Tired")) {
-                    let index = this.status.indexOf("Tired")
-                    this.status.splice(index, 1)
+                } else if (this.rest > 5 && this.status.includes("Tired")) {
+                    this.status = this.status.filter(stat => stat != "Tired")
                 }            
             }
         }
@@ -227,6 +225,7 @@ window.addEventListener("load", () => {
         checkInvBtn.addEventListener("click", openInventory)
         scavengeBtn.addEventListener("click", openScavenge)
         restBtn.addEventListener("click", openRestMenu)
+        statBtn.addEventListener("click", openStats)
         paceSlowBtn.addEventListener("click", handlePace)
         paceNormBtn.addEventListener("click", handlePace)
         paceFastBtn.addEventListener("click", handlePace)
@@ -420,10 +419,16 @@ window.addEventListener("load", () => {
     // Handle the day timer
     function manageDays() {
         dayTimer += 1
+        // Every 1000, reduce kmsToGo
+        if (dayTimer >= 1000) {
+            kmsToGo -= (gameStats.kph + gameStats.pace)
+        }
+        // Add darkness
         if (dayTimer >= 5000) {
             ctx.fillStyle = 'rgba(87, 67, 50, 0.4)'
             ctx.fillRect(0, 0, gameWidth, gameHeight)
         }
+        // Update day, also roll for weather
         if (dayTimer >= 10000) {
             let weatherRand = Math.floor(Math.random() * 4)
             dayTimer = 0
@@ -621,9 +626,47 @@ window.addEventListener("load", () => {
         gameStats.gamePaused = true
         gamePopUp.style.display="block"
 
+        if (inventory.length) {
+            gamePopText.innerHTML = `
+            <h2>Inventory</h2>
+            <p>You have ${gameStats.food}kg of food</p>
+            <p>You have ${gameStats.water}l of water</p>
+            <p>You also have ${inventory}</p>
+            `            
+        } else {
+            gamePopText.innerHTML = `
+            <h2>Inventory</h2>
+            <p>You have ${gameStats.food}kg of food</p>
+            <p>You have ${gameStats.water}l of water</p>
+            <p>You have no other items.</p>
+            `          
+        }
+        closePopBtn.addEventListener("click", () => {
+            gameStats.gamePaused = false
+            gamePopUp.style.display="none"
+        })
+    }
+
+    // Display stats
+    function openStats() {
+        gameStats.gamePaused = true
+        gamePopUp.style.display="block"
+
+        gamePopText.insertAdjacentHTML("afterbegin", "<h2>Status</h2>")
+
+        gameChars.forEach((char) => {
+            if (!char.status.length) {
+                gamePopText.insertAdjacentHTML("beforeend",
+                `<p>${char.name} is fine.</p>`)
+            } else {
+                gamePopText.insertAdjacentHTML("beforeend",
+                `<p>${char.name} is ${char.status}.</p>`)
+            }
+        })
 
         closePopBtn.addEventListener("click", () => {
             gameStats.gamePaused = false
+            gamePopText.innerHTML = ""
             gamePopUp.style.display="none"
         })
     }
@@ -640,7 +683,6 @@ window.addEventListener("load", () => {
         }
     }
 
-
     const background = new Background()
     const sky = new Sky()
     const ground = new Ground()
@@ -648,7 +690,6 @@ window.addEventListener("load", () => {
     function runGame(timeStamp) {
         const deltaTime = timeStamp - lastTime
         lastTime = timeStamp
-        // kmsToGo -= (gameStats.kph + gameStats.pace)
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
         background.update()
