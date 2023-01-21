@@ -418,6 +418,7 @@ window.addEventListener("load", () => {
         }
     }
 
+    // Obstacles
     class Obstacles {
         constructor() {
             this.type = ''
@@ -434,6 +435,14 @@ window.addEventListener("load", () => {
         update() {
             
         }
+    }
+
+    // Handle obstacle spawning
+    function handleObstacles() {
+        // Need to spawn new obstacles every x amt of time
+        // Need to randomly decide what kind of obstacle - strangers or background
+        // Should background be more regular ?
+        // Should have whole days where nothing happens though
     }
 
     // Handle the day timer
