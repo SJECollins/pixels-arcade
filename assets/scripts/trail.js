@@ -57,8 +57,9 @@ window.addEventListener("load", () => {
     let kmsToGo = 100
     let treeFgTimer = 0
     let treeBgTimer = 0
-    let treeInterval = 1000
-    let randTreeInterval = Math.random() * 2000 + 1500
+    let treeFgInterval = 6000
+    let treeBgInterval = 4000
+    let randTreeInterval = Math.random() * 2000 + 2500
     let obstacleTimer = 0
     let obstacleInterval = 2000
     let randomObstacleInterval = Math.random() * 2000 + 10000
@@ -222,11 +223,25 @@ window.addEventListener("load", () => {
                 names.push(characters[i].value)
             }
         }
-        for (let i = 0; i < names.length; i++) {
-            let spawnX = posX += 32
-            let spawnY = posY += 32
-            gameChars.push(new Character(names[i], characterImages[i], spawnX, spawnY))
+        if (!names.length) {
+            // If no characters entered
+            gamePopUp.style.display="block"
+            gamePopText.innerHTML = "<h2>Enjoy the scenery...</h2>"
+            closePopBtn.addEventListener("click", () => {
+                gamePopText.innerHTML = ""
+                gamePopUp.style.display="none"
+            })
+        } else {
+            for (let i = 0; i < names.length; i++) {
+                let spawnX = posX += 32
+                let spawnY = posY += 32
+                gameChars.push(new Character(names[i], characterImages[i], spawnX, spawnY))
+            }            
         }
+        startBtn.removeEventListener("click", () => {
+            runGame()
+            createCharPop.style.display="block"
+        })
         checkInvBtn.addEventListener("click", openInventory)
         scavengeBtn.addEventListener("click", openScavenge)
         restBtn.addEventListener("click", openRestMenu)
@@ -320,11 +335,11 @@ window.addEventListener("load", () => {
 
     // Handle trees
     function handleBgTrees(deltaTime) {
-        if (treeBgTimer > treeInterval + randTreeInterval) {
+        if (treeBgTimer > treeBgInterval + randTreeInterval) {
             let frameX = (Math.floor(Math.random() * 6)) * 32
             console.log("background")
             bgTrees.push(new Tree(0, 0.4, frameX))
-            randTreeInterval = Math.random() * 2000 + 1500
+            randTreeInterval = Math.random() * 2000 + 2500
             treeBgTimer = 0
         } else {
             treeBgTimer += deltaTime
@@ -337,11 +352,11 @@ window.addEventListener("load", () => {
     }
 
     function handleFgTrees(deltaTime) {
-        if (treeFgTimer > treeInterval + randTreeInterval) {
+        if (treeFgTimer > treeFgInterval + randTreeInterval) {
             let frameX = (Math.floor(Math.random() * 6)) * 32
             console.log("foreground")
             fgTrees.push(new Tree(96, 0.6, frameX))
-            randTreeInterval = Math.random() * 2000 + 1500
+            randTreeInterval = Math.random() * 2000 + 2500
             treeFgTimer = 0
         } else {
             treeFgTimer += deltaTime
@@ -460,7 +475,6 @@ window.addEventListener("load", () => {
             gameStats.pace = 3
             paceDisplay.innerHTML = 'Fast'
         }
-
     }
     
     // Handle rest options
@@ -494,8 +508,8 @@ window.addEventListener("load", () => {
                 } else {
                     gameStats.food = 0
                     gameChars.forEach((char) => {
-                        if (char.food <= 7) {
-                            char.food += 3
+                        if (char.food <= 8) {
+                            char.food += 2
                         } else {
                             char.food = 10
                         }
@@ -513,8 +527,8 @@ window.addEventListener("load", () => {
                 } else {
                     gameStats.food = 0
                     gameChars.forEach((char) => {
-                        if (char.food <= 7) {
-                            char.food += 3
+                        if (char.food <= 8) {
+                            char.food += 2
                         } else {
                             char.food = 10
                         }
@@ -799,12 +813,18 @@ window.addEventListener("load", () => {
         gamePopText.insertAdjacentHTML("afterbegin", "<h2>Status</h2>")
 
         gameChars.forEach((char) => {
-            if (!char.status.length) {
+            if (!char.status.length && !char.injury.length) {
                 gamePopText.insertAdjacentHTML("beforeend",
                 `<p>${char.name} is fine.</p>`)
-            } else {
+            } else if (!char.status.length && char.injury.length) {
+                gamePopText.insertAdjacentHTML("beforeend",
+                `<p>${char.name} has ${char.injury}.</p>`)
+            } else if (char.status.length && !char.injury.length) {
                 gamePopText.insertAdjacentHTML("beforeend",
                 `<p>${char.name} is ${char.status}.</p>`)
+            } else {
+                gamePopText.insertAdjacentHTML("beforeend",
+                `<p>${char.name} is ${char.status} and has ${char.injury}.</p>`)
             }
         })
         closePopBtn.addEventListener("click", () => {
@@ -819,9 +839,17 @@ window.addEventListener("load", () => {
         if (dayCounter > 1) {
             if (kmsToGo <= 0) {
                 gameStats.gameOver = true
+                document.querySelector("#km-count").innerHTML = 100 - kmsToGo
+                document.querySelector("#day-count").innerHTML = dayCounter
+                document.querySelector("#outcome").innerHTML = "And made it to your destination."
+                document.querySelector("#game-over").style.display="block"
             }
             if (!gameChars.length) {
                 gameStats.gameOver = true
+                document.querySelector("#km-count").innerHTML = 100 - kmsToGo
+                document.querySelector("#day-count").innerHTML = dayCounter
+                document.querySelector("#outcome").innerHTML = "But you didn't make it..."
+                document.querySelector("#game-over").style.display="block"
             }            
         }
     }
@@ -857,6 +885,9 @@ window.addEventListener("load", () => {
     startBtn.addEventListener("click", () => {
         runGame()
         createCharPop.style.display="block"
+    })
+    resetBtn.addEventListener("click", () => {
+        location.reload() 
     })
 
 })
