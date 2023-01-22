@@ -47,6 +47,14 @@ window.addEventListener("load", () => {
     charThreeImg.src = "../assets/images/trail/charthreecomp.png"
     const treeImg = new Image()
     treeImg.src = "../assets/images/trail/trees.png"
+    const buildingImg = new Image()
+    buildingImg.src = "../assets/images/trail/buildings.png"
+    const peopleImg = new Image()
+    peopleImg.src = "../assets/images/trail/people.png"
+    const dogImg = new Image()
+    dogImg.src = "../assets/images/trail/dog.png"
+    const catImg = new Image()
+    catImg.src = "../assets/images/trail/cat.png"
 
     // Game variables
     const gameWidth = 512
@@ -54,7 +62,7 @@ window.addEventListener("load", () => {
     let lastTime = 0
     let dayTimer = 0
     let dayCounter = 0
-    let kmsToGo = 100
+    let kmsToGo = 1000
     let treeFgTimer = 0
     let treeBgTimer = 0
     let treeFgInterval = 6000
@@ -66,6 +74,12 @@ window.addEventListener("load", () => {
 
     let bgTrees = []
     let fgTrees = []
+    let alreadySpawned = []
+    let spawnedPeople = []
+    let spawnedBuildings = []
+    let spawnedAnimals = []
+    let hasCat = false
+    let hasDog = false
 
     // How to manage inventory???
     let inventory = []
@@ -187,6 +201,12 @@ window.addEventListener("load", () => {
                 if (this.food < 7 || this.water < 7 || this.rest < 7) {
                     this.mood -= 1
                 }
+                if (this.food >= 7 && this.water >= 7 && this.rest >= 5) {
+                    this.mood += 1
+                }
+                if (this.mood > 10) {
+                    this.mood = 10
+                }
                 if (this.health < 5 && this.mood > 5) {
                         // Prevent mood going above 5 when health is low
                     this.mood = 4
@@ -216,7 +236,7 @@ window.addEventListener("load", () => {
     function createCharacters() {
         const characters = document.getElementsByName('characters')
         let names = []
-        let posX = 180
+        let posX = 150
         let posY = 42
         for (let i = 0; i < characters.length; i++) {
             if (characters[i].value !== ''){
@@ -419,37 +439,122 @@ window.addEventListener("load", () => {
     }
 
     // Obstacles
-    class Obstacles {
-        constructor() {
-            this.type = ''
-            this.img = ''
-            this.x = 0
-            this.y = 0
-            this.width = gameWidth
-            this.height = gameHeight
-            this.speed = 1
+    class Obstacle {
+        constructor(obsType, obsName, obsImg, spawnY, obsWidth, obsHeight, obsY, spawnSpeed) {
+            this.type = obsType
+            this.name = obsName
+            this.img = obsImg
+            this.x = gameWidth
+            this.y = spawnY
+            this.width = obsWidth
+            this.height = obsHeight
+            this.frameY = obsY
+            this.speed = spawnSpeed
+            this.markedForDeletion = false
         }
         draw(context) {
-
+            if (!this.markedForDeletion) {
+               context.drawImage(this.img, 0, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height) 
+            }
         }
         update() {
-            
+            this.x -= this.speed * gameStats.pace
+            // Quasi-collision detection? Better to check when adjacent to characters?
+            if (this.x < 300) {
+                console.log("collision")
+                this.markedForDeletion = true
+            }
+            console.log(this.x)
+            // Delete when off screen
+            if (this.x < 0 - this.width) {
+                this.markedForDeletion = true
+            }
         }
     }
 
     // Handle obstacle spawning
-    function handleObstacles() {
+    function spawnObstacles() {
         // Need to spawn new obstacles every x amt of time
         // Need to randomly decide what kind of obstacle - strangers or background
         // Should background be more regular ?
         // Should have whole days where nothing happens though
+        let peopleObs = [{name: 'Women', y: 0}, {name: 'Old Lady', y: 96}, {name: 'Cowboy', y: 192}]
+        let buildingObs = [{name: 'Cabin', y: 0}, {name: 'Garage', y: 96}, {name: 'Shop', y: 192}, {name: 'House', y: 288}, {name: 'Tent', y: 384}]
+        let animalObs = [{name: 'Dog', width: 64, img: dogImg}, {name: 'Cat', width: 32, img: catImg}]
+        let randNum = Math.floor(Math.random() * 20)
+        if (randNum < 10) {
+            // No obstacle
+            return 
+        } else {
+            // Pick an obstacle to spawn
+            if (randNum >= 10 && randNum < 15) {
+                // Spawn a random building
+                let building = buildingObs[Math.floor(Math.random() * buildingObs.length)]
+                // Check if already spawned - use some instead of includes as object
+                if (alreadySpawned.some(obj => obj.name == building.name)) {
+                    console.log("already there")
+                    return spawnObstacles()
+                } else {
+                    // Push to spawned array 
+                    alreadySpawned.push(building)
+                    spawnedBuildings.push(new Obstacle('building', building.name, buildingImg, 18, 128, 96, building.y, 0.4))
+                }
+            } else if (randNum >= 15 && randNum < 18) {
+                let person = peopleObs[Math.floor(Math.random() * peopleObs.length)]
+                if (alreadySpawned.some(obj => obj.name == person.name)) {
+                    console.log("already there")
+                    return spawnObstacles()
+                } else {
+                    alreadySpawned.push(person)
+                    spawnedPeople.push(new Obstacle('person', person.name, peopleImg, 96, 64, 96, person.y, 0.5))
+                    console.log("spawn person")
+                    console.log(person)
+                }
+            } else {
+                let animal = animalObs[Math.floor(Math.random() * animalObs.length)]
+                if (alreadySpawned.some(obj => obj.name == animal.name)) {
+                    console.log("already there")
+                    return spawnObstacles()
+                } else {
+                    alreadySpawned.push(animal)
+                    spawnedAnimals.push(new Obstacle('animal', animal.name, animal.img, 128, animal.width, 32, 32, 0.5))
+                    console.log("spawn animal")
+                    console.log(animal)
+                }
+            }
+        }
+    }
+    
+    // Handle background buildings
+    function handleBuildings() {
+        spawnedBuildings.forEach(building => {
+            building.draw(ctx)
+            building.update()
+        })
+        spawnedBuildings = spawnedBuildings.filter(building => !building.markedForDeletion)
+    }
+
+    function handlePeople() {
+        spawnedPeople.forEach(person => {
+            person.draw(ctx)
+            person.update()
+        })
+        spawnedPeople = spawnedPeople.filter(person => !person.markedForDeletion)
+    }
+
+    function handleAnimals() {
+        spawnedAnimals.forEach(animal => {
+            animal.draw(ctx)
+            animal.update()
+        })
+        spawnedAnimals = spawnedAnimals.filter(animal => !animal.markedForDeletion)
     }
 
     // Handle the day timer
     function manageDays() {
         dayTimer += 1
         // Every 1000, reduce kmsToGo
-        if (dayTimer >= 1000) {
+        if (dayTimer % 1000 === 0) {
             kmsToGo -= (gameStats.kph + gameStats.pace)
         }
         // Add darkness
@@ -469,6 +574,12 @@ window.addEventListener("load", () => {
                 gameStats.weather = 'Fine'
             }
             weatherDisplay.innerHTML = gameStats.weather
+        }
+        // Check for obstacles
+        let randTime = Math.floor(Math.random() * 2000) + 1000
+        if (dayCounter % 1 == 0 && dayTimer == randTime) {
+            spawnObstacles()
+            console.log("calling spawn")
         }
     }
 
@@ -529,6 +640,7 @@ window.addEventListener("load", () => {
             case "large-meal":
                 if (gameStats.food >= gameChars.length) {
                     gameStats.food -= gameChars.length
+                    
                     gameChars.forEach((char) => {
                         char.food = 10
                         char.mood = 10                        
@@ -848,7 +960,7 @@ window.addEventListener("load", () => {
         if (dayCounter > 1) {
             if (kmsToGo <= 0) {
                 gameStats.gameOver = true
-                document.querySelector("#km-count").innerHTML = 100 - kmsToGo
+                document.querySelector("#km-count").innerHTML = 100
                 document.querySelector("#day-count").innerHTML = dayCounter
                 document.querySelector("#outcome").innerHTML = "And made it to your destination."
                 document.querySelector("#game-over").style.display="block"
@@ -873,10 +985,13 @@ window.addEventListener("load", () => {
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
         background.update()
+        handleBuildings()
         handleBgTrees(deltaTime)
         ground.draw(ctx)
         ground.update()
         handleCharacters(ctx, deltaTime)
+        handlePeople()
+        handleAnimals()
         handleFgTrees(deltaTime)
         if (gameStats.weather == 'Rain') {
             sky.draw(ctx)
