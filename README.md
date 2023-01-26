@@ -5,6 +5,8 @@ This is for educational purposes and purely for learning and reflection as I wor
 
 [Live Site](https://sjecollins.github.io/javascript-game-project/)
 
+[Submitted CI project](https://github.com/SJECollins/ci-pp2-pixels-arcade)
+
 ## Styling
 The styling is inspired by the Apple IIc.
 
