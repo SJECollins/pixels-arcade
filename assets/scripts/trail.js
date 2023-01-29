@@ -68,9 +68,6 @@ window.addEventListener("load", () => {
     let treeFgInterval = 6000
     let treeBgInterval = 4000
     let randTreeInterval = Math.random() * 2000 + 2500
-    let obstacleTimer = 0
-    let obstacleInterval = 2000
-    let randomObstacleInterval = Math.random() * 2000 + 10000
 
     let bgTrees = []
     let fgTrees = []
@@ -227,7 +224,13 @@ window.addEventListener("load", () => {
                     this.status.push("Tired")
                 } else if (this.rest > 5 && this.status.includes("Tired")) {
                     this.status = this.status.filter(stat => stat != "Tired")
-                }            
+                }
+                // If has animal companion
+                if (hasCat || hasDog) {
+                    if (this.mood < 10) {
+                        this.mood += 1
+                    }
+                }
             }
         }
     }
@@ -256,10 +259,7 @@ window.addEventListener("load", () => {
                 gameChars.push(new Character(names[i], characterImages[i], spawnX, spawnY))
             }            
         }
-        startBtn.removeEventListener("click", () => {
-            runGame()
-            createCharPop.style.display="block"
-        })
+        startBtn.removeEventListener("click", runGame)
         closePopBtn.addEventListener("click", closePopUpBtn)
         checkInvBtn.addEventListener("click", openInventory)
         scavengeBtn.addEventListener("click", openScavenge)
@@ -559,7 +559,6 @@ window.addEventListener("load", () => {
         switch (obsType) {
             case "building":
                 gamePopText.insertAdjacentHTML("beforeend", `
-                <p>There is a ${obsName} just off the road.</p>
                 <p>There doesn't seem to be anyone around.</p>
                 <p>It could be a good place to recover a bit.</p>
                 <p>Approach the ${obsName}?</p>
@@ -568,9 +567,9 @@ window.addEventListener("load", () => {
                 <button id="approach">Approach ${obsName}</button>`)
                 gameChoices.addEventListener("click", (e) => {
                     if (e.target && e.target.id == "approach") {
-                        approachBuilding(obsName)
                         gameChoices.innerHTML = ""
                         gamePopText.innerHTML = ""
+                        approachBuilding(obsName)
                     }
                 })
                 closePopBtn.innerHTML = "Avoid"
@@ -588,9 +587,9 @@ window.addEventListener("load", () => {
                     gameChoices.addEventListener("click", (e) => {
                         if (e.target && e.target.id == "trade") {
                             tradeItem = "water"
-                            trade(tradeItem)
                             gameChoices.innerHTML = ""
                             gamePopText.innerHTML = ""
+                            trade(tradeItem)
                         }
                     })
                 } else if (randEvent == 1) {
@@ -603,9 +602,9 @@ window.addEventListener("load", () => {
                     gameChoices.addEventListener("click", (e) => {
                         if (e.target && e.target.id == "trade") {
                             tradeItem = "food"
-                            trade(tradeItem)
                             gameChoices.innerHTML = ""
                             gamePopText.innerHTML = ""
+                            trade(tradeItem)
                         }
                     })
                 } else {
@@ -618,9 +617,9 @@ window.addEventListener("load", () => {
                     <button id="help-stranger">Give Supplies</button>`)
                     gameChoices.addEventListener("click", (e) => {
                         if (e.target && e.target.id == "help-stranger") {
-                            helpStranger(obsName)
                             gameChoices.innerHTML = ""
                             gamePopText.innerHTML = ""
+                            helpStranger(obsName)
                         }
                     })
                 }
@@ -636,9 +635,9 @@ window.addEventListener("load", () => {
                 <button id="get-animal">Feed ${obsName}</button>`)
                 gameChoices.addEventListener("click", (e) => {
                     if (e.target && e.target.id == "get-animal") {
-                        getAnimal(obsName)
                         gameChoices.innerHTML = ""
                         gamePopText.innerHTML = ""
+                        getAnimal(obsName)
                     }
                 })
                 closePopBtn.innerHTML = "Don't Feed"
@@ -667,26 +666,26 @@ window.addEventListener("load", () => {
             })
             closePopBtn.innerHTML = "Okay"
             if (randEvent < 4) {
-                gameChars.innerHTML = `
+                gamePopText.insertAdjacentHTML("afterbegin", `
                 <p>The ${obsName} is quiet and empty, but seems safe.</p>
                 <p>After searching the ${obsName}, there are just enough supplies for a good meal.</p>
                 <p>The old furniture provides a good rest.</p>
-                `
+                `)
             } else if (randEvent == 5) {
                 gameStats.food += 2
                 gameStats.water += 2
-                gameChars.innerHTML = `
+                gamePopText.insertAdjacentHTML("afterbegin", `
                 <p>The ${obsName} is quiet and empty, but seems safe.</p>
                 <p>After searching the ${obsName}, there are enough supplies for a good meal and extra for the road.</p>
                 <p>The old furniture provides a good rest.</p>
-                `
+                `)
             } else {
-                gameChars.innerHTML = `
+                gamePopText.insertAdjacentHTML("afterbegin", `
                 <p>The ${obsName} is quiet and empty, but seems safe.</p>
                 <p>After searching the ${obsName}, there are just enough supplies for a good meal.</p>
                 <p>The old furniture provides a good rest.</p>
                 <p>Unfortunately, while resting someone steals some of your supplies.</p>
-                `
+                `)
                 if (gameStats.food >= 2) {
                     gameStats.food -= 2
                 } else {
@@ -699,11 +698,11 @@ window.addEventListener("load", () => {
                 }
             }
         } else {
-            gameChars.innerHTML = `
+            gamePopText.insertAdjacentHTML("afterbegin", `
             <p>While searching the ${obsName}, a family appear from a small room in the back.</p>
             <p>They are scared and hungry, but let you rest if you share some food with them.</p>
             <p>You have ${gameStats.food}kg.</p>
-            `
+            `)
             gameChoices.insertAdjacentHTML("afterbegin", `
             <button id="share-food">Share food</button>`)
             gameChoices.addEventListener("click", (e) => {
@@ -719,10 +718,10 @@ window.addEventListener("load", () => {
                         char.mood = 10
                         char.rest = 10
                     })
-                    gamePopText.innerHTML = `
+                    gamePopText.insertAdjacentHTML("afterbegin", `
                     <p>The family are very grateful for your help.</p>
                     <p>After resting, they offer a medkit as thanks.</p>
-                    `
+                    `)
                     gameChoices.innerHTML = ""
                     closePopBtn.innerHTML = "Okay"
                     inventory.push("medkit")
@@ -737,27 +736,27 @@ window.addEventListener("load", () => {
         if (tradeItem == "food") {
             if (gameStats.food >= 2) {
                 gameStats.food -= 2
-                gamePopText.innerHTML = `
+                gamePopText.insertAdjacentHTML("afterbegin", `
                 <p>You trade 2kg of food for 2l of water.</p>
-                `
+                `)
             } else {
                 gameStats.food = 0
-                gamePopText.innerHTML = `
+                gamePopText.insertAdjacentHTML("afterbegin", `
                 <p>You trade the remainder of your food for 2l of water.</p>
-                `
+                `)
             }
             gameStats.water += 2
         } else {
             if (gameStats.water >= 2) {
                 gameStats.water -= 2
-                gamePopText.innerHTML = `
+                gamePopText.insertAdjacentHTML("afterbegin", `
                 <p>You trade 2l of water for 2kg of food.</p>
-                `
+                `)
             } else {
                 gameStats.water = 0
-                gamePopText.innerHTML = `
+                gamePopText.insertAdjacentHTML("afterbegin", `
                 <p>You trade the remainder of your water for 2kg of food.</p>
-                `
+                `)
             }
             gameStats.food += 2            
         }
@@ -861,6 +860,8 @@ window.addEventListener("load", () => {
 
     // Handle the day timer
     function manageDays() {
+        foodDisplay.innerHTML = gameStats.food
+        waterDisplay.innerHTML = gameStats.water
         dayTimer += 1
         // Every 1000, reduce kmsToGo
         if (dayTimer % 1000 === 0) {
@@ -1104,10 +1105,13 @@ window.addEventListener("load", () => {
         closePopBtn.innerHTML = "Okay"
         // Get our options for scavenging and resting
         let scavOptions = []
+        let option
+        let name
+        let value
         gameChars.forEach(char => {
-            let option = document.querySelector(`input[name="${char.name}-scav-options"]:checked`)
-            let name = option.id.split("-")[0]
-            let value = option.value
+            option = document.querySelector(`input[name="${char.name}-scav-options"]:checked`)
+            name = option.id.split("-")[0]
+            value = option.value
             scavOptions.push({name: name, job: value})
         })
         let rested = scavOptions.filter(option => option.job == "rest").map(option => option.name)
