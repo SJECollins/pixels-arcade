@@ -318,7 +318,7 @@ window.addEventListener("load", () => {
         draw(context) {
             // Draw img twice for endless scrolling
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
-            context.drawImage(this.img, this.x + this.width, this.y, this.width, this.height)
+            context.drawImage(this.img, this.x + this.width - this.speed, this.y, this.width, this.height)
         }
         update() {
             this.x -= this.speed * gameStats.pace
@@ -428,7 +428,7 @@ window.addEventListener("load", () => {
         draw(context) {
             // Draw img twice for endless scrolling
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
-            context.drawImage(this.img, this.x + this.width, this.y, this.width, this.height)
+            context.drawImage(this.img, this.x + this.width - this.speed, this.y, this.width, this.height)
         }
         update() {
             this.x -= this.speed * gameStats.pace
