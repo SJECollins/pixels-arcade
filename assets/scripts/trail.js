@@ -324,7 +324,7 @@ window.addEventListener("load", () => {
             this.x -= this.speed * gameStats.pace
             // Reset img when scrolled off screen
             if (this.x < 0 - this.width) {
-                this.x = 0
+                this.x = this.x - (0 - this.width)
             }
         }
     }
@@ -434,7 +434,7 @@ window.addEventListener("load", () => {
             this.x -= this.speed * gameStats.pace
             // Reset img when scrolled off screen
             if (this.x < 0 - this.width) {
-                this.x = 0
+                this.x = this.x - (0 - this.width)
             }
         }
     }
