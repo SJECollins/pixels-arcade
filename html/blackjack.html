@@ -101,16 +101,18 @@
         </div>
 
         <div id="card-area">
+            <h2>Dealer</h2>
             <div id="dealer-area">
+
                 
-                <h2>Dealer</h2>
             </div>
             <hr>
             <hr>
             <div id="player-area">
 
-                <h2>You</h2>
+                
             </div>
+            <h2>You</h2>
             <div id="player-options">
                 <button id="hit-me">Hit</button>
                 <button id="stay">Stay</button>
@@ -129,8 +131,12 @@
         <!-- Bet pop up-->
         <div id="bet" class="pop-up">
             <div class="pop-up-card">
-                <input />
-                <button id="enter-bet">Next Round</button>
+                <div id="bet-input">
+                    <button id="decrement">&darr;</button>
+                    <input type="number" id="user-bet" min="10" max="100" />
+                    <button id="increment">&uarr;</button>
+                </div>
+                <button id="enter-bet">Bet</button>
             </div>
         </div>
 

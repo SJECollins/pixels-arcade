@@ -22,9 +22,36 @@
 }
 
 #dealer-area, #player-area {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 2em;
     height: max(300px, 30vh);
 }
 
 #bet, #end-hand {
     display: none;
+}
+
+.card {
+    height: 160px;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 2rem;
+    color: var(--apple-white);
+    background-color: var(--apple-black);
+    box-shadow: 0 2px 2px 8px var(--apple-black);
+    border-radius: 8px;
+}
+
+@layer base {
+    input[type='number']::-webkit-outer-spin-button,
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number'] {
+      -webkit-appearance: none;
+      margin: 0;
+      -moz-appearance: textfield !important;
+    }
 }
