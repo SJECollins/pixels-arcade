@@ -89,57 +89,67 @@
     <p id="instructions">Instructions</p>
     
     <div id="board">
-    <!-- Game Buttons -->
-    <div id="buttons">
-        <button id="start">Start!</button>
-        <button id="reset">Reset</button>
-    </div>
-
-    <div id="card-area">
-        <div id="dealer-area">
-
+        <!-- Game Buttons -->
+        <div id="buttons">
+            <button id="start">Start!</button>
+            <button id="reset">Reset</button>
         </div>
-        <div id="player-area">
 
+        <div id="stats">
+            <p>Your Bet: <span id="curr-bet"></span></p>
+            <p>Your Chips: <span id="player-chips"></span></p>
         </div>
-        <div id="player-options">
-            <button id="hit-me">Hit</button>
-            <button id="stay">Stay</button>
+
+        <div id="card-area">
+            <div id="dealer-area">
+                
+                <h2>Dealer</h2>
+            </div>
+            <hr>
+            <hr>
+            <div id="player-area">
+
+                <h2>You</h2>
+            </div>
+            <div id="player-options">
+                <button id="hit-me">Hit</button>
+                <button id="stay">Stay</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Instruction pop up-->
-    <div id="intro" class="pop-up">
-      <div class="pop-up-card">
-        <h2>Welcome to Blackjack</h2>
-        <p></p>
-        <button id="close-pop-up">Got It!</button>
-      </div>
-    </div>
-
-    <!-- Bet pop up-->
-    <div id="bet" class="pop-up">
-      <div class="pop-up-card">
-        <input />
-        <button id="enter-bet">Next Round</button>
-      </div>
-    </div>
-
-    <div id="end-hand" class="pop-up">
-        <div id="hand" class="pop-up-card">
-            <p id="hand-result"></p>
-            <button id="next-hand">Okay</button>
+        <!-- Instruction pop up-->
+        <div id="intro" class="pop-up">
+            <div class="pop-up-card">
+                <h2>Welcome to Blackjack</h2>
+                <p></p>
+                <button id="close-pop-up">Got It!</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Game Over -->
-    <div id="game-over" class="pop-up">
-      <div id="end" class="pop-up-card">
-        <h2>Game Over!</h2>
-        <p>You went bust!</p>
-        <a href="blackjack.html">Play Again</a>
-        <a href="../index.html">Home</a>
-      </div>
+        <!-- Bet pop up-->
+        <div id="bet" class="pop-up">
+            <div class="pop-up-card">
+                <input />
+                <button id="enter-bet">Next Round</button>
+            </div>
+        </div>
+
+        <div id="end-hand" class="pop-up">
+            <div id="hand" class="pop-up-card">
+                <p id="hand-result"></p>
+                <button id="next-hand">Okay</button>
+            </div>
+        </div>
+
+        <!-- Game Over -->
+        <div id="game-over" class="pop-up">
+            <div id="end" class="pop-up-card">
+                <h2>Game Over!</h2>
+                <p>You went bust!</p>
+                <a href="blackjack.html">Play Again</a>
+                <a href="../index.html">Home</a>
+            </div>
+        </div>
     </div>
 
   </section>

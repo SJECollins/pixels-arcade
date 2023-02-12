@@ -1,0 +1,30 @@
+#board {
+    width: max(60vw, 300px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#card-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#dealer-area, #player-area, #player-options {
+    flex-direction: row;
+}
+
+#dealer-area, #player-area {
+    height: max(300px, 30vh);
+}
+
+#bet, #end-hand {
+    display: none;
+}
