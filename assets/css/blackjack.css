@@ -29,6 +29,10 @@
     height: max(300px, 30vh);
 }
 
+#player-options {
+    display: none;
+}
+
 #bet, #end-hand {
     display: none;
 }
