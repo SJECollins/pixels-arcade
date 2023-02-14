@@ -14,6 +14,8 @@ const gameOver = document.getElementById("game-over")
 const endHand = document.getElementById("end-hand")
 const handResult = document.getElementById("hand-result")
 const nextHand = document.getElementById("next-hand")
+const incBet = document.getElementById("increment")
+const decBet = document.getElementById("decrement")
 
 const suits = ["hearts", "diams", "clubs", "spades"]
 const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
@@ -47,11 +49,11 @@ function createDeck() {
             deck.push(card)
         }
     }
-    shuffleDeck(deck)
+    shuffleDeck()
 }
 
 // Shuffle the card deck - Fisher Yates?
-function shuffleDeck(deck) {
+function shuffleDeck() {
     for (let i = deck.length - 1; i > 0; i--) {
         let randPos = Math.floor(Math.random() * (i + 1))
         let temp = deck[randPos]
@@ -59,7 +61,7 @@ function shuffleDeck(deck) {
         deck[i] = temp
     }
     betBtn.addEventListener("click", placeBet)
-    betPop.style.display = "block"
+    betPop.style.display = "flex"
 }
 
 // Place a bet at the start of a round
@@ -77,13 +79,7 @@ function placeBet() {
 function dealCards() {
     options.style.display = "none"
     let card = {}
-    if (deck.length == 0) {
-        while (deadCards.length > 0) {
-            let card = deadCards.shift()
-            deck.push(card)
-        }
-        shuffleDeck()
-    }
+    // Deal cards to hand
     if (playerHand.length < 2) {
         let i = 1
         while (i < 5) {
@@ -91,9 +87,11 @@ function dealCards() {
             if (i % 2 == 0) {
                 playerHand.push(card)
                 renderHand(card, "player")
+                playerScore += card.value
             } else {
                 dealerHand.push(card)
                 renderHand(card, "dealer")
+                dealerScore += card.value
             }
             i++
         }
@@ -102,17 +100,16 @@ function dealCards() {
             card = deck.pop()
             playerHand.push(card)
             renderHand(card, "player")
+            playerScore += card.value
         }
         if ((dealerScore < 21 && dealerScore < playerScore) || (dealerScore < 17)) {
             card = deck.pop()
             dealerHand.push(card)
             renderHand(card, "dealer")
+            dealerScore += card.value
         }
     }
-    // Display current scores ???
     console.log(deck)
-    console.log(playerHand)
-    console.log(dealerHand)
     playRound()
 }
 
@@ -142,7 +139,10 @@ hitMe.addEventListener("click", () => {
 })
 stay.addEventListener("click", () => {
     hit = false
-    dealCards()
+    handOver = true
+    while (handOver) {
+        dealCards()        
+    }
 })
 
 // Play another round
@@ -150,28 +150,26 @@ function nextRound() {
     endHand.style.display = "none"
     playerScore = 0
     dealerScore = 0
-    playerBet = 0
+    let card = {}
     for (let i = 0; i < playerHand.length; i++) {
-        let card = playerHand.shift()
-        deadCards.push(card)
+        card = playerHand.shift()
+        deck.push(card)
         i--
     }
     for (let i = 0; i < dealerHand.length; i++) {
-        let card = dealerHand.shift()
-        deadCards.push(card)
+        card = dealerHand.shift()
+        deck.push(card)
         i--
     }
+    shuffleDeck()
     document.getElementById("player-area").innerHTML = ""
     document.getElementById("dealer-area").innerHTML = ""
-    placeBet()
+    betBtn.addEventListener("click", placeBet)
+    betPop.style.display = "flex"
 }
 
 // Check scores
 function checkScore() {
-    playerHand.forEach(card => playerScore += card.value)
-    dealerHand.forEach(card => dealerScore += card.value)
-    console.log("player score: " + playerScore)
-    console.log("dealer score: " + dealerScore)
     if (playerScore > 21) {
         // You lose
         if (playerChips == 0) {
@@ -181,19 +179,29 @@ function checkScore() {
             handResult.innerHTML = "You bust!"
             nextHand.addEventListener("click", nextRound)
         }
+        handOver = false
     } else if (playerScore == 21) {
         // You win
         playerChips += playerBet * 2
         endHand.style.display = "block"
         handResult.innerHTML = `You won ${playerBet * 2}!`
         nextHand.addEventListener("click", nextRound)
+        handOver = false
+    } else if (playerScore >= 17 && playerScore == dealerScore && !hit) {
+        // Tie
+        playerChips += playerBet
+        endHand.style.display = "block"
+        handResult.innerHTML = `It's a tie. You get your bet back.`
+        nextHand.addEventListener("click", nextRound)
+        handOver = false
     }
-    if (dealerScore > 21) {
+    if (dealerScore > 21 && playerScore <= 21) {
         // You win
         playerChips += playerBet * 2
         endHand.style.display = "block"
         handResult.innerHTML = `You won ${playerBet * 2}!`
         nextHand.addEventListener("click", nextRound)
+        handOver = false
     } else if (dealerScore == 21) {
         // You lose
         if (playerChips == 0) {
@@ -203,14 +211,35 @@ function checkScore() {
             handResult.innerHTML = "Dealer wins!"
             nextHand.addEventListener("click", nextRound)
         }
+        handOver = false
+    } else if (handOver && dealerScore > playerScore) {
+        // You lose
+        if (playerChips == 0) {
+            gameOver.style.display = "block"
+        } else {
+            endHand.style.display = "block"
+            handResult.innerHTML = "Dealer wins!"
+            nextHand.addEventListener("click", nextRound)
+        }
+        handOver = false
     }
 }
+
+incBet.addEventListener("click", () => {
+    let bet = parseInt(userBet.value)
+    bet++
+    userBet.value = bet    
+})
+decBet.addEventListener("click", () => {
+    let bet = parseInt(userBet.value)
+    bet--
+    userBet.value = bet     
+})
 
 function startGame() {
     startBtn.removeEventListener("click", startGame)
     createDeck()
 }
-
 startBtn.addEventListener("click", startGame)
 reset.addEventListener("click", () => {
     location.reload()

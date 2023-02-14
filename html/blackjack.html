@@ -103,8 +103,18 @@
         <div id="card-area">
             <h2>Dealer</h2>
             <div id="dealer-area"></div>
-            <hr>
-            <hr>
+            <div id="bet-area">
+              <p>Your Bet: <span id="curr-bet"></span></p>
+              <div id="bet">
+                  <div id="bet-input">
+                      <button id="decrement">&#9660;</button>
+                      <input type="number" id="user-bet" min="10" max="100" value="0" />
+                      <button id="increment">&#9650;</button>
+                  </div>
+                  <button id="enter-bet">Bet</button>
+              </div>
+              <p>Your Chips: <span id="player-chips"></span></p>
+            </div>
             <div id="player-area"></div>
             <h2>You</h2>
             <div id="player-options">
@@ -122,17 +132,7 @@
             </div>
         </div>
 
-        <!-- Bet pop up-->
-        <div id="bet" class="pop-up">
-            <div class="pop-up-card">
-                <div id="bet-input">
-                    <button id="decrement">&darr;</button>
-                    <input type="number" id="user-bet" min="10" max="100" />
-                    <button id="increment">&uarr;</button>
-                </div>
-                <button id="enter-bet">Bet</button>
-            </div>
-        </div>
+
 
         <div id="end-hand" class="pop-up">
             <div id="hand" class="pop-up-card">

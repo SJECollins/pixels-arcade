@@ -26,15 +26,39 @@
     flex-direction: row;
     justify-content: space-evenly;
     padding: 2em;
-    height: max(300px, 30vh);
+    height: max(280px, 30vh);
 }
 
 #player-options {
     display: none;
 }
 
-#bet, #end-hand {
+#end-hand {
     display: none;
+    height: 120px;
+}
+
+#hand {
+    height: 120px;
+}
+
+#bet-area {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 3rem;
+    border-top: 2px dashed var(--apple-black);
+    border-bottom: 2px dashed var(--apple-black);
+}
+
+#bet {
+    display: none;
+    flex-direction: row;
+}
+
+#bet button {
+    border-radius: 4px;
 }
 
 .card {
