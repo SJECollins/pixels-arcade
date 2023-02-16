@@ -66,7 +66,7 @@ function shuffleDeck() {
 
 // Place a bet at the start of a round
 function placeBet() {
-    playerBet = userBet.value
+    playerBet = parseInt(userBet.value)
     playerChips -= playerBet
     currentBet.innerHTML = playerBet
     currentChips.innerHTML = playerChips
@@ -77,7 +77,6 @@ function placeBet() {
 
 // Deal cards
 function dealCards() {
-    options.style.display = "none"
     let card = {}
     // Deal cards to hand
     if (playerHand.length < 2) {
@@ -125,6 +124,9 @@ function renderHand(card, player) {
     ${card.rank}
     `
     hand.appendChild(newCard)
+    if (player == "dealer") {
+        hand.firstChild.className = "hidden-card"
+    }
 }
 
 // Play a round
@@ -148,6 +150,7 @@ stay.addEventListener("click", () => {
 // Play another round
 function nextRound() {
     endHand.style.display = "none"
+    options.style.display = "none"
     playerScore = 0
     dealerScore = 0
     let card = {}
@@ -170,61 +173,65 @@ function nextRound() {
 
 // Check scores
 function checkScore() {
+    console.log("Player chips: " + playerChips)
+    console.log("Player bet: " + playerBet)
     if (playerScore > 21) {
         // You lose
-        if (playerChips == 0) {
-            gameOver.style.display = "block"
-        } else {
-            endHand.style.display = "block"
-            handResult.innerHTML = "You bust!"
-            nextHand.addEventListener("click", nextRound)
-        }
-        handOver = false
+        return youLose()
     } else if (playerScore == 21) {
         // You win
-        playerChips += playerBet * 2
-        endHand.style.display = "block"
-        handResult.innerHTML = `You won ${playerBet * 2}!`
-        nextHand.addEventListener("click", nextRound)
-        handOver = false
+        return youWin()
     } else if (playerScore >= 17 && playerScore == dealerScore && !hit) {
         // Tie
-        playerChips += playerBet
-        endHand.style.display = "block"
-        handResult.innerHTML = `It's a tie. You get your bet back.`
-        nextHand.addEventListener("click", nextRound)
-        handOver = false
+        return youTie()
     }
     if (dealerScore > 21 && playerScore <= 21) {
         // You win
-        playerChips += playerBet * 2
-        endHand.style.display = "block"
-        handResult.innerHTML = `You won ${playerBet * 2}!`
-        nextHand.addEventListener("click", nextRound)
-        handOver = false
+        return youWin()
     } else if (dealerScore == 21) {
         // You lose
-        if (playerChips == 0) {
-            gameOver.style.display = "block"
-        } else {
-            endHand.style.display = "block"
-            handResult.innerHTML = "Dealer wins!"
-            nextHand.addEventListener("click", nextRound)
-        }
-        handOver = false
+        return youLose()
     } else if (handOver && dealerScore > playerScore) {
         // You lose
-        if (playerChips == 0) {
-            gameOver.style.display = "block"
-        } else {
-            endHand.style.display = "block"
-            handResult.innerHTML = "Dealer wins!"
-            nextHand.addEventListener("click", nextRound)
-        }
-        handOver = false
+        return youLose()
     }
 }
 
+// Refactor - stop repeating yourself
+function youLose() {
+    if (playerChips == 0) {
+        gameOver.style.display = "block"
+    } else {
+        endHand.style.display = "block"
+        handResult.innerHTML = "You lost!"
+        nextHand.addEventListener("click", nextRound)
+    }
+    dealerCards.firstChild.className = "card"
+    handOver = false
+    console.log("Called loss")
+}
+
+function youWin() {
+    playerChips += playerBet * 2
+    endHand.style.display = "block"
+    handResult.innerHTML = `You won ${playerBet * 2}!`
+    nextHand.addEventListener("click", nextRound)
+    dealerCards.firstChild.className = "card"
+    handOver = false
+    console.log("Called win")
+}
+
+function youTie() {
+    playerChips += playerBet
+    endHand.style.display = "block"
+    handResult.innerHTML = `It's a tie. You get your bet back.`
+    nextHand.addEventListener("click", nextRound)
+    dealerCards.firstChild.className = "card"
+    handOver = false
+    console.log("Called tie")
+}
+
+// Change bet
 incBet.addEventListener("click", () => {
     let bet = parseInt(userBet.value)
     bet++
