@@ -193,6 +193,22 @@ The size of the game is also dependent on window size so it's sort of mobile-fri
 
 I do want to consider adjusting the speed a bit and adding an end game.
 
+## Apocalypse Trail
+21/02
+
+Actually January would be more appropriate, but I can't remember when I did the bulk of the game.
+
+Loosely based on Oregon Trail, but much simpler in execution. The goal is to get your characters to some supposed safe place. There's a few encounters on the way and you have to manage food, drink & rest. There's also a very rudimentary day/night cycle and weather, which could do with some sprucing up.
+
+It's at a basic, playable state at the moment. There's a big ol' list of improvements to make (like I want to change the character status display so that it's more nuanced), but the real sort of goal of this little project was to see if I could make something like this in the browser. It's also now at about 1000 lines of JS and all in one file WHICH IS NOT A GOOD THING, but I've been trying to keep each of the games to a single file each as they're really just for learning. So... leave it? We'll see.
+
+## Blackjack
+21/02
+
+And I should probably put the date for this as the 17th, but again not sure when I last updated it.
+
+Just a quick Blackjack game. It's only got very simple rules of hit and stay. I could revisit and look into doubling down and all that, maybe add multiplayer or something, but really it just came about because I was looking at a shuffling algorithm and it struck me that I never made Blackjack even though I'm very certain that was a game I played on the Apple IIc when I was a kid so I just wanted to take a swing at it.
+
 
 # General
 ## 02/07
@@ -218,3 +234,7 @@ Remove commented out code for menu and unused social media links. Need to revisi
 ## 16/01
 
 Added menu to header for all pages for quicker navigation.
+
+## 21/02
+
+Updated all the menus to include Blackjack and Apocalypse Trail. Added Blackjack to main menu. Also fixed CSS for menus so home is unordered and games are in ordered list. Was weird having "Home" as #1.
