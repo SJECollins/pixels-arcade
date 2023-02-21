@@ -34,12 +34,20 @@
         <div class="menu-pop-up">
             <div class="menu-pop-up-card">
                 <h2>Menu</h2>
-                <ol>
+                <ul>
                     <li>
                         <a href="../index.html" aria-label="Home screen">Home</a>
                     </li>
+                </ul>
+                <ol>
                     <li>
                         <a href="../html/anagram.html" aria-label="Anagram game">Anagram Game</a>
+                    </li>
+                    <li>
+                        <a href="../html/trail.html" aria-label="Apocalypse Trail game">Apocalypse Trail</a>
+                    </li>
+                    <li>
+                        <a href="../html/blackjack.html" aria-label="Blackjack game">Blackjack</a>
                     </li>
                     <li>
                         <a href="../html/breakout.html" aria-label="Breakout game">Breakout</a>
@@ -77,9 +85,6 @@
                     </li>
                     <li>
                         <a href="../html/survive.html" aria-label="Survive the Horder game">Survive the Horde</a>
-                    </li>
-                    <li>
-                        <a href="../html/trail.html" aria-label="Apocalypse Trail game">Apocalypse Trail</a>            
                     </li>
                 </ol>
             </div>
@@ -124,20 +129,20 @@
             <div id="controls">
                 <div id="controls-top">
                     <p>Options: </p>
-                        <button type="button" id="check-inventory">Inventory</button>
-                        <button type="button" id="scavenge">Scavenge</button>
-                        <button type="button" id="rest">Rest</button>
-                        <button type="button" id="status">Stats</button>
+                    <button type="button" id="check-inventory">Inventory</button>
+                    <button type="button" id="scavenge">Scavenge</button>
+                    <button type="button" id="rest">Rest</button>
+                    <button type="button" id="status">Stats</button>
                 </div>
                 <div id="controls-bottom">
                     <p>Set Pace: </p>
-                        <button type="button" id="pace-slow">Slow</button>
-                        <button type="button" id="pace-normal">Normal</button>
-                        <button type="button" id="pace-fast">Fast</button>
+                    <button type="button" id="pace-slow">Slow</button>
+                    <button type="button" id="pace-normal">Normal</button>
+                    <button type="button" id="pace-fast">Fast</button>
                 </div>
             </div>
         </div>
-        
+
         <!-- Game pop up for info and decisions -->
         <div id="game-pop-up" class="pop-up">
             <div class="pop-up-card">
@@ -146,7 +151,7 @@
                 <button id="close-game-pop-up">Okay</button>
             </div>
         </div>
-        
+
         <!-- Character creation pop up -->
         <div id="char-pop-up" class="pop-up">
             <div class="pop-up-card">
@@ -174,41 +179,41 @@
                     </div>
                     <div>
                         <label for="eat-small">Small meal:</label>
-                        <input type="radio" value="small-meal" name="eating" id="eat-small">                        
+                        <input type="radio" value="small-meal" name="eating" id="eat-small">
                     </div>
                     <div>
                         <label for="eat-large">Large meal:</label>
-                        <input type="radio" value="large-meal" name="eating" id="eat-large">                        
+                        <input type="radio" value="large-meal" name="eating" id="eat-large">
                     </div>
                 </fieldset>
                 <fieldset id="drinking">
                     <legend>Drink</legend>
                     <div>
                         <label for="drinks-nothing">Nothing:</label>
-                        <input type="radio" value="nothing" name="drinking" id="drink-nothing" checked>                        
+                        <input type="radio" value="nothing" name="drinking" id="drink-nothing" checked>
                     </div>
                     <div>
                         <label for="drinks-small">Small drink:</label>
-                        <input type="radio" value="small-drink" name="drinking" id="drink-small">                        
+                        <input type="radio" value="small-drink" name="drinking" id="drink-small">
                     </div>
                     <div>
                         <label for="drinks-large">Large drink:</label>
-                        <input type="radio" value="large-drink" name="drinking" id="drink-large">                        
+                        <input type="radio" value="large-drink" name="drinking" id="drink-large">
                     </div>
                 </fieldset>
                 <fieldset id="resting">
                     <legend>Sleep</legend>
                     <div>
                         <label for="no-sleep">No sleep:</label>
-                        <input type="radio" value="nothing" name="resting" id="no-sleep" checked>                        
+                        <input type="radio" value="nothing" name="resting" id="no-sleep" checked>
                     </div>
                     <div>
                         <label for="short-sleep">Short sleep:</label>
-                        <input type="radio" value="short-sleep" name="resting" id="short-sleep">                        
+                        <input type="radio" value="short-sleep" name="resting" id="short-sleep">
                     </div>
                     <div>
                         <label for="long-sleep">Long sleep:</label>
-                        <input type="radio" value="long-sleep" name="resting" id="long-sleep">                        
+                        <input type="radio" value="long-sleep" name="resting" id="long-sleep">
                     </div>
                 </fieldset>
                 <button id="rest-options">Okay</button>

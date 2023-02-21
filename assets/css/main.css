@@ -101,9 +101,12 @@ header {
 }
 
 .menu-pop-up-card li {
-  list-style-type: decimal;
   padding: 8px;
   margin-left: 40px;
+}
+
+.menu-pop-up-card ol > li {
+  list-style-type: decimal;
 }
 
 #close-menu {
