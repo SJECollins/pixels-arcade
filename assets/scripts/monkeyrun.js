@@ -151,7 +151,7 @@ window.addEventListener("load", function() {
         draw(context) {
             // Draw bg twice to create illusion of endlessly scrolling background
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
-            context.drawImage(this.img, this.x + this.width, this.y, this.width, this.height)
+            context.drawImage(this.img, this.x + this.width - 1, this.y, this.width, this.height)
         }
         update(incSpeed) {
             // Increase speed over time
@@ -176,7 +176,7 @@ window.addEventListener("load", function() {
         draw(context) {
             // Draw branch twice to create illusion of endlessly scrolling background
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
-            context.drawImage(this.img, this.x + this.width, this.y, this.width, this.height)
+            context.drawImage(this.img, this.x + this.width - 1, this.y, this.width, this.height)
         }
         update(incSpeed) {
             // Increase speed over time
