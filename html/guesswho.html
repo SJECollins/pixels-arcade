@@ -98,7 +98,11 @@
             <!-- Game Buttons -->
             <div id="buttons">
                 <button id="start">Start!</button>
+                <button id="autoflip">Auto-flip <span id="autoflip-on">(on)</span></button>
                 <button id="reset">Reset</button>
+            </div>
+            <div id="answer-display">
+                <p>The person <span id="clue-answer"></span></p>
             </div>
 
             <!-- Append the characters here -->
@@ -113,7 +117,8 @@
                 <label for="final-guess">Is the person named...</label>
                 <input type="text" id="final-guess">
                 <button type="submit" id="final-guess-button">Enter</button>
-            </div> 
+            </div>
+            <button id="show-final-guess">Final Guess</button>
         </div>
 
         <!-- Instruction pop up-->

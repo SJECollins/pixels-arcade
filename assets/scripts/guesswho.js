@@ -123,21 +123,42 @@ const CHARACTERS = [
 
 const startButton = document.getElementById("start")
 const resetButton = document.getElementById("reset")
+const autoflipBtn = document.getElementById("autoflip")
+const autoflipOn = document.getElementById("autoflip-on")
+const guessDisplay = document.getElementById("guess-area")
+const finalGuessDisplay = document.getElementById("final-guess-area")
+const showFinalGuess = document.getElementById("show-final-guess")
+const clueInput = document.getElementById("user-guess")
+const clueBtn = document.getElementById("guess-button")
+const finalGuessBtn = document.getElementById("final-guess-button")
+const ansDisplay = document.getElementById("answer-display")
+const clueAns = document.getElementById("clue-answer")
 const board = document.getElementById("characters")
 const grid = document.createElement("div")
 grid.classList.add("grid")
 board.appendChild(grid)
 
-let userPerson = {}
-let compPerson = {}
+let thePerson = {}
+let clues = []
+let autoflip = false
 
-function startGame() {
+autoflipBtn.addEventListener("click", () => {
+    autoflip = autoflip ? false : true
+    console.log(autoflip)
+    if (autoflip) {
+        autoflipOn.style.display = "inline"
+    } else {
+        autoflipOn.style.display = "none"
+    }
+})
+
+function createBoard() {
     CHARACTERS.sort(() => 0.5 - Math.random())
     CHARACTERS.forEach((char) => {
         const card = document.createElement("div")
         card.classList.add("card")
         card.dataset.name = char.name
-        // card.addEventListener("click", flipCard)
+        card.addEventListener("click", flipCard)
 
         const frontFace = document.createElement("div")
         frontFace.classList.add("front-face")
@@ -152,9 +173,95 @@ function startGame() {
 
         grid.appendChild(card)
         card.appendChild(frontFace)
+        frontFace.appendChild(charName)
         card.appendChild(backFace)
-    })
+    }) 
 }
+
+function flipCard() {
+    
+}
+
+clueBtn.addEventListener("click", getClue)
+function getClue() {
+    let guessRight = true
+    let guess = clueInput.value.trim().toLowerCase()
+    ansDisplay.style.display = "block"
+    if (thePerson.description.includes(guess)) {
+        clueAns.innerHTML = `does have ${guess}`
+        guessRight = true
+    } else {
+        clueAns.innerHTML = `does not have ${guess}`
+        guessRight = false
+    }
+    if (autoflip) {
+        if (guessRight) {
+            CHARACTERS.forEach((char) => {
+                if (char.description.includes(guess)) {
+                    console.log("Don't flip the ones that match the guess")
+                } else {
+                    console.log("Do flip the ones that do")
+                    let cards = document.getElementsByClassName("card")
+                    console.log(cards)
+                    Array.from(cards).forEach((card) => {
+                        console.log(card)
+                        if (card.getAttribute("data-name") == char.name) {
+                            card.classList.add("flip")
+                            console.log("Flipped!")
+                        }                        
+                    })
+                }
+            })
+        } else {
+            CHARACTERS.forEach((char) => {
+                if (char.description.includes(guess)) {
+                    console.log("Flip the ones that match the guess")
+                    let cards = document.getElementsByClassName("card")
+                    console.log(cards)
+                    Array.from(cards).forEach((card) => {
+                        console.log(card)
+                        if (card.getAttribute("data-name") == char.name) {
+                            card.classList.add("flip")
+                            console.log("Flipped!")
+                        }                        
+                    })
+                } else {
+                    console.log("Don't flip those that do")
+                }
+            })
+        }
+    }
+
+}
+
+// function flipCard() {
+//     let char = CHARACTERS.find(char => char.name === thePerson.name).description
+//     console.log(char)
+// }
+
+
+function showFinal() {
+    finalGuessDisplay.style.display = "block"
+
+}
+
+function finalGuess() {
+
+}
+
+function startGame() {
+    // Get the Person
+    thePerson = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)]
+    console.log(thePerson.description)
+    // Create the board
+    createBoard()
+    // Show guess input
+    guessDisplay.style.display = "block"
+    showFinalGuess.style.display = "block"
+    showFinalGuess.addEventListener("click", showFinal)
+}
+
+
 
 startButton.addEventListener("click", startGame)
 resetButton.addEventListener("click", () => {
