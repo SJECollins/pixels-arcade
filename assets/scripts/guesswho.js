@@ -2,7 +2,7 @@ const CHARACTERS = [
     {
         name: "alice",
         image: "../assets/images/guesswho/alice.png",
-        description: ["blonde hair", "brown eyes", "medium hair", "medium length hair", "glasses"],
+        description: ["blonde hair", "blond hair", "brown eyes", "medium hair", "medium length hair", "glasses"],
     },
     {
         name: "anna",
@@ -17,17 +17,17 @@ const CHARACTERS = [
     {
         name: "carl",
         image: "../assets/images/guesswho/carl.png",
-        description: ["blonde hair", "brown eyes", "short hair"],
+        description: ["blonde hair", "blond hair", "brown eyes", "short hair"],
     },
     {
         name: "don",
         image: "../assets/images/guesswho/don.png",
-        description: ["blonde hair", "medium hair", "medium length hair", "brown eyes", "glasses"],
+        description: ["blonde hair", "blond hair", "medium hair", "medium length hair", "brown eyes", "glasses"],
     },
     {
         name: "erica",
         image: "../assets/images/guesswho/erica.png",
-        description: ["blonde hair", "long hair", "blue eyes"],
+        description: ["blonde hair", "blond hair", "long hair", "blue eyes"],
     },
     {
         name: "fred",
@@ -67,7 +67,7 @@ const CHARACTERS = [
     {
         name: "leslie",
         image: "../assets/images/guesswho/leslie.png",
-        description: ["blonde hair", "short hair", "blue eyes"],
+        description: ["blonde hair", "blond hair", "short hair", "blue eyes"],
     },
     {
         name: "linda",
@@ -128,6 +128,7 @@ const autoflipOn = document.getElementById("autoflip-on")
 const guessDisplay = document.getElementById("guess-area")
 const finalGuessDisplay = document.getElementById("final-guess-area")
 const showFinalGuess = document.getElementById("show-final-guess")
+const finalGuessInput = document.getElementById("final-guess")
 const clueInput = document.getElementById("user-guess")
 const clueBtn = document.getElementById("guess-button")
 const finalGuessBtn = document.getElementById("final-guess-button")
@@ -179,11 +180,12 @@ function createBoard() {
 }
 
 function flipCard() {
-    
+    this.classList.toggle("flip")
 }
 
 clueBtn.addEventListener("click", getClue)
 function getClue() {
+    let cards = Array.from(document.getElementsByClassName("card"))
     let guessRight = true
     let guess = clueInput.value.trim().toLowerCase()
     ansDisplay.style.display = "block"
@@ -197,17 +199,11 @@ function getClue() {
     if (autoflip) {
         if (guessRight) {
             CHARACTERS.forEach((char) => {
-                if (char.description.includes(guess)) {
-                    console.log("Don't flip the ones that match the guess")
-                } else {
-                    console.log("Do flip the ones that do")
-                    let cards = document.getElementsByClassName("card")
-                    console.log(cards)
-                    Array.from(cards).forEach((card) => {
+                if (!char.description.includes(guess)) {
+                    cards.forEach((card) => {
                         console.log(card)
                         if (card.getAttribute("data-name") == char.name) {
                             card.classList.add("flip")
-                            console.log("Flipped!")
                         }                        
                     })
                 }
@@ -215,41 +211,42 @@ function getClue() {
         } else {
             CHARACTERS.forEach((char) => {
                 if (char.description.includes(guess)) {
-                    console.log("Flip the ones that match the guess")
-                    let cards = document.getElementsByClassName("card")
-                    console.log(cards)
-                    Array.from(cards).forEach((card) => {
+                    cards.forEach((card) => {
                         console.log(card)
                         if (card.getAttribute("data-name") == char.name) {
                             card.classList.add("flip")
-                            console.log("Flipped!")
                         }                        
                     })
-                } else {
-                    console.log("Don't flip those that do")
                 }
             })
         }
     }
-
+    clueInput.value = ""
 }
-
-// function flipCard() {
-//     let char = CHARACTERS.find(char => char.name === thePerson.name).description
-//     console.log(char)
-// }
-
 
 function showFinal() {
     finalGuessDisplay.style.display = "block"
-
+    finalGuessBtn.addEventListener("click", finalGuess)
 }
 
 function finalGuess() {
+    let guessChar = finalGuessInput.value.trim().toLowerCase()
+    checkWin(guessChar)
+}
 
+function checkWin(guess) {
+    document.getElementById("game-over").style.display = "block"
+    document.getElementById("correct-person").innerHTML = `${thePerson.name.charAt(0).toUpperCase() + thePerson.name.slice(1)}`
+    document.getElementById("correct-image").style.backgroundImage = `url(${thePerson.image})`
+    if (thePerson.name == guess) {
+        document.getElementById("result").innerHTML = "WON!"
+    } else {
+        document.getElementById("result").innerHTML = "LOST!"
+    }
 }
 
 function startGame() {
+    startButton.removeEventListener("click", startGame)
     // Get the Person
     thePerson = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)]
     console.log(thePerson.description)
@@ -260,8 +257,6 @@ function startGame() {
     showFinalGuess.style.display = "block"
     showFinalGuess.addEventListener("click", showFinal)
 }
-
-
 
 startButton.addEventListener("click", startGame)
 resetButton.addEventListener("click", () => {

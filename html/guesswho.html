@@ -118,14 +118,17 @@
                 <input type="text" id="final-guess">
                 <button type="submit" id="final-guess-button">Enter</button>
             </div>
-            <button id="show-final-guess">Final Guess</button>
+            <button id="show-final-guess">Enter Final Guess</button>
         </div>
 
         <!-- Instruction pop up-->
         <div id="intro" class="pop-up">
             <div class="pop-up-card">
                 <h2>Welcome to Guess Who!</h2>
-
+                <p>Enter your guesses in the input below.</p>
+                <p>When you've narrowed down your suspects,</p>
+                <p>click the button to input your final guess!</p>
+                <p>You can turn on autoflip for super-baby mode!</p>
                 <button id="close-pop-up">Got It!</button>
             </div>
         </div>
@@ -135,7 +138,8 @@
             <div id="end" class="pop-up-card">
                 <h2>Game Over!</h2>
                 <p>YOU <span id="result"></span></p>
-                <h3>The word was <span class="right-word"></span></h3>
+                <h3>The person was <span id="correct-person"></span></h3>
+                <div id="correct-image"></div>
                 <a href="guesswho.html">Play Again</a>
                 <a href="../index.html">Home</a>
             </div>
