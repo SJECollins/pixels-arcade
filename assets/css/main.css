@@ -152,6 +152,7 @@ h1 {
 
 /* Button styling */
 button {
+  font-family: "Press Start 2P";
   background-color: var(--apple-black);
   color: var(--apple-light-green);
   font-size: 1rem;

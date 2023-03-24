@@ -9,8 +9,8 @@
     content="Pixel Arcade is a collection of single player games for mobile and desktop browsers.">
   <meta name="keywords" content="Pixel Arcade, games, gaming, mobile, browser, HTML, CSS, JavaScript">
   <link href="../assets/css/main.css" rel="stylesheet">
-  <link href="../assets/css/hideseek.css" rel="stylesheet">
-  <title>Pixel's Arcade | Hide & Seek</title>
+  <link href="../assets/css/quiz.css" rel="stylesheet">
+  <title>Pixel's Arcade | Quiz</title>
   <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
 </head>
 
@@ -93,51 +93,72 @@
       <button id="close-menu" type="button" aria-label="Close">Close</button>
     </div>
 
-    <h1>Hide & Seek</h1>
+    <h1>Pixel's Quiz</h1>
     <p id="instructions">Instructions</p>
 
     <div id="board">
       <!-- Game Buttons -->
       <div id="buttons">
-        <button id="start">Start!</button>
-        <button id="reset">Reset</button>
-      </div>
-
-      <!-- Text Speed Options-->
-      <div id="text-speed">
-        <span>I prefer: </span>
         <div>
-          <button id="fast-text">Fast Text</button>
-          <button id="slow-text">Slow Text</button>
+            <label for="categories">Choose a category: </label>
+            <select name="categories" id="categories">
+                <option value="arts_and_literature">Arts & Literature</option>
+                <option value="film_and_tv">Film & TV</option>
+                <option value="general_knowledge">General Knowledge</option>
+                <option value="music">Music</option>
+            </select>            
         </div>
+        <div>
+            <label for="difficulty">Choose a difficulty: </label>
+            <select name="difficulty" id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>            
+        </div>
+        <button id="start">Start Quiz!</button>
+        <button id="reset">Reset</button>
       </div>
 
       <!-- Terminal -->
       <div class="terminal">
-        <p id="message"><span>Hide & Seek</span><br>A text adventure game.</p>
-        <div class="response">
-          <span class="input-text">Input:</span>
-          <input type="text" id="user-input" value="">
-          <button type="button" id="user-answer">Enter</button>
-        </div>
+        <p id="count-question">Question number <span id="question-number"></span> of 10:</p>
+        <p id="question"></p>
+        <div id="answers"></div>
       </div>
 
       <!-- Instruction pop up-->
       <div id="intro" class="pop-up">
         <div class="pop-up-card">
-          <h2>Welcome to Hide & Seek</h2>
-          <p>A text adventure game.</p>
-          <p>Enter your choice in the input.</p>
-          <p>Try to make good choices.</p>
+          <h2>Welcome to Pixel's Quiz</h2>
+            <p>Choose from four categories:<br>
+                Film & TV
+                Music
+                Arts & Literature
+                General Knowledge
+            </p>
+            <p>Select your difficulty.</p>
+            <p>Then answer ten questions.</p>
           <button id="close-pop-up">Got It!</button>
         </div>
       </div>
     </div>
+
+    <!-- Game Over -->
+    <div id="game-over" class="pop-up">
+        <div id="end" class="pop-up-card">
+            <h2>Game Over!</h2>
+            <p>You answered <span id="result"></span> correctly out of 10.</p>
+            <a href="quiz.html">Play Again</a>
+            <a href="../index.html">Home</a>
+        </div>
+    </div>
+
   </section>
   <!-- Footer with social links -->
   <footer>
   </footer>
-  <script src="../assets/scripts/hideseek.js"></script>
+  <script src="../assets/scripts/quiz.js"></script>
   <script src="../assets/scripts/popups.js"></script>
 </body>
 
