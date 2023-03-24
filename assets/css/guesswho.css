@@ -12,6 +12,12 @@
     margin: 20px auto;
 }
 
+#answer-display {
+    border: 2px solid var(--apple-black);
+    margin: 1em 4em;
+    padding: 1em;
+}
+
 input {
     border: 0;
     outline: 0;
