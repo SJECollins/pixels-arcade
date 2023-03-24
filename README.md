@@ -209,6 +209,26 @@ And I should probably put the date for this as the 17th, but again not sure when
 
 Just a quick Blackjack game. It's only got very simple rules of hit and stay. I could revisit and look into doubling down and all that, maybe add multiplayer or something, but really it just came about because I was looking at a shuffling algorithm and it struck me that I never made Blackjack even though I'm very certain that was a game I played on the Apple IIc when I was a kid so I just wanted to take a swing at it.
 
+## Guess Who
+23/04
+
+I spoke to someone this week who was attempting to create Guess Who for a project. At the time, they hadn't progressed beyond images on divs in their HTML so I don't know how they were planning to approach their script, but it was an interesting idea for a project so I thought I'd have a go.
+
+The images were made using this [avatar maker](https://avatarmaker.com/).
+
+Then it was fairly straightforward to create an array of objects, append the cards with the images and names to the HTML board, and pick the person. Right now, it's kind of limited on character details. I made an autoflip thing to test the input while I was making it, but I've left it in cause it's funny.
+
+Could definitely beef it up.
+
+## Quiz
+24/04
+
+Alright, this was just cause everyone makes a JS quiz game as one of their first JS projects and I hadn't done one yet. It's like 80 lines of code, it's nothing fancy, I just wanted to make one to make it.
+
+Using [The Trivia API](https://the-trivia-api.com/) to generate the quiz based on selected category and difficulty.
+
+Quick and fun. Need to update the menus.
+
 
 # General
 ## 02/07
