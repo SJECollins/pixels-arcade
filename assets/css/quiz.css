@@ -40,7 +40,6 @@ option {
 #answers {
     position: absolute;
     bottom: 1em;
-    /* left: 1em; */
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -58,4 +57,12 @@ option {
 #answers button:hover {
     color: var(--apple-black);
     border: 2px solid var(--apple-light-green);
+}
+
+.right {
+    border: 4px dashed var(--apple-light-green) !important;
+}
+
+.wrong {
+    border: 4px dashed red !important;
 }

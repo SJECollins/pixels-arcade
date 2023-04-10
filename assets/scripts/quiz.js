@@ -54,11 +54,18 @@ function displayQuestion() {
 function checkAnswer(e) {
     console.log(e.target.innerHTML)
     console.log(correctAns)
+    console.log(e.target)
     if (e.target.innerHTML == correctAns) {
         score += 1
-        ansDisplay.innerHTML = `Correct! The answer was ${correctAns}`
+        e.target.classList.add("right")
+        setTimeout(() => {
+            ansDisplay.innerHTML = `Correct! The answer was ${correctAns}`            
+        }, 1000)
     } else {
-        ansDisplay.innerHTML = `Wrong... The answer was ${correctAns}`
+        e.target.classList.add("wrong")
+        setTimeout(() => {
+            ansDisplay.innerHTML = `Wrong... The answer was ${correctAns}`            
+        }, 1000)
     }
     setTimeout(() => {
         checkEnd()
