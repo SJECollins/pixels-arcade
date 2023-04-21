@@ -207,7 +207,7 @@ window.addEventListener("load", () => {
                     this.mood = 10
                 }
                 if (this.health < 5 && this.mood > 5) {
-                        // Prevent mood going above 5 when health is low
+                    // Prevent mood going above 5 when health is low
                     this.mood = 4
                 }
                 if (this.food <= 5 && !this.status.includes("Hungry")) {
@@ -272,7 +272,7 @@ window.addEventListener("load", () => {
         treeBgTimer = 0
         treeFgTimer = 0
         gameStats.pace = 2
-        createCharPop.style.display="none"
+        createCharPop.style.display = "none"
         foodDisplay.innerHTML = gameStats.food
         waterDisplay.innerHTML = gameStats.water
         enterChars.removeEventListener("click", createCharacters)
@@ -356,7 +356,6 @@ window.addEventListener("load", () => {
     function handleBgTrees(deltaTime) {
         if (treeBgTimer > treeBgInterval + randTreeInterval) {
             let frameX = (Math.floor(Math.random() * 6)) * 32
-            console.log("background")
             bgTrees.push(new Tree(0, 0.4, frameX))
             randTreeInterval = Math.random() * 2000 + 2500
             treeBgTimer = 0
@@ -373,7 +372,6 @@ window.addEventListener("load", () => {
     function handleFgTrees(deltaTime) {
         if (treeFgTimer > treeFgInterval + randTreeInterval) {
             let frameX = (Math.floor(Math.random() * 6)) * 32
-            console.log("foreground")
             fgTrees.push(new Tree(96, 0.6, frameX))
             randTreeInterval = Math.random() * 2000 + 2500
             treeFgTimer = 0
@@ -462,11 +460,9 @@ window.addEventListener("load", () => {
             this.x -= this.speed * gameStats.pace
             // Quasi-collision detection? Better to check when adjacent to characters?
             if (this.x < 300) {
-                console.log("collision")
                 obstacleEvents(this.type, this.name)
                 this.markedForDeletion = true
             }
-            console.log(this.x)
             // Delete when off screen
             if (this.x < 0 - this.width) {
                 this.markedForDeletion = true
@@ -490,7 +486,6 @@ window.addEventListener("load", () => {
                 let building = buildingObs[Math.floor(Math.random() * buildingObs.length)]
                 // Check if already spawned - use some instead of includes as object
                 if (alreadySpawned.some(obj => obj.name == building.name)) {
-                    console.log("already there")
                     return spawnObstacles()
                 } else {
                     // Push to spawned array 
@@ -500,24 +495,18 @@ window.addEventListener("load", () => {
             } else if (randNum >= 15 && randNum < 18) {
                 let person = peopleObs[Math.floor(Math.random() * peopleObs.length)]
                 if (alreadySpawned.some(obj => obj.name == person.name)) {
-                    console.log("already there")
                     return spawnObstacles()
                 } else {
                     alreadySpawned.push(person)
                     spawnedPeople.push(new Obstacle('person', person.name, peopleImg, 96, 64, 96, person.y, 0.5))
-                    console.log("spawn person")
-                    console.log(person)
                 }
             } else {
                 let animal = animalObs[Math.floor(Math.random() * animalObs.length)]
                 if (alreadySpawned.some(obj => obj.name == animal.name)) {
-                    console.log("already there")
                     return spawnObstacles()
                 } else {
                     alreadySpawned.push(animal)
                     spawnedAnimals.push(new Obstacle('animal', animal.name, animal.img, 128, animal.width, 32, 32, 0.5))
-                    console.log("spawn animal")
-                    console.log(animal)
                 }
             }
         }
@@ -718,10 +707,10 @@ window.addEventListener("load", () => {
                         char.mood = 10
                         char.rest = 10
                     })
-                    gamePopText.insertAdjacentHTML("afterbegin", `
+                    gamePopText.innerHTML = `
                     <p>The family are very grateful for your help.</p>
                     <p>After resting, they offer a medkit as thanks.</p>
-                    `)
+                    `
                     gameChoices.innerHTML = ""
                     closePopBtn.innerHTML = "Okay"
                     inventory.push("medkit")
@@ -889,7 +878,6 @@ window.addEventListener("load", () => {
         let randTime = Math.floor(Math.random() * 2000) + 1000
         if (dayCounter % 1 == 0 && dayTimer == randTime) {
             spawnObstacles()
-            console.log("calling spawn")
         }
     }
 
@@ -1056,9 +1044,6 @@ window.addEventListener("load", () => {
         dayDisplay.innerHTML = dayCounter
         foodDisplay.innerHTML = gameStats.food
         waterDisplay.innerHTML = gameStats.water
-        console.log(eating, drinking, resting)
-        console.log(gameChars)
-        console.log(gameChars.length)
     }
 
     // Handle Scavenging

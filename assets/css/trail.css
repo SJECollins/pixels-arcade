@@ -31,11 +31,12 @@
     border-right: 4px solid var(--apple-dark-green);
 }
 
-#controls-top, #controls-bottom {
+#controls-top, #controls-mid, #controls-bottom {
     border-bottom: 4px solid var(--apple-dark-green);
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    flex-wrap: wrap;
     text-align: left;
     align-items: center;
 }
