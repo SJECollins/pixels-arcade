@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Pixel Arcade is a collection of single player games for mobile and desktop browsers.">
+  <meta name="keywords" content="Pixel Arcade, games, gaming, mobile, browser, HTML, CSS, JavaScript">
+  <link href="../assets/css/main.css" rel="stylesheet">
+  <link href="../assets/css/typing.css" rel="stylesheet">
+  <title>Pixel's Arcade | Typing Test</title>
+  <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+
+<body>
+  <!-- Header containing title link, logos and navbar -->
+  <header>
+    <div id="header-title">
+      <img src="../assets/images/pixel-head-green.png" alt="Green pixel head logo">
+      <a href="../index.html" aria-label="Navigates to home menu page"> Pixel's Arcade </a>
+      <img src="../assets/images/pixel-head-green.png" alt="Green pixel head logo">
+    </div>
+    <div id="header-menu">
+      <button id="open-menu" type="button" aria-label="Open menu">Menu</button>
+    </div>
+  </header>
+
+  <!-- Main section containing the game menu-->
+  <section id="main-screen">
+
+    <!-- Menu modal -->
+    <div class="menu-pop-up">
+      <div class="menu-pop-up-card">
+        <h2>Menu</h2>
+        <ul>
+          <li>
+            <a href="../index.html" aria-label="Home screen">Home</a>
+          </li>
+        </ul>
+        <ol>
+          <li>
+            <a href="../html/anagram.html" aria-label="Anagram game">Anagram Game</a>
+          </li>
+          <li>
+            <a href="../html/trail.html" aria-label="Apocalypse Trail game">Apocalypse Trail</a>
+          </li>
+          <li>
+            <a href="../html/blackjack.html" aria-label="Blackjack game">Blackjack</a>
+          </li>
+          <li>
+            <a href="../html/breakout.html" aria-label="Breakout game">Breakout</a>
+          </li>
+          <li>
+            <a href="../html/guesswho.html" aria-label="Guess Who game">Guess Who</a>
+          </li>
+          <li>
+            <a href="../html/hide-seek.html" aria-label="Hide & Seek text adventure game">Hide & Seek</a>
+          </li>
+          <li>
+            <a href="../html/invaders.html" aria-label="Space Invaders game">Space Invaders</a>
+          </li>
+          <li>
+            <a href="../html/memory-cards.html" aria-label="Dead Heads memory card game">Dead Heads Memory Game</a>
+          </li>
+          <li>
+            <a href="../html/minesweeper.html" aria-label="Minesweeper game">Minesweeper</a>
+          </li>
+          <li>
+            <a href="../html/missing-item.html" aria-label="Missing Item game">Missing Item Game</a>
+          </li>
+          <li>
+            <a href="../html/monkey-run.html" aria-label="Monkey Run game">Monkey Run</a>
+          </li>
+          <li>
+            <a href="../html/rps.html" aria-label="Rock, Paper, Scissors game">Rock Paper Scissors</a>
+          </li>
+          <li>
+            <a href="../html/rabbit.html" aria-label="Slap-a-Rabbit game">Slap-a-Rabbit</a>
+          </li>
+          <li>
+            <a href="../html/simon.html" aria-label="Simon game">Simon</a>
+          </li>
+          <li>
+            <a href="../html/snake.html" aria-label="Snake game">Snake</a>
+          </li>
+          <li>
+            <a href="../html/survive.html" aria-label="Survive the Horder game">Survive the Horde</a>
+          </li>
+        </ol>
+      </div>
+      <button id="close-menu" type="button" aria-label="Close">Close</button>
+    </div>
+
+    <h1>Typing Test</h1>
+    <p id="instructions">Instructions</p>
+
+    <div id="board">
+      <!-- Game Buttons -->
+      <div id="buttons">
+        <button id="start">Start!</button>
+        <button id="reset">Reset</button>
+      </div>
+
+      <!-- Terminal -->
+      <div class="terminal">
+            <div id="stats">
+                <div>Time: <span id="time-left"></span></div>
+                <div>WPM: <span id="wpm"></span></div>
+                <div>CPM: <span id="cpm"></span></div>
+                <div>Errors: <span id="errors"></span></div>
+            </div>
+            <p id="test-text">
+
+            </p>
+            <textarea
+                id="user-input"
+            ></textarea>
+      </div>
+    </div>
+
+    <!-- Instruction pop up-->
+    <div id="intro" class="pop-up">
+      <div class="pop-up-card">
+        <h2>Welcome to the Typing Test!</h2>
+        <p>Click Start to generate your page of text.</p>
+        <p>Type as accurately and quickly as you can.</p>
+        <button id="close-pop-up">Got It!</button>
+      </div>
+    </div>
+
+    <!-- Round result pop up-->
+    <!-- <div id="round" class="pop-up">
+      <div class="pop-up-card">
+        <h3 id="round-result"></h3>
+        <h3>The word was <span class="right-word"></span></h3>
+        <button id="next-round">Next Round</button>
+      </div>
+    </div> -->
+
+    <!-- Game Over -->
+    <!-- <div id="game-over" class="pop-up">
+      <div id="end" class="pop-up-card">
+        <h2>Game Over!</h2>
+        <p>YOU <span id="result"></span></p>
+        <h3>The word was <span class="right-word"></span></h3>
+        <a href="anagram.html">Play Again</a>
+        <a href="../index.html">Home</a>
+      </div>
+    </div> -->
+
+  </section>
+  <!-- Footer with social links -->
+  <footer>
+  </footer>
+  <script src="../assets/scripts/typing.js"></script>
+  <script src="../assets/scripts/popups.js"></script>
+</body>
+
+</html>
