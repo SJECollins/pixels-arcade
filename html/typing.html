@@ -106,17 +106,15 @@
       <!-- Terminal -->
       <div class="terminal">
             <div id="stats">
-                <div>Time: <span id="time-left"></span></div>
-                <div>WPM: <span id="wpm"></span></div>
-                <div>CPM: <span id="cpm"></span></div>
-                <div>Errors: <span id="errors"></span></div>
+                <div>Time: <p id="time-left"></p></div>
+                <div>WPM: <p id="wpm"></p></div>
+                <div>CPM: <p id="cpm"></p></div>
+                <div>Errors: <p id="errors"></p></div>
             </div>
             <p id="test-text">
 
             </p>
-            <textarea
-                id="user-input"
-            ></textarea>
+            <input id="user-input" type="text">
       </div>
     </div>
 
@@ -130,25 +128,18 @@
       </div>
     </div>
 
-    <!-- Round result pop up-->
-    <!-- <div id="round" class="pop-up">
-      <div class="pop-up-card">
-        <h3 id="round-result"></h3>
-        <h3>The word was <span class="right-word"></span></h3>
-        <button id="next-round">Next Round</button>
-      </div>
-    </div> -->
-
     <!-- Game Over -->
-    <!-- <div id="game-over" class="pop-up">
+    <div id="game-over" class="pop-up">
       <div id="end" class="pop-up-card">
         <h2>Game Over!</h2>
-        <p>YOU <span id="result"></span></p>
-        <h3>The word was <span class="right-word"></span></h3>
-        <a href="anagram.html">Play Again</a>
+        <p id="overall"></p>
+        <div>CPM: <p id="cpm-result"></p></div>
+        <div>WPM: <p id="wpm-result"></p></div>
+        <div>Accuracy: <p id="accuracy"></p>%</div>
+        <a href="typing.html">Play Again</a>
         <a href="../index.html">Home</a>
       </div>
-    </div> -->
+    </div>
 
   </section>
   <!-- Footer with social links -->
