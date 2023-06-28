@@ -537,6 +537,53 @@ window.addEventListener("load", () => {
         spawnedAnimals = spawnedAnimals.filter(animal => !animal.markedForDeletion)
     }
 
+    function approachEvent(e) {
+        gameChoices.removeEventListener("click", approachEvent)
+        if (e.target && e.target.id == "approach") {
+            gameChoices.innerHTML = ""
+            gamePopText.innerHTML = ""
+            approachBuilding(obsName)
+        }       
+    }
+
+    function tradeWater(e) {
+        gameChoices.removeEventListener("click", tradeWater)
+        if (e.target && e.target.id == "trade") {
+            tradeItem = "water"
+            gameChoices.innerHTML = ""
+            gamePopText.innerHTML = ""
+            trade(tradeItem)
+        }    
+    }
+
+    function tradeFood(e) {
+        gameChoices.removeEventListener("click", tradeFood)
+        if (e.target && e.target.id == "trade") {
+            tradeItem = "food"
+            gameChoices.innerHTML = ""
+            gamePopText.innerHTML = ""
+            trade(tradeItem)
+        }
+    }
+
+    function giveSupplies(e) {
+        gameChoices.removeEventListener("click", giveSupplies)
+        if (e.target && e.target.id == "help-stranger") {
+            gameChoices.innerHTML = ""
+            gamePopText.innerHTML = ""
+            helpStranger(obsName)
+        }
+    }
+
+    function feedAnimal(e) {
+        gameChoices.removeEventListener("click", feedAnimal)
+        if (e.target && e.target.id == "get-animal") {
+            gameChoices.innerHTML = ""
+            gamePopText.innerHTML = ""
+            getAnimal(obsName)
+        }
+    }
+
     // Obstacle events
     function obstacleEvents(obsType, obsName) {
         // First want to check what type of obstacle - building, people, animal
@@ -554,13 +601,7 @@ window.addEventListener("load", () => {
                 `)
                 gameChoices.insertAdjacentHTML("afterbegin", `
                 <button id="approach">Approach ${obsName}</button>`)
-                gameChoices.addEventListener("click", (e) => {
-                    if (e.target && e.target.id == "approach") {
-                        gameChoices.innerHTML = ""
-                        gamePopText.innerHTML = ""
-                        approachBuilding(obsName)
-                    }
-                })
+                gameChoices.addEventListener("click", approachEvent)
                 closePopBtn.innerHTML = "Avoid"
                 break;
             case "person":
@@ -573,14 +614,7 @@ window.addEventListener("load", () => {
                     `)
                     gameChoices.insertAdjacentHTML("afterbegin", `
                     <button id="trade">Trade</button>`)
-                    gameChoices.addEventListener("click", (e) => {
-                        if (e.target && e.target.id == "trade") {
-                            tradeItem = "water"
-                            gameChoices.innerHTML = ""
-                            gamePopText.innerHTML = ""
-                            trade(tradeItem)
-                        }
-                    })
+                    gameChoices.addEventListener("click", tradeWater)
                 } else if (randEvent == 1) {
                     gamePopText.insertAdjacentHTML("beforeend", `
                     <p>They are standing in the middle of the road.</p>
@@ -588,14 +622,7 @@ window.addEventListener("load", () => {
                     `)
                     gameChoices.insertAdjacentHTML("afterbegin", `
                     <button id="trade">Trade</button>`)
-                    gameChoices.addEventListener("click", (e) => {
-                        if (e.target && e.target.id == "trade") {
-                            tradeItem = "food"
-                            gameChoices.innerHTML = ""
-                            gamePopText.innerHTML = ""
-                            trade(tradeItem)
-                        }
-                    })
+                    gameChoices.addEventListener("click", tradeFood)
                 } else {
                     gamePopText.insertAdjacentHTML("beforeend", `
                     <p>They are standing in the middle of the road.</p>
@@ -604,13 +631,7 @@ window.addEventListener("load", () => {
                     `)
                     gameChoices.insertAdjacentHTML("afterbegin", `
                     <button id="help-stranger">Give Supplies</button>`)
-                    gameChoices.addEventListener("click", (e) => {
-                        if (e.target && e.target.id == "help-stranger") {
-                            gameChoices.innerHTML = ""
-                            gamePopText.innerHTML = ""
-                            helpStranger(obsName)
-                        }
-                    })
+                    gameChoices.addEventListener("click", giveSupplies)
                 }
                 closePopBtn.innerHTML = "Refuse"
                 break;
@@ -618,17 +639,11 @@ window.addEventListener("load", () => {
                 gamePopText.insertAdjacentHTML("beforeend", `
                 <p>A ${obsName} is sitting in the middle of the road.</p>
                 <p>It looks hungry.</p>
-                <p>Give some food to the dog?</p>
+                <p>Give some food to the ${obsName}?</p>
                 `)
                 gameChoices.insertAdjacentHTML("afterbegin", `
                 <button id="get-animal">Feed ${obsName}</button>`)
-                gameChoices.addEventListener("click", (e) => {
-                    if (e.target && e.target.id == "get-animal") {
-                        gameChoices.innerHTML = ""
-                        gamePopText.innerHTML = ""
-                        getAnimal(obsName)
-                    }
-                })
+                gameChoices.addEventListener("click", feedAnimal)
                 closePopBtn.innerHTML = "Don't Feed"
                 break;
         }
@@ -766,6 +781,7 @@ window.addEventListener("load", () => {
         <p>The ${obsName} is very grateful.</p>
         <p>The only thing they can offer in return is a medkit.</p>
         `
+        inventory.push("medkit")
         closePopBtn.innerHTML = "Okay"
     }
 
@@ -773,8 +789,8 @@ window.addEventListener("load", () => {
     class Animal {
         constructor(animalImg, animalWidth) {
             this.img = animalImg
-            this.x = 196
-            this.y = 96
+            this.x = 186
+            this.y = 160
             this.width = animalWidth
             this.height = 32
             this.frameX = 0
@@ -804,46 +820,49 @@ window.addEventListener("load", () => {
     }
 
     function getAnimal(obsName) {
+        console.log("I've been called")
         if (gameStats.food >= 1) {
             gameStats.food -= 1
         } else {
             gameStats.food = 0
         }
         closePopBtn.innerHTML = "Okay"
-        if (!hasCat && !hasDog) {
+        if (hasCat) {
+            hasCat = false
+            hasDog = true
+            cat = {}
+            dog = new Animal(dogImg, 64)
+            dog.isCompanion = true
+            gamePopText.innerHTML = `
+            <p>The ${obsName} is grateful for the food.</p>
+            <p>It decides to follow you.</p>
+            <p>The cat hisses and runs away.</p>
+            `
+        } else if (hasDog) {
+            hasDog = false
+            hasCat = true
+            dog = {}
+            cat = new Animal(catImg, 32)
+            cat.isCompanion = true
+            gamePopText.innerHTML = `
+            <p>The ${obsName} is grateful for the food.</p>
+            <p>It decides to follow you.</p>
+            <p>The dog runs away with its tail between its legs.</p>
+            `
+        } else {
             if (obsName == "dog") {
                 hasDog = true
                 dog = new Animal(dogImg, 64)
+                dog.isCompanion = true
             } else {
                 hasCat = true
                 cat = new Animal(catImg, 32)
+                cat.isCompanion = true
             }
             gamePopText.innerHTML = `
             <p>The ${obsName} is grateful for the food.</p>
             <p>It decides to follow you.</p>
-            `
-        } else {
-            if (hasCat) {
-                hasCat = false
-                hasDog = true
-                cat = {}
-                dog = new Animal(dogImg, 64)
-                gamePopText.innerHTML = `
-                <p>The ${obsName} is grateful for the food.</p>
-                <p>It decides to follow you.</p>
-                <p>The cat hisses and runs away.</p>
-                `
-            } else {
-                hasDog = false
-                hasCat = true
-                dog = {}
-                cat = new Animal(catImg, 32)
-                gamePopText.innerHTML = `
-                <p>The ${obsName} is grateful for the food.</p>
-                <p>It decides to follow you.</p>
-                <p>The dog runs away with its tail between its legs.</p>
-                `
-            }
+            `            
         }
     }
 
@@ -1282,7 +1301,6 @@ window.addEventListener("load", () => {
         handleCharacters(ctx, deltaTime)
         handlePeople()
         handleAnimals(ctx, deltaTime)
-        handleFgTrees(deltaTime)
         if (hasCat) {
             cat.draw(ctx)
             cat.update(deltaTime)
@@ -1291,6 +1309,7 @@ window.addEventListener("load", () => {
             dog.draw(ctx)
             dog.update(deltaTime)
         }
+        handleFgTrees(deltaTime)
         if (gameStats.weather == 'Rain') {
             sky.draw(ctx)
             sky.update()    
