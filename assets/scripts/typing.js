@@ -24,14 +24,11 @@ async function getText() {
     let response = await fetch(`https://litipsum.com/api/p/json`)
     let data = await response.json()
     testText = data.text
-    console.log(typeof(testText))
-    console.log(testText)
     displayText()
 }
 
 function displayText() {
     Object.values(testText).forEach(paragraph => {
-        console.log(paragraph)
         paragraph = paragraph.replace(/<p>/g, '').replace(/<\/p>/g, ' ').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"')
         paragraph.split("").forEach(char => {
             const span = document.createElement("span")
@@ -88,6 +85,16 @@ function userTyping() {
     testChars[charIndex].classList.add("current")
 }
 
+userInput.addEventListener("keyup", scroll)
+function scroll(event) {
+    console.log(event.target.selectionStart)
+    console.log(typeof(event.target.selectionStart))
+    if (event.target.selectionStart % 50 == 0) {
+        console.log("Should scroll")
+        textDisplay.scroll({top: (event.target.selectionStart / 2), behavior: "smooth"})
+    }
+}
+
 function startTest() {
     getText()
     textDisplay.addEventListener("click", () => userInput.focus())
@@ -110,3 +117,6 @@ function endGame() {
 }
 
 startBtn.addEventListener("click", startTest)
+reset.addEventListener("click", () => {
+    location.reload() 
+  })
