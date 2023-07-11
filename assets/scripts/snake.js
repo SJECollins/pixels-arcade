@@ -37,7 +37,7 @@ const squares = document.querySelectorAll(".tile")
 
 // Start/restart
 function startGame() {
-  currentSnake.forEach(index => squares[index]. classList.remove("snake"))
+  currentSnake.forEach(index => squares[index].classList.remove("snake"))
   squares[applePosition].classList.remove("apple")
   clearInterval(interval)
   points = 0
