@@ -3,7 +3,13 @@ const EASY = [{
     images: ["../assets/images/sliding/turt-1.png", "../assets/images/sliding/turt-2.png", "../assets/images/sliding/turt-3.png", "../assets/images/sliding/turt-4.png", "../assets/images/sliding/turt-5.png", "../assets/images/sliding/turt-6.png", "../assets/images/sliding/turt-7.png", "../assets/images/sliding/turt-8.png"]
 }]
 
-const startBtn = document.getElementById("start")
+const HARD = [{
+    name: "turtle-hard",
+    images: ["../assets/images/sliding/orc-hard-1.png", "../assets/images/sliding/orc-hard-2.png", "../assets/images/sliding/orc-hard-3.png", "../assets/images/sliding/orc-hard-4.png", "../assets/images/sliding/orc-hard-5.png", "../assets/images/sliding/orc-hard-6.png", "../assets/images/sliding/orc-hard-7.png", "../assets/images/sliding/orc-hard-8.png", "../assets/images/sliding/orc-hard-9.png", "../assets/images/sliding/orc-hard-10.png", "../assets/images/sliding/orc-hard-11.png", "../assets/images/sliding/orc-hard-12.png", "../assets/images/sliding/orc-hard-13.png", "../assets/images/sliding/orc-hard-14.png", "../assets/images/sliding/orc-hard-15.png",]
+}]
+
+const startEasyBtn = document.getElementById("start-easy")
+const startHardBtn = document.getElementById("start-hard")
 const resetBtn = document.getElementById("reset")
 const cantMove = document.getElementById("cant-move")
 const board = document.getElementById("puzzle")
@@ -14,11 +20,17 @@ let correctOrder = []
 
 function createBoard() {
     let puzzle = {}
+    let currentPuzzle = []
+
     if (size == "small") {
         puzzle = EASY[Math.floor(Math.random() * EASY.length)]
     }
+
+    if (size == "big") {
+        puzzle = HARD[Math.floor(Math.random() * HARD.length)]
+    }
+
     correctOrder = puzzle.images
-    puzzle.images.sort(() => 0.5 - Math.random())
     puzzle.images.forEach((image) => {
         const tile = document.createElement("div")
         if (size == "small") {
@@ -34,7 +46,7 @@ function createBoard() {
         face.classList.add("face")
         face.style.backgroundImage = `url(${image})`
 
-        grid.appendChild(tile)
+        currentPuzzle.push(tile)
         tile.appendChild(face)
     })
     const emptyTile = document.createElement("div")
@@ -43,34 +55,41 @@ function createBoard() {
     } else {
         emptyTile.classList.add("tile", "hard", "empty")
     }
-    grid.appendChild(emptyTile)
+    currentPuzzle.push(emptyTile)
+    shufflePuzzle(currentPuzzle)
 }
 
-function getPosition(tileIndex, gridSize) {
-    let tilePosition = []
-    if (tileIndex % gridSize === 0) {
-        tilePosition.push("left")
+function shufflePuzzle(currentPuzzle) {
+    let moves = 0
+    let gridSize
+    if (size == "small") {
+        gridSize = 3
+    } else {
+        gridSize = 4
     }
-    if ((tileIndex + 1) % gridSize === 0) {
-        tilePosition.push("right")
+
+    while (moves < 30) {
+        let randomTile = Math.floor(Math.random() * currentPuzzle.length)
+        let emptyTile = currentPuzzle.findIndex(tile => tile.classList.contains("empty"))
+        let move = findMove(randomTile, emptyTile, gridSize)
+        if (move != "no") {
+            [currentPuzzle[randomTile], currentPuzzle[emptyTile]] = [currentPuzzle[emptyTile], currentPuzzle[randomTile]]
+            moves += 1
+        }        
     }
-    if (Math.floor(tileIndex / gridSize) === 0) {
-        tilePosition.push("top")
-    }
-    if (Math.floor(tileIndex / gridSize) === (gridSize - 1)) {
-        tilePosition.push("bottom")
-    }
-    return tilePosition
+    currentPuzzle.forEach((tile) => {
+        grid.appendChild(tile)
+    })
 }
 
-function findMove(tile, tilePos, emptyTile, gridSize) {
-    if (!tilePos.includes("top") && tile - gridSize == emptyTile) {
+function findMove(tile, emptyTile, gridSize) {
+    if (tile - gridSize == emptyTile) {
         return "above"
-    } else if (!tilePos.includes("bottom") && tile + gridSize == emptyTile) {
+    } else if (tile + gridSize == emptyTile) {
         return "below"
-    } else if (!tilePos.includes("left") && tile - 1 == emptyTile) {
+    } else if (tile - 1 == emptyTile) {
         return "left"
-    } else if (!tilePos.includes("right") && tile + 1 == emptyTile) {
+    } else if (tile + 1 == emptyTile) {
         return "right"
     } else {
         return "no"
@@ -80,9 +99,7 @@ function findMove(tile, tilePos, emptyTile, gridSize) {
 function moveTile(event) {
     let gridSize = 0
     let tiles = Array.from(document.getElementsByClassName("tile"))
-    tiles.forEach(tile => console.log(tile.firstChild))
     let emptyTile = tiles.findIndex(tile => tile.classList.contains("empty"))
-    console.log("Empty tile: ", emptyTile)
     let selectedTile = tiles.findIndex((tile) => {
         if (tile.firstChild) {
             if (tile.firstChild.style.backgroundImage == event.target.style.backgroundImage) {
@@ -90,16 +107,14 @@ function moveTile(event) {
             }
         }
     })
-    console.log("Selected tile: ", selectedTile)
 
     // so we have the index, now we want to find if there's a free adjacent tile
     if (size == "small") {
         gridSize = 3
+    } else {
+        gridSize = 4
     }
-    let tilePosition = getPosition(selectedTile, gridSize)
-    console.log("Edge: ", tilePosition)
-    let move = findMove(selectedTile, tilePosition, emptyTile, gridSize)
-    console.log("Can move: ", move)
+    let move = findMove(selectedTile, emptyTile, gridSize)
     if (move === "no") {
         cantMove.style.display = "block"
         setTimeout(function () {
@@ -116,7 +131,6 @@ function redrawBoard(tiles, tile, emptyTile) {
     tiles.forEach((tile) => {
         grid.appendChild(tile)
     })
-    tiles.forEach(tile => console.log("New tiles: ", tile.firstChild))
     checkWin(tiles)
 }
 
@@ -133,7 +147,14 @@ function checkArrays(array1, array2) {
 }
 
 function checkWin(tiles) {
-    if (checkArrays(correctOrder, tiles)) {
+    let currentOrder = []
+    tiles.forEach((tile) => {
+        if (tile.firstChild) {
+            image = tile.firstChild.style.backgroundImage.slice(4, -1).replace(/"/g, "")
+            currentOrder.push(image)
+        }
+    })
+    if (checkArrays(correctOrder, currentOrder)) {
         console.log("You win!")
     }
 }
@@ -145,4 +166,12 @@ function startEasy() {
     createBoard()
 }
 
-startBtn.addEventListener("click", startEasy)
+function startHard() {
+    grid.classList.add("grid", "big")
+    board.appendChild(grid)
+    size = "big"
+    createBoard()
+}
+
+startEasyBtn.addEventListener("click", startEasy)
+startHardBtn.addEventListener("click", startHard)

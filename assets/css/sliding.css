@@ -15,6 +15,11 @@
     grid-template-columns: auto auto auto;
 }
 
+.big {
+    grid-template-rows: auto auto auto auto;
+    grid-template-columns: auto auto auto auto;
+}
+
 /* Tile styling */
 .tile {
     position: relative;
@@ -24,6 +29,11 @@
 .easy {
     width: 120px;
     height: 120px;
+}
+
+.hard {
+    width: 90px;
+    height: 90px;
 }
 
 .face {
