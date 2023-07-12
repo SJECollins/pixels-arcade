@@ -15,6 +15,10 @@ const cantMove = document.getElementById("cant-move")
 const board = document.getElementById("puzzle")
 const grid = document.createElement("div")
 
+let timeDisplay = document.getElementById("timer")
+let time = 0
+
+let gameOver = false
 let size = ""
 let correctOrder = []
 
@@ -152,10 +156,16 @@ function checkWin(tiles) {
         if (tile.firstChild) {
             image = tile.firstChild.style.backgroundImage.slice(4, -1).replace(/"/g, "")
             currentOrder.push(image)
+        } else {
+            currentOrder.push("blank")
         }
     })
+    currentOrder.pop()
     if (checkArrays(correctOrder, currentOrder)) {
-        console.log("You win!")
+        document.getElementById("game-over").style.display = "block"
+        document.getElementById("result").innerHTML = "WON!"
+        document.getElementById("end-time").innerHTML = time
+        gameOver = true
     }
 }
 
@@ -163,15 +173,32 @@ function startEasy() {
     grid.classList.add("grid", "small")
     board.appendChild(grid)
     size = "small"
-    createBoard()
+    startGame()
 }
 
 function startHard() {
     grid.classList.add("grid", "big")
     board.appendChild(grid)
     size = "big"
+    startGame()
+}
+
+function startGame() {
+    let startTime = setInterval(() => {
+        time++
+        timeDisplay.innerHTML = time
+        if (gameOver) {
+            time = 0
+            clearInterval(startTime)
+        }
+    }, 1000)
+    startEasyBtn.removeEventListener("click", startEasy)
+    startHardBtn.removeEventListener("click", startHard)
     createBoard()
 }
 
 startEasyBtn.addEventListener("click", startEasy)
 startHardBtn.addEventListener("click", startHard)
+reset.addEventListener("click", () => {
+    location.reload() 
+  })
