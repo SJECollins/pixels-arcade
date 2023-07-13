@@ -202,6 +202,8 @@ Loosely based on Oregon Trail, but much simpler in execution. The goal is to get
 
 It's at a basic, playable state at the moment. There's a big ol' list of improvements to make (like I want to change the character status display so that it's more nuanced), but the real sort of goal of this little project was to see if I could make something like this in the browser. It's also now at about 1000 lines of JS and all in one file WHICH IS NOT A GOOD THING, but I've been trying to keep each of the games to a single file each as they're really just for learning. So... leave it? We'll see.
 
+01/07 - the animals can now join you...
+
 ## Blackjack
 21/02
 
@@ -229,32 +231,49 @@ Using [The Trivia API](https://the-trivia-api.com/) to generate the quiz based o
 
 Quick and fun. Need to update the menus.
 
+## Typing Test
+01/06/23
+
+- [Coding Nepal](https://www.youtube.com/watch?v=Hg80AjDNnJk&ab_channel=CodingNepal)
+
+Date is not accurate, I think it was roughly June - possibly May? - when I made it. Similar to the Guess Who game, a student was working on a typing test game (I think in python?) and I thought that sounded interesting.
+
+Not very original - I think mostly based off of the Coding Nepal video above. The only really unique the scroll effect, which could be better.
+
+## Sliding Puzzle
+12/07/23
+
+And another idea based on something a student was working on! I've only played the end result of their project, which was excellent, but didn't get the opportunity to see their code and what approach they took.
+
+I basically went with playing with one dimensional arrays. Fairly straightforward in the end, it was all just checking indexes and swapping positions in arrays! Did use a nice function from [Bobby Hadz](https://bobbyhadz.com/blog/javascript-check-if-two-arrays-have-same-elements) to compare if two arrays are identical.
+
+Now, whether or not to make it a bit fancier? Plus need to add more puzzles, just have the testing ones in at the moment. Oh, and could display the complete picture at the end.
 
 # General
-## 02/07
+## 02/07/22
 
 Submitted smaller arcade project based on this idea for PP2 to CI on 30/06.
 
 So, now I've updated the page to include the revisions I've made to the four games I submitted.
 
-## 05/07
+## 05/07/22
 
 Finished styling the Missing Item game and added the instructions pop up and now the reset button works too.
 
 Also updated the index to display all the games. Still trying to decide what to do with the navbar. Eight isn't a bad number if I want to stack the links on top of each other, but that might look a little funny.
 
-## 24/07
+## 24/07/22
 
 Moved all html files into their own folder. Broke everything. Think I have everything fixed but we'll see 
 
-## 02/01
+## 02/01/23
 
 Remove commented out code for menu and unused social media links. Need to revisit menu in the header - some sort of drop down?? A search? We'll see
 
-## 16/01
+## 16/01/23
 
 Added menu to header for all pages for quicker navigation.
 
-## 21/02
+## 21/02/23
 
 Updated all the menus to include Blackjack and Apocalypse Trail. Added Blackjack to main menu. Also fixed CSS for menus so home is unordered and games are in ordered list. Was weird having "Home" as #1.

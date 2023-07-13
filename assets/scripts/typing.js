@@ -1,3 +1,4 @@
+/* DOM elements */
 const textDisplay = document.getElementById("test-text")
 const userInput = document.getElementById("user-input")
 const timeDisplay = document.getElementById("time-left")
@@ -11,6 +12,7 @@ const accResult = document.getElementById("accuracy")
 const startBtn = document.getElementById("start")
 const resetBtn = document.getElementById("reset")
 
+/* Variables */
 let testText
 let charIndex = 0
 let chars = 0
@@ -20,6 +22,10 @@ let accuracy = 0
 let timer
 let time = 60
 
+/**
+ * Retrieves a page of text from the Lit Ipsum api
+ * Calls display(Text)
+ */
 async function getText() {
     let response = await fetch(`https://litipsum.com/api/p/json`)
     let data = await response.json()
@@ -27,6 +33,12 @@ async function getText() {
     displayText()
 }
 
+/**
+ * Need to append individual characters to our textDisplay rather that
+ * whole paragraphs
+ * Also have to replace curly quotes in the text with regular quotes to
+ * avoid unnecessary errors
+ */
 function displayText() {
     Object.values(testText).forEach(paragraph => {
         paragraph = paragraph.replace(/<p>/g, '').replace(/<\/p>/g, ' ').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"')
@@ -38,6 +50,9 @@ function displayText() {
     })
 }
 
+/**
+ * Update the WPM, CPM, Error and Time displays
+ */
 function updateStats() {
     chars = charIndex - errors
     words = Math.round((((charIndex - errors) / 5) / (60 - time)) * 60)
@@ -48,6 +63,7 @@ function updateStats() {
     errorDisplay.innerHTML = errors
 }
 
+// Simple countdown function
 function countdown() {
     if (time <= 0) {
         clearInterval(timer)
@@ -57,6 +73,10 @@ function countdown() {
     updateStats()
 }
 
+/**
+ * Checking our user input versus the characters in our spans
+ * Assigns right/wrong classes and updates errors updates
+ */
 function userTyping() {
     const testChars = textDisplay.querySelectorAll("span")
     let userChar = userInput.value.split("")[charIndex]
@@ -85,16 +105,21 @@ function userTyping() {
     testChars[charIndex].classList.add("current")
 }
 
+/**
+ * Scrolls the textDisplay window as the user is typing based on the
+ * position of the cursor
+ */
 userInput.addEventListener("keyup", scroll)
 function scroll(event) {
-    console.log(event.target.selectionStart)
-    console.log(typeof(event.target.selectionStart))
     if (event.target.selectionStart % 50 == 0) {
-        console.log("Should scroll")
         textDisplay.scroll({top: (event.target.selectionStart / 2), behavior: "smooth"})
     }
 }
 
+/**
+ * Start function to call our getText, add our event listeners
+ * and start the countdown
+ */
 function startTest() {
     getText()
     textDisplay.addEventListener("click", () => userInput.focus())
@@ -103,6 +128,9 @@ function startTest() {
     timer = setInterval(countdown, 1000)
 }
 
+/**
+ * Display our end results
+ */
 function endGame() {
     document.getElementById("game-over").style.display = "block"
     cpmResult.innerHTML = chars
