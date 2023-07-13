@@ -1,3 +1,4 @@
+/* Puzzles! */
 const EASY = [{
     name: "turtle",
     images: ["../assets/images/sliding/turt-1.png", "../assets/images/sliding/turt-2.png", "../assets/images/sliding/turt-3.png", "../assets/images/sliding/turt-4.png", "../assets/images/sliding/turt-5.png", "../assets/images/sliding/turt-6.png", "../assets/images/sliding/turt-7.png", "../assets/images/sliding/turt-8.png"]
@@ -8,20 +9,27 @@ const HARD = [{
     images: ["../assets/images/sliding/orc-hard-1.png", "../assets/images/sliding/orc-hard-2.png", "../assets/images/sliding/orc-hard-3.png", "../assets/images/sliding/orc-hard-4.png", "../assets/images/sliding/orc-hard-5.png", "../assets/images/sliding/orc-hard-6.png", "../assets/images/sliding/orc-hard-7.png", "../assets/images/sliding/orc-hard-8.png", "../assets/images/sliding/orc-hard-9.png", "../assets/images/sliding/orc-hard-10.png", "../assets/images/sliding/orc-hard-11.png", "../assets/images/sliding/orc-hard-12.png", "../assets/images/sliding/orc-hard-13.png", "../assets/images/sliding/orc-hard-14.png", "../assets/images/sliding/orc-hard-15.png",]
 }]
 
+/* Our HTML elements */
 const startEasyBtn = document.getElementById("start-easy")
 const startHardBtn = document.getElementById("start-hard")
 const resetBtn = document.getElementById("reset")
 const cantMove = document.getElementById("cant-move")
 const board = document.getElementById("puzzle")
 const grid = document.createElement("div")
-
 let timeDisplay = document.getElementById("timer")
-let time = 0
 
+/* Variables */
+let time = 0
 let gameOver = false
 let size = ""
 let correctOrder = []
 
+/**
+ * createBoard function - called by startGame()
+ * Select the puzzle based on size / difficulty selected by user
+ * Save the correct order to correctOrder array
+ * Create the tiles, push to currentPuzzle array and send this to shufflePuzzle()
+ */
 function createBoard() {
     let puzzle = {}
     let currentPuzzle = []
@@ -63,6 +71,12 @@ function createBoard() {
     shufflePuzzle(currentPuzzle)
 }
 
+/**
+ * @param {array} currentPuzzle - array of tiles from createBoard()
+ * Need the puzzle to be solveable - can't just shuffle images randomly
+ * Makes an arbitrary number of moves to shuffle the tiles in the array
+ * Then appends the tiles to the grid
+ */
 function shufflePuzzle(currentPuzzle) {
     let moves = 0
     let gridSize
@@ -72,7 +86,7 @@ function shufflePuzzle(currentPuzzle) {
         gridSize = 4
     }
 
-    while (moves < 30) {
+    while (moves < 50) {
         let randomTile = Math.floor(Math.random() * currentPuzzle.length)
         let emptyTile = currentPuzzle.findIndex(tile => tile.classList.contains("empty"))
         let move = findMove(randomTile, emptyTile, gridSize)
@@ -86,6 +100,13 @@ function shufflePuzzle(currentPuzzle) {
     })
 }
 
+/**
+ * Determines whether the selected tile can move to the empty space
+ * @param {integer} tile - index of the tile we want to move
+ * @param {integer} emptyTile - index of the empty tile
+ * @param {integer} gridSize - size of the grid
+ * @returns where the tile we want to move can move or that it cannot move
+ */
 function findMove(tile, emptyTile, gridSize) {
     if (tile - gridSize == emptyTile) {
         return "above"
@@ -100,6 +121,13 @@ function findMove(tile, emptyTile, gridSize) {
     }
 }
 
+/**
+ * @param {*} event - targeting the backgroundImage of the clicked tile
+ * Find the index of the selected tile, then call findMove to see if we can move it
+ * If not - display warning to user
+ * If so:
+ * @returns redrawBoard() with our current array of tiles, and the index of the selected and empty tiles 
+ */
 function moveTile(event) {
     let gridSize = 0
     let tiles = Array.from(document.getElementsByClassName("tile"))
@@ -111,8 +139,7 @@ function moveTile(event) {
             }
         }
     })
-
-    // so we have the index, now we want to find if there's a free adjacent tile
+    // Maybe consider making gridSize global as doing the same thing in a couple functions
     if (size == "small") {
         gridSize = 3
     } else {
@@ -129,6 +156,13 @@ function moveTile(event) {
     }
 }
 
+/**
+ * Swap our selected and empty tiles, clear board and append tiles again
+ * @param {array} tiles - current array of our tiles
+ * @param {integer} tile - index of selected tile
+ * @param {integer} emptyTile - index of empty tile
+ * Also call checkWin with our tiles array
+ */
 function redrawBoard(tiles, tile, emptyTile) {
     [tiles[tile], tiles[emptyTile]] = [tiles[emptyTile], tiles[tile]]
     grid.innerHTML = ""
@@ -138,18 +172,15 @@ function redrawBoard(tiles, tile, emptyTile) {
     checkWin(tiles)
 }
 
-function checkArrays(array1, array2) {
-    if (array1.length === array2.length) {
-        return array1.every((element, index) => {
-            if (element === array2[index]) {
-                return true;
-            }
-            return false;
-        });
-    }
-    return false;
-}
-
+/**
+ * Check if the puzzle is solved
+ * @param {array} tiles 
+ * We're comparing based on the order of the image URLs originally saved in correctOrder
+ * Our current tiles array is an array of DOM elements - so we need to iterate through
+ * each of those tiles and just get the backgroundImage URLs for each of those
+ * We push them to currentOrder (pop off the (possibly) empty tile at the end)
+ * Then if checkArrays returns true we end our game!
+ */
 function checkWin(tiles) {
     let currentOrder = []
     tiles.forEach((tile) => {
@@ -169,6 +200,33 @@ function checkWin(tiles) {
     }
 }
 
+/**
+ * https://bobbyhadz.com/blog/javascript-check-if-two-arrays-have-same-elements
+ * Bobby Hadz has a nice function for making sure two arrays are identical
+ * Checks if arrays are same length and same order, iterating through the arrays
+ * with the every() method checking if elements are identical at each index
+ * @param {array} array1 
+ * @param {array} array2 
+ * @returns boolean
+ */
+function checkArrays(correctOrder, currentOrder) {
+    if (correctOrder.length === currentOrder.length) {
+        return correctOrder.every((element, index) => {
+            if (element === currentOrder[index]) {
+                return true;
+            }
+            return false;
+        });
+    }
+    return false;
+}
+
+/**
+ * Currently called by users clicking "Start Easy" button
+ * Could consider a radio button on HTML and have one start function that takes
+ * the value to determine settings??
+ * Adds small class to grid, sets size variable to small and calls startGame()
+ */
 function startEasy() {
     grid.classList.add("grid", "small")
     board.appendChild(grid)
@@ -176,6 +234,10 @@ function startEasy() {
     startGame()
 }
 
+/**
+ * Currently called by users clicking "Start Hard" button
+ * Adds big class to grid, sets size variable to big and calls startGame()
+ */
 function startHard() {
     grid.classList.add("grid", "big")
     board.appendChild(grid)
@@ -183,6 +245,10 @@ function startHard() {
     startGame()
 }
 
+/**
+ * Starts the timer, removes start button event listeners
+ * Calls createBoard()
+ */
 function startGame() {
     let startTime = setInterval(() => {
         time++
