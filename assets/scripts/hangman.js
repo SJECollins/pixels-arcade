@@ -18,7 +18,7 @@ const gameVars = {
 }
 
 const setPicture = () => {
-    pictureDisplay.style.backgroundImage = `url(/assets/images/hangman/hangman${gameVars.pictureIndex}.png)`
+    pictureDisplay.src = `../assets/images/hangman/hangman${gameVars.pictureIndex}.png`
 }
 
 const getWord = () => {
