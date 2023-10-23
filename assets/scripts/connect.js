@@ -1,6 +1,9 @@
 const startBtn = document.getElementById("start")
-const board = document.getElementById("board")
+const playBtn = document.getElementById("save-options")
+const board = document.getElementById("play-area")
+const hoverArea = document.getElementById("hover-area")
 
+// Game variables
 const gameVars = {
     player1: "red",
     player2: "yellow",
@@ -9,53 +12,165 @@ const gameVars = {
     gameOver: false,
 }
 
+// The columns
+const columns = {
+    colOne: ["_1", "_8", "_15", "_22", "_29", "_36"],
+    colTwo: ["_2", "_9", "_16", "_23", "_30", "_37"],
+    colThree: ["_3", "_10", "_17", "_24", "_31", "_38"],
+    colFour: ["_4", "_11", "_18", "_25", "_32", "_39"],
+    colFive: ["_5", "_12", "_19", "_26", "_33", "_40"],
+    colSix: ["_6", "_13", "_20", "_27", "_34", "_41"],
+    colSeven: ["_7", "_14", "_21", "_28", "_35", "_42"],
+}
+
+// Select players
+const selectPlayers = () => {
+    let players = document.getElementsByName("human-computer")
+    let colours = document.getElementsByName("colours")
+
+    for (let i = 0; i < 2; i++) {
+        if (players[i].checked) {
+            if (players[i].value == "human") {
+                gameVars.computer = false
+                document.querySelector("#versus").innerHTML = "Two Player"
+            } else {
+                gameVars.computer = true
+                document.querySelector("#versus").innerHTML = "Vs Computer"
+            }
+        }
+        if (colours[i].checked) {
+            if (colours[i].value == "red") {
+                gameVars.player1 = "red"
+                gameVars.player2 = "yellow"
+            } else {
+                gameVars.player1 = "yellow"
+                gameVars.player2 = "red"
+            }
+        }
+    }
+
+    document.querySelector("#player1-colour").innerHTML = gameVars.player1
+    document.querySelector("#player2-colour").innerHTML = gameVars.player2
+
+    document.querySelector("#options").style.display = "none"
+    createBoard()
+    gameVars.current = gameVars.player1
+}
+
+// Generate the board
 const createBoard = () => {
     for (let i = 0; i < 42; i++) {
         const spot = document.createElement("div")
         spot.classList.add("spot")
         spot.classList.add("_" + (i + 1))
         spot.addEventListener("click", addDisc)
+        spot.addEventListener("mouseover", hoverDisc)
+        spot.addEventListener("mouseout", removeHover)
         board.appendChild(spot)
+    }
+
+    for (let i = 0; i < 7; i++) {
+        const hoverspot = document.createElement("div")
+        hoverspot.classList.add("hover-disc")
+        hoverspot.classList.add("hover" + i)
+        hoverArea.appendChild(hoverspot)
     }
 }
 
-const addDisc = (event) => {
-    const clicked = event.target
-    let classes = Array.from(clicked.classList)
+// Hovering disc over board
+const hoverDisc = (event) => {
+    const hovered = event.target
+    let classes = Array.from(hovered.classList)
 
-    const colOne = ["_1", "_8", "_15", "_22", "_29", "_36"]
-    const colTwo = ["_2", "_9", "_16", "_23", "_30", "_37"]
-    const colThree = ["_3", "_10", "_17", "_24", "_31", "_38"]
-    const colFour = ["_4", "_11", "_18", "_25", "_32", "_39"]
-    const colFive = ["_5", "_12", "_19", "_26", "_33", "_40"]
-    const colSix = ["_6", "_13", "_20", "_27", "_34", "_41"]
-    const colSeven = ["_7", "_14", "_21", "_28", "_35", "_42"]
-
-    if (checkClasses(colOne, classes)) {
-        checkColumn(colOne, 1)
-    } else if (checkClasses(colTwo, classes)) {
-        checkColumn(colTwo, 2)
-    } else if (checkClasses(colThree, classes)) {
-        checkColumn(colThree, 3)
-    } else if (checkClasses(colFour, classes)) {
-        checkColumn(colFour, 4)
-    } else if (checkClasses(colFive, classes)) {
-        checkColumn(colFive, 5)
-    } else if (checkClasses(colSix, classes)) {
-        checkColumn(colSix, 6)
-    } else if (checkClasses(colSeven, classes)) {
-        checkColumn(colSeven, 7)
+    if (checkClasses(columns.colOne, classes)) {
+        let disc = document.querySelector(".hover0")
+        disc.classList.add(gameVars.current)
+    } else if (checkClasses(columns.colTwo, classes)) {
+        let disc = document.querySelector(".hover1")
+        disc.classList.add(gameVars.current)
+    } else if (checkClasses(columns.colThree, classes)) {
+        let disc = document.querySelector(".hover2")
+        disc.classList.add(gameVars.current)
+    } else if (checkClasses(columns.colFour, classes)) {
+        let disc = document.querySelector(".hover3")
+        disc.classList.add(gameVars.current)
+    } else if (checkClasses(columns.colFive, classes)) {
+        let disc = document.querySelector(".hover4")
+        disc.classList.add(gameVars.current)
+    } else if (checkClasses(columns.colSix, classes)) {
+        let disc = document.querySelector(".hover5")
+        disc.classList.add(gameVars.current)
+    } else if (checkClasses(columns.colSeven, classes)) {
+        let disc = document.querySelector(".hover6")
+        disc.classList.add(gameVars.current)
     } else {
         console.log("What?")
     }
 }
 
+// Remove the hovering disc
+const removeHover = (event) => {
+    const hovered = event.target
+    let classes = Array.from(hovered.classList)
+
+    if (checkClasses(columns.colOne, classes)) {
+        let disc = document.querySelector(".hover0")
+        disc.classList.remove(gameVars.player1, gameVars.player2)
+    } else if (checkClasses(columns.colTwo, classes)) {
+        let disc = document.querySelector(".hover1")
+        disc.classList.remove(gameVars.player1, gameVars.player2)
+    } else if (checkClasses(columns.colThree, classes)) {
+        let disc = document.querySelector(".hover2")
+        disc.classList.remove(gameVars.player1, gameVars.player2)
+    } else if (checkClasses(columns.colFour, classes)) {
+        let disc = document.querySelector(".hover3")
+        disc.classList.remove(gameVars.player1, gameVars.player2)
+    } else if (checkClasses(columns.colFive, classes)) {
+        let disc = document.querySelector(".hover4")
+        disc.classList.remove(gameVars.player1, gameVars.player2)
+    } else if (checkClasses(columns.colSix, classes)) {
+        let disc = document.querySelector(".hover5")
+        disc.classList.remove(gameVars.player1, gameVars.player2)
+    } else if (checkClasses(columns.colSeven, classes)) {
+        let disc = document.querySelector(".hover6")
+        disc.classList.remove(gameVars.player1, gameVars.player2)
+    } else {
+        console.log("What?")
+    }
+}
+
+// Adding a disc to the board
+const addDisc = (event) => {
+    const clicked = event.target
+    let classes = Array.from(clicked.classList)
+
+    if (checkClasses(columns.colOne, classes)) {
+        checkColumn(columns.colOne, 1)
+    } else if (checkClasses(columns.colTwo, classes)) {
+        checkColumn(columns.colTwo, 2)
+    } else if (checkClasses(columns.colThree, classes)) {
+        checkColumn(columns.colThree, 3)
+    } else if (checkClasses(columns.colFour, classes)) {
+        checkColumn(columns.colFour, 4)
+    } else if (checkClasses(columns.colFive, classes)) {
+        checkColumn(columns.colFive, 5)
+    } else if (checkClasses(columns.colSix, classes)) {
+        checkColumn(columns.colSix, 6)
+    } else if (checkClasses(columns.colSeven, classes)) {
+        checkColumn(columns.colSeven, 7)
+    } else {
+        console.log("What?")
+    }
+}
+
+// Which column did the user click?
 const checkClasses = (column, classes) => {
     return classes.some(item => {
         return column.includes(item);
     });
 }
 
+// Check if discs are in column, drop disc in empty spot - should be called placeDisc really
 const checkColumn = (column, columnNumber) => {
     for (let i = column.length - 1; i >= 0; i--) {
         const spot = document.querySelector(`.${column[i]}`)
@@ -67,6 +182,7 @@ const checkColumn = (column, columnNumber) => {
     }
 }
 
+// Swap players
 const changePlayer = () => {
     if (gameVars.current == gameVars.player1) {
         gameVars.current = gameVars.player2
@@ -75,6 +191,7 @@ const changePlayer = () => {
     }
 }
 
+// Either end game or change player
 const checkBoard = (colNum, rowNum) => {
     let allSpots = document.querySelectorAll(".spot")
     let spotArray = Array.from(allSpots)
@@ -91,6 +208,7 @@ const checkBoard = (colNum, rowNum) => {
 
 }
 
+// Find winning combo
 const checkSpots = (spots, col, row) => {
     col = col - 1
     // Right
@@ -173,15 +291,21 @@ const checkSpots = (spots, col, row) => {
     return false
 }
 
+// End game
 const endGame = () => {
-    console.log("Game over")
+    document.querySelector("#game-over").style.display = "block"
+    if (gameVars.current == gameVars.player1) {
+        document.querySelector("#result").innerHTML = "Player One wins!"
+    } else {
+        document.querySelector("#result").innerHTML = "Player Two wins!"
+    }
 }
 
+// Start game
 const startGame = () => {
     startBtn.removeEventListener("click", startGame)
-    createBoard()
-    gameVars.current = gameVars.player1
-
+    document.getElementById("options").style.display = "block"
+    playBtn.addEventListener("click", selectPlayers)
 }
 
 startBtn.addEventListener("click", startGame)

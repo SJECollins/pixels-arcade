@@ -1,6 +1,23 @@
 /* Board styling */
 
-#board {
+#hover-area {
+    display: grid;
+    grid-template-columns: repeat(7, 64px);
+    grid-template-rows: 1;
+    width: 448px;
+    height: 64px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.hover-disc {
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    border-radius: 50%;
+}
+
+#play-area {
     display: grid;
     grid-template-columns: repeat(7, 64px);
     grid-template-rows: repeat(6, 64px);
@@ -8,7 +25,7 @@
     height: 384px;
     margin: 0 auto;
     justify-content: center;
-    background-color: var(--apple-dark-green);
+    background-color: blue;
     border-radius: 8px;
 }
 
@@ -17,7 +34,7 @@
     width: 60px;
     height: 60px;
     margin: auto;
-    border: 2px solid var(--apple-dark-green);
+    border: 2px solid blue;
     border-radius: 50%;
 }
 
@@ -37,3 +54,16 @@
 }
 
 
+/* Options Styling */
+#options {
+    display: none;
+}
+
+#options > div {
+    justify-content: space-between;
+}
+
+input[type="radio"]:checked {
+    accent-color: var(--apple-dark-green);
+    background-color: var(--apple-white);
+}

@@ -103,10 +103,14 @@
     <p id="instructions">Instructions</p>
 
     <div id="stats">
-
+      <p>Player One: <span id="player1-colour"></span></p>
+      <p>Player Two: <span id="player2-colour"></span></p>
+      <p id="versus"></p>
     </div>
     <!-- Div for the board -->
     <div id="board">
+      <div id="hover-area"></div>
+      <div id="play-area"></div>
 
     </div>
 
@@ -125,12 +129,31 @@
       </div>
     </div>
 
+    <div id="options" class="pop-up">
+      <div class="pop-up-card">
+        <div id="player-options">
+          <p>Player options:</p>
+          <label for="human">2 Player</label>
+          <input id="human" type="radio" value="human" name="human-computer">
+          <label for="computer">Vs Computer</label>
+          <input id="computer" type="radio" value="computer" name="human-computer">
+        </div>
+        <div id="colour-options">
+          <p>Player One colour:</p>
+          <label for="red">Red</label>
+          <input id="red" type="radio" value="red" name="colours">
+          <label for="yellow">Yellow</label>
+          <input id="yellow" type="radio" value="yellow" name="colours">
+        </div>
+      </div>
+      <button id="save-options" type="button">Play!</button>
+    </div>
+
     <!--Game Over-->
     <div id="game-over" class="pop-up">
       <div id="end" class="pop-up-card">
         <h2>Game Over!</h2>
-        <p>You <span id="result"></span></p>
-        <p>The word was: <span id="end-word"></span>!</p>
+        <p><span id="result"></span></p>
         <a href="connect.html">Play Again</a>
         <a href="../index.html">Home</a>
       </div>
