@@ -23,6 +23,8 @@ const columns = {
     colSeven: ["_7", "_14", "_21", "_28", "_35", "_42"],
 }
 
+const columnOrder = ["colOne", "colTwo", "colThree", "colFour", "colFive", "colSix", "colSeven"]
+
 // Select players
 const selectPlayers = () => {
     let players = document.getElementsByName("human-computer")
@@ -48,6 +50,8 @@ const selectPlayers = () => {
             }
         }
     }
+
+    console.log(gameVars.computer)
 
     document.querySelector("#player1-colour").innerHTML = gameVars.player1
     document.querySelector("#player2-colour").innerHTML = gameVars.player2
@@ -75,6 +79,17 @@ const createBoard = () => {
         hoverspot.classList.add("hover" + i)
         hoverArea.appendChild(hoverspot)
     }
+}
+
+const getBoard = () => {
+    let allSpots = document.querySelectorAll(".spot")
+    let spotArray = Array.from(allSpots)
+    let spots = []
+    for (let i = 0; i < spotArray.length; i += 7) {
+        const row = spotArray.slice(i, i + 7)
+        spots.push(row)
+    }
+    return spots
 }
 
 // Hovering disc over board
@@ -177,7 +192,99 @@ const checkColumn = (column, columnNumber) => {
         let classes = Array.from(spot.classList)
         if (!classes.includes("disc")) {
             spot.classList.add("disc", gameVars.current)
+            console.log(i)
             return checkBoard(columnNumber, i)
+        }
+    }
+}
+
+// Computer turn
+const computerMove = () => {
+    let spots = getBoard()
+    console.log(spots)
+    let col = 0
+    let row = 0
+
+    for (let i = 0; i < 6; i ++) {
+        for (let j = 0; j < 7; j++) {
+            let classes = Array.from(spots[i][j].classList)
+            if (classes.includes(gameVars.current)) {
+                console.log(computerFindMove(spots, j, i))
+                [col, row] = computerFindMove(spots, j, i)
+                console.log(column, colNum)
+            } else {
+                col = Math.floor(Math.random() * 7)
+                row = Math.floor(Math.random() * 6)
+            }
+            let column = columns[columnOrder[col]]
+            return checkColumn(column, row)
+        }
+    }
+}
+
+const computerFindMove = (spots, col, row) => {
+    let computer = gameVars.current
+    let player = gameVars.current == "red" ? "yellow" : "red"
+    
+    // Check down, place up
+    if (row < 5 && row > 0) {
+        let spot = Array.from(spots[row + 1][col].classList)
+        let empty = Array.from(spots[row - 1][col].classList)
+        if (spot.includes(computer) && !empty.includes(player)) {
+            console.log(col, row - 1)
+            return col, row - 1
+        }
+    }
+    // Check left, place right
+    if (col < 6 && col > 0) {
+        let spot = Array.from(spots[row][col - 1].classList)
+        let empty = Array.from(spots[row][col + 1].classList)
+        if (spot.includes(computer) && !empty.includes(player)) {
+            console.log(col, row - 1)
+            return col + 1, row
+        }
+    }
+    // Check right, place left
+    if (col < 6 && col > 0) {
+        let spot = Array.from(spots[row][col + 1].classList)
+        let empty = Array.from(spots[row][col - 1].classList)
+        if (spot.includes(computer) && !empty.includes(player)) {
+            console.log(col - 1, row)
+            return col - 1, row
+        }
+    }
+    // Check down left, place up right
+    if (col < 6 && col > 0 && row < 5 && row > 0) {
+        let spot = Array.from(spots[row + 1][col - 1].classList)
+        let empty = Array.from(spots[row - 1][col + 1].classList)
+        if (spot.includes(computer) && !empty.includes(player)) {
+            console.log(col + 1, row - 1)
+            return col + 1, row - 1
+        }
+    }
+    // Check down right, place up left
+    if (col < 6 && col > 0 && row < 5 && row > 0) {
+        let spot = Array.from(spots[row + 1][col + 1].classList)
+        let empty = Array.from(spots[row - 1][col - 1].classList)
+        if (spot.includes(computer) && !empty.includes(player)) {
+            return col - 1, row - 1
+            // col - 1 row - 1
+        }
+    }
+    // Check up left, place down right
+    if (col < 6 && col > 0 && row < 5 && row > 0) {
+        let spot = Array.from(spots[row - 1][col - 1].classList)
+        let empty = Array.from(spots[row + 1][col + 1].classList)
+        if (spot.includes(computer) && !empty.includes(player)) {
+            return col + 1, row + 1
+        }
+    }
+    // Check up right, place down left
+    if (col < 6 && col > 0 && row < 5 && row > 0) {
+        let spot = Array.from(spots[row - 1][col + 1].classList)
+        let empty = Array.from(spots[row + 1][col - 1].classList)
+        if (spot.includes(computer) && !empty.includes(player)) {
+            return col - 1, row + 1
         }
     }
 }
@@ -186,6 +293,9 @@ const checkColumn = (column, columnNumber) => {
 const changePlayer = () => {
     if (gameVars.current == gameVars.player1) {
         gameVars.current = gameVars.player2
+        if (gameVars.computer) {
+            computerMove()
+        }
     } else {
         gameVars.current = gameVars.player1
     }
@@ -193,13 +303,10 @@ const changePlayer = () => {
 
 // Either end game or change player
 const checkBoard = (colNum, rowNum) => {
-    let allSpots = document.querySelectorAll(".spot")
-    let spotArray = Array.from(allSpots)
-    let spots = []
-    for (let i = 0; i < spotArray.length; i += 7) {
-        const row = spotArray.slice(i, i + 7)
-        spots.push(row)
-    }
+    let spots = getBoard()
+
+    console.log("Col number: ", colNum)
+
     if (checkSpots(spots, colNum, rowNum)) {
         return endGame()
     } else {
@@ -234,9 +341,10 @@ const checkSpots = (spots, col, row) => {
         }        
     }
     // Down
-    if (row < 3) {
+    if (row < 3 && row > 0) {
         let num = 0
         for (let i = 0; i < 4; i++) {
+            console.log(row + i, col) // Why is col not a number???
             let spot = Array.from(spots[row + i][col].classList)
             if (spot.includes(gameVars.current)) {
                 num += 1
