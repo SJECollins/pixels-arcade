@@ -60,7 +60,9 @@ const selectPlayers = () => {
         gameVars.current = gameVars.player1
     } else {
         gameVars.current = gameVars.player2
-        computerMove()
+        if (gameVars.computer) {
+            computerMove()            
+        }
     }
 }
 
