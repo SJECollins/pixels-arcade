@@ -11,8 +11,8 @@
 }
 
 .hover-disc {
-    width: 60px;
-    height: 60px;
+    width: 54px;
+    height: 54px;
     margin: auto;
     border-radius: 50%;
 }
@@ -21,36 +21,40 @@
     display: grid;
     grid-template-columns: repeat(7, 64px);
     grid-template-rows: repeat(6, 64px);
-    width: 448px;
-    height: 384px;
-    margin: 0 auto;
+    width: 464px;
+    height: 400px;
+    margin: auto;
     justify-content: center;
+    align-items: center;
     background-color: blue;
     border-radius: 8px;
+    border: 8px solid darkblue
 }
 
 .spot {
     background-color: var(--apple-white);
-    width: 60px;
-    height: 60px;
+    width: 54px;
+    height: 54px;
     margin: auto;
     border: 2px solid blue;
     border-radius: 50%;
 }
 
 .disc {
-    width: 60px;
-    height: 60px;
+    width: 54px;
+    height: 54px;
     margin: auto;
     border-radius: 50%;
 }
 
 .red {
     background-color: red;
+    border: 6px dashed darkred;
 }
 
 .yellow {
     background-color: yellow;
+    border: 6px dashed darkgoldenrod;
 }
 
 
@@ -96,4 +100,41 @@ input[value="yellow"]:checked ~ #yellow-selected {
 
 input[value="yellow"]:checked ~ #red-selected {
     display: none;
+}
+
+/* Media query for smaller screens */
+
+@media (max-width: 530px) {
+    #hover-area {
+        grid-template-columns: repeat(7, 44px);
+        width: 308px;
+        height: 44px;
+    }
+
+    .hover-disc {
+        width: 40px;
+        height: 40px;
+    }
+
+    #play-area {
+        grid-template-columns: repeat(7, 44px);
+        grid-template-rows: repeat(6, 44px);
+        width: 324px;
+        height: 280px;
+    }
+
+    .spot {
+        width: 40px;
+        height: 40px;
+    }
+
+    .disc {
+        width: 40px;
+        height: 40px;
+    }
+
+    .red, .yellow {
+        border-width: 4px;
+    }
+    
 }

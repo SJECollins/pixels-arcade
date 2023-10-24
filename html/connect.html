@@ -107,6 +107,7 @@
 
     <h1>Hangman</h1>
     <p id="instructions">Instructions</p>
+    <button id="reset" type="button">Reset</button>
 
     <div id="stats">
       <p>Player One: <span id="player1-colour"></span></p>
@@ -128,8 +129,8 @@
     <div id="intro" class="pop-up">
       <div class="pop-up-card">
         <h2>Welcome to Connect4!</h2>
-        <p>Guess the word.</p>
-        <p>Save the man.</p>
+        <p>2 Player or Vs Computer.</p>
+        <p>Get 4 in a row to win.</p>
         <p>You can reset the game at any time.</p>
         <button id="close-pop-up">Got It!</button>
       </div>
@@ -140,8 +141,8 @@
         <div id="player-options">
           <p>Player options:</p>
           <label for="human">2 Player</label>
-          <input id="human" type="radio" value="human" name="human-computer">
-          <label for="computer">Vs Computer</label>
+          <input id="human" type="radio" value="human" name="human-computer" checked>
+          <label for="computer">Vs.Computer</label>
           <input id="computer" type="radio" value="computer" name="human-computer">
           <small id="player-selected">The computer will be Player Two.</small>
         </div>

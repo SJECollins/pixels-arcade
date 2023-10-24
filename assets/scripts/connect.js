@@ -1,4 +1,5 @@
 const startBtn = document.getElementById("start")
+const resetBtn = document.getElementById("reset")
 const playBtn = document.getElementById("save-options")
 const board = document.getElementById("play-area")
 const hoverArea = document.getElementById("hover-area")
@@ -428,3 +429,6 @@ const startGame = () => {
 }
 
 startBtn.addEventListener("click", startGame)
+resetBtn.addEventListener("click", () => {
+    location.reload()
+})
