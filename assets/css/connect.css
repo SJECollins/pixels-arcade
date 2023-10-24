@@ -67,3 +67,33 @@ input[type="radio"]:checked {
     accent-color: var(--apple-dark-green);
     background-color: var(--apple-white);
 }
+
+#player-selected, #red-selected, #yellow-selected {
+    margin-top: 4px;
+    color: var(--apple-dark-green);
+    display: none;
+}
+
+input[value="computer"]:checked ~ #player-selected {
+    display: block;
+}
+
+input[value="human"]:checked ~ #player-selected {
+    display: none;
+}
+
+input[value="red"]:checked ~ #red-selected {
+    display: block;
+}
+
+input[value="red"]:checked ~ #yellow-selected {
+    display: none;
+}
+
+input[value="yellow"]:checked ~ #yellow-selected {
+    display: block;
+}
+
+input[value="yellow"]:checked ~ #red-selected {
+    display: none;
+}

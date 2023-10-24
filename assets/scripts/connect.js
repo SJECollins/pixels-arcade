@@ -56,7 +56,12 @@ const selectPlayers = () => {
 
     document.querySelector("#options").style.display = "none"
     createBoard()
-    gameVars.current = gameVars.player1
+    if (gameVars.player1 == "red") {
+        gameVars.current = gameVars.player1
+    } else {
+        gameVars.current = gameVars.player2
+        computerMove()
+    }
 }
 
 // Generate the board
