@@ -45,6 +45,7 @@ window.addEventListener("load", function() {
     let shelfInterval = 1000
     let randomShelfInterval = Math.random() * 1000 + 10000
     let maxShelves = 0
+    let emptyShelves = 0
     let lastTime = 0
     let gameOver = false
 
@@ -152,31 +153,32 @@ window.addEventListener("load", function() {
                     this.moving = false
                 }
             }      
-
             // Collision with shelves? - pretty rough
             shelfArray.forEach(shelf => {
                 const distanceX = (shelf.x + 16) - (this.x + 8)
                 const distanceY = (shelf.y - 8) - this.y
                 const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
-                if(distance < shelf.width / 2 + this.width / 2 ) {
+                if (distance < shelf.width / 2 + this.width / 2 ) {
                     this.onShelf = true
                     if (distanceX < 10 && distanceX > -10) {
                         if (distanceY > -18 && this.frameY == 0) {
-                            input.keys.splice(input.keys.indexOf("KeyS", 1))
+                            input.keys.splice(input.keys.indexOf("KeyS"), 1)
                         }
                         if (distanceY < 24 && this.frameY == 32) {
-                            input.keys.splice(input.keys.indexOf("KeyW", 1))
+                            input.keys.splice(input.keys.indexOf("KeyW"), 1)
                         }
                     } else if (distanceY < 24 && distanceY > -18) {
                         if (distanceX < 24 && this.frameY == 64) {
-                            input.keys.splice(input.keys.indexOf("KeyD", 1))
+                            input.keys.splice(input.keys.indexOf("KeyD"), 1)
                         }
                         if (distanceX > -24 && this.frameY == 96) {
-                            input.keys.splice(input.keys.indexOf("KeyA", 1))
+                            input.keys.splice(input.keys.indexOf("KeyA"), 1)
                         }
                     }
                     if (this.interacting) {
-                        shelf.health = 3
+                        setTimeout(() => {
+                            shelf.health = 2
+                        }, 2000)
                         // Probably need a better way to handle score - this is imprecise
                         score += 1
                     }
@@ -184,16 +186,24 @@ window.addEventListener("load", function() {
                     this.onShelf = false
                 }
             })
+            spillArray.forEach(spill => {
+                const distanceX = (spill.x + 16) - (this.x + 8)
+                const distanceY = (spill.y - 8) - this.y
+                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
+                if (distance < spill.width / 2 + this.width / 2 && this.interacting) {
+                    setTimeout(() => {
+                        spill.markedForDeletion = true
+                    }, 3000)
+                } 
+            })
         }
-        interact(input) {
-            if (input.keys.indexOf("KeyE") > -1 || input.keys.indexOf("interact") > -1) {
-                this.frameCount = 1
-                this.interacting = true
-                setTimeout(() => {
-                    this.interacting = false
-                    this.frameCount = 3
-                }, 3000)                
-            }
+        interact() {
+            this.frameCount = 1
+            this.interacting = true
+            setTimeout(() => {
+                this.interacting = false
+                this.frameCount = 3
+            }, 3000)                
         }
     }
 
@@ -205,8 +215,7 @@ window.addEventListener("load", function() {
                 if ((e.code == "KeyW" ||
                      e.code == "KeyD" ||
                      e.code == "KeyS" ||
-                     e.code == "KeyA" ||
-                     e.code == "KeyE")
+                     e.code == "KeyA")
                      && this.keys.indexOf(e.code) === -1) {
                         this.keys.push(e.code)
                      }
@@ -215,8 +224,7 @@ window.addEventListener("load", function() {
                 if ((e.target.id == "left"||
                      e.target.id == "up" ||
                      e.target.id == "down" ||
-                     e.target.id == "right" ||
-                     e.target.id == "interact")
+                     e.target.id == "right")
                      && this.keys.indexOf(e.target.id) === -1) {
                         this.keys.push(e.target.id)
                      }
@@ -225,8 +233,7 @@ window.addEventListener("load", function() {
                 if (e.code == "KeyW" ||
                     e.code == "KeyD" ||
                     e.code == "KeyS" ||
-                    e.code == "KeyA" ||
-                    e.code == "KeyE") {
+                    e.code == "KeyA") {
                     this.keys.splice(this.keys.indexOf(e.code), 1)
                     }
             })
@@ -234,11 +241,16 @@ window.addEventListener("load", function() {
                 if (e.target.id == "left"||
                     e.target.id == "up" ||
                     e.target.id == "down" ||
-                    e.target.id == "right" ||
-                    e.target.id == "interact") {
+                    e.target.id == "right") {
                     this.keys.splice(this.keys.indexOf(e.target.id), 1)
                     }
             })            
+        }
+    }
+
+    const handleInteract = (e) => {
+        if (e.code == "KeyE" || e.target.id == "interact") {
+            player.interact()
         }
     }
 
@@ -260,6 +272,7 @@ window.addEventListener("load", function() {
             this.speed = 0.25
             this.turned = false
             this.slipped = false
+            this.spills = []
             this.markedForDeletion = false
         }
         draw(context) {
@@ -269,31 +282,51 @@ window.addEventListener("load", function() {
         }
         update(deltaTime) {
             // Update frames
-            if (this.frameTimer > this.frameInterval) {
-                if (this.frameX >= this.frameCount) {
-                    this.frameX = 0
+            if (!this.slipped) {
+                if (this.frameTimer > this.frameInterval) {
+                    if (this.frameX >= this.frameCount) {
+                        this.frameX = 0
+                    } else {
+                        this.frameX++
+                    }
+                    this.frameTimer = 0
                 } else {
-                    this.frameX++
+                    this.frameTimer += deltaTime
                 }
-                this.frameTimer = 0
+                // Turn customer
+                if (this.x < this.edge && !this.turned) {
+                    this.x += this.speed
+                } else {
+                    if (!this.turned) {
+                        this.frameY += 32
+                        this.turned = true
+                    }
+                    this.x -= this.speed
+                }                
             } else {
-                this.frameTimer += deltaTime
-            }
-            // Turn customer
-            if (this.x < this.edge && !this.turned) {
-                this.x += this.speed
-            } else {
-                if (!this.turned) {
-                    this.frameY += 32
-                    this.turned = true
-                }
-                this.x -= this.speed
+                console.log("slipped")
             }
             // Delete customer
             if (this.x < 0) {
                 this.markedForDeletion = true
             }
             // If the customer has slipped on a spill???
+            spillArray.forEach(spill => {
+                if (spill.x == this.x && spill.y == this.y && !this.slipped) {
+                    this.slip()
+                }
+            })
+        }
+        slip() {
+            this.slipped = true
+            this.frameX = 4
+            setTimeout(() => {
+                this.frameX = 5
+                setTimeout(() => {
+                    this.slipped = false
+                }, 3000)                
+            }, 2000)
+
         }
     }
 
@@ -328,23 +361,34 @@ window.addEventListener("load", function() {
             this.warningImg = exclamationImg
             this.frameX = 64
             this.frameY = frameY
-            this.frameCount = 2
+            this.warningFrameX = 0
+            this.frameCount = 1
             this.countdown = 680
             this.health = 2
         }
         draw(context) {
             context.drawImage(this.img, this.frameX, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
             if (this.health == 0) {
-                context.drawImage(this.warningImg, this.frameX, this.frameY, this.x, this.y, this.width, this.height)
+                context.drawImage(this.warningImg, this.warningFrameX, 0, this.width, this.height, this.x, this.y, this.width, this.height)
             }
         }
-        update() {
+        update(deltaTime) {
             if (this.health == 2) {
                 this.frameX = 64
             } else if (this.health == 1) {
                 this.frameX = 32
             } else {
                 this.frameX = 0
+                if (this.frameTimer > this.frameInterval) {
+                    if (this.warningFrameX > this.frameCount) {
+                        this.warningFrameX = 0
+                    } else {
+                        this.warningFrameX++
+                    }
+                    this.frameTimer = 0
+                } else {
+                    this.frameTimer += deltaTime
+                }
             }
         }
     }
@@ -395,11 +439,12 @@ window.addEventListener("load", function() {
             if (shelf.health < 1) {
                 shelf.countdown -= deltaTime
             }
-            if (shelf.coundown <= 0) {
-                gameOver = true
+            if (shelf.countdown <= 0 && shelf.countdown >= -100) {
+                emptyShelves += 1
+                shelf.countdown -= 200
             }
             shelf.draw(ctx)
-            shelf.update()
+            shelf.update(deltaTime)
         })
     }
 
@@ -427,7 +472,7 @@ window.addEventListener("load", function() {
         if (spillTimer > spillInterval + randomSpillInterval) {
             let spawnY = yPositions[Math.floor(Math.random() * yPositions.length)]
             let spawnX = (Math.floor(Math.random() * 7) * 32) + 64
-            spillArray.push(new Spill(spawnY, spawnX))
+            spillArray.push(new Spill(spawnX, spawnY))
             randomSpillInterval = Math.random() * 1000 + 10000
             spillTimer = 0
         } else {
@@ -454,7 +499,6 @@ window.addEventListener("load", function() {
         handleSpills(deltaTime)
         player.draw(ctx, deltaTime)
         player.update(input)
-        player.interact(input)
         handleCustomers(deltaTime)
         
         if (!gameOver) {
@@ -465,6 +509,7 @@ window.addEventListener("load", function() {
     function startGame() {
         spawnShelves()
         animate(0)
+        document.addEventListener("keydown", handleInteract)
         startBtn.removeEventListener("click", startGame)
     }
 
