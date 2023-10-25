@@ -64,8 +64,8 @@ window.addEventListener("load", function() {
         constructor() {
             this.width = tileSize
             this.height = tileSize * 2
-            this.x = 0
-            this.y = 0
+            this.x = 300
+            this.y = 124
             this.img = playerImg
             this.frameX = 0
             this.frameY = 0
@@ -111,18 +111,34 @@ window.addEventListener("load", function() {
                     this.moveX = 1
                     this.frameY = 64
                     this.moving = true
+                    if (this.x == 304) {
+                        this.moveX = 0
+                        this.moving = false
+                    }
                 } else if (input.keys.indexOf("KeyA") > -1 || input.keys.indexOf("left") > -1) {
                     this.moveX = -1
                     this.frameY = 96
                     this.moving = true
+                    if (this.x == 0) {
+                        this.moveX = 0
+                        this.moving = false
+                    }
                 } else if (input.keys.indexOf("KeyW") > -1 || input.keys.indexOf("up") > -1) {
                     this.moveY = -1
                     this.frameY = 32
                     this.moving = true
+                    if (this.y == 0) {
+                        this.moveY = 0
+                        this.moving = false
+                    }
                 } else if (input.keys.indexOf("KeyS") > -1 || input.keys.indexOf("down") > -1) {
                     this.moveY = 1
                     this.frameY = 0
                     this.moving = true
+                    if (this.y == 256) {
+                        this.moveY = 0
+                        this.moving = false
+                    }
                 } else {
                     this.moveX = 0
                     this.moveY = 0
