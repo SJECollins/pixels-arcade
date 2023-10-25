@@ -303,8 +303,6 @@ window.addEventListener("load", function() {
                     }
                     this.x -= this.speed
                 }                
-            } else {
-                console.log("slipped")
             }
             // Delete customer
             if (this.x < 0) {
@@ -326,7 +324,6 @@ window.addEventListener("load", function() {
                     this.slipped = false
                 }, 3000)                
             }, 2000)
-
         }
     }
 
