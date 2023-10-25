@@ -11,6 +11,8 @@ window.addEventListener("load", function() {
     // Images
     const playerImg = new Image()
     playerImg.src = "../assets/images/stockboy/stockboy.png"
+    const playerInteractingImg = new Image()
+    playerInteractingImg.src = "../assets/images/stockboy/stockboyinteracting.png"
     const bgImg = new Image()
     bgImg.src = "../assets/images/stockboy/floor.png"
     const shelfImg = new Image()
@@ -40,6 +42,7 @@ window.addEventListener("load", function() {
     let currentSpills = 0
     let shelves = []
     let maxShelves = 0
+    let lastTime = 0
     let gameOver = false
 
     // Background class
@@ -72,9 +75,16 @@ window.addEventListener("load", function() {
             this.frameInterval = 1000/this.fps
             this.moveX = 0
             this.moveY = 0
+            this.moving = false
+            this.interactingTime = 240
             this.interacting = false
         }
-        draw() {
+        draw(context, deltaTime) {
+            if (!this.interacting) {
+                this.img = playerImg
+            } else {
+                this.img = playerInteractingImg
+            }
             // Update frames
             if (this.frameTimer > this.frameInterval) {
                 if (this.frameX >= this.frameCount) {
@@ -84,7 +94,11 @@ window.addEventListener("load", function() {
                 }
                 this.frameTimer = 0
             } else {
-                this.frameTimer += deltaTime
+                if (this.moving || this.interacting) {
+                    this.frameTimer += deltaTime
+                } else {
+                    this.frameX = 0
+                }
             }
             context.drawImage(this.img, this.frameX * this.width, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
         }
@@ -92,21 +106,38 @@ window.addEventListener("load", function() {
             // Move player and update frameY
             this.x += this.moveX
             this.y += this.moveY
-            if (input.keys.indexOf("KeyD") > -1 || input.keys.indexOf("right") > -1) {
-                this.moveX = 1
-                this.frameY = 32
-            } else if (input.keys.indexOf("KeyA") > -1 || input.keys.indexOf("left") > -1) {
-                this.moveX = -1
-                this.frameY = 64
-            } else if (input.keys.indexOf("KeyW") > -1 || input.keys.indexOf("up") > -1) {
-                this.moveY = -1
-                this.frameY = 96
-            } else if (input.keys.indexOf("KeyS") > -1 || input.keys.indexOf("down") > -1) {
-                this.moveY = 1
-                this.frameY = 0
-            } else {
-                this.moveX = 0
-                this.moveY = 0
+            if (!this.interacting) {
+                if (input.keys.indexOf("KeyD") > -1 || input.keys.indexOf("right") > -1) {
+                    this.moveX = 1
+                    this.frameY = 64
+                    this.moving = true
+                } else if (input.keys.indexOf("KeyA") > -1 || input.keys.indexOf("left") > -1) {
+                    this.moveX = -1
+                    this.frameY = 96
+                    this.moving = true
+                } else if (input.keys.indexOf("KeyW") > -1 || input.keys.indexOf("up") > -1) {
+                    this.moveY = -1
+                    this.frameY = 32
+                    this.moving = true
+                } else if (input.keys.indexOf("KeyS") > -1 || input.keys.indexOf("down") > -1) {
+                    this.moveY = 1
+                    this.frameY = 0
+                    this.moving = true
+                } else {
+                    this.moveX = 0
+                    this.moveY = 0
+                    this.moving = false
+                }                
+            }
+        }
+        interact(input) {
+            if (input.keys.indexOf("KeyE") > -1 || input.keys.indexOf("interact") > -1) {
+                this.frameCount = 1
+                this.interacting = true
+                setTimeout(() => {
+                    this.interacting = false
+                    this.frameCount = 3
+                }, 3000)                
             }
         }
     }
@@ -219,7 +250,6 @@ window.addEventListener("load", function() {
     function handleShelves() {
         let spawnX = 0
         let spawnY = 0
-        
     }
 
     // Spill class
@@ -292,10 +322,15 @@ window.addEventListener("load", function() {
     const player = new Player()
     const input = new InputHandler()
 
-    function animate() {
+    function animate(timeStamp) {
+        const deltaTime = timeStamp - lastTime
+        lastTime = timeStamp
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
-        player.draw()
+        player.draw(ctx, deltaTime)
+        player.update(input)
+        player.interact(input)
+        
 
         if (!gameOver) {
             requestAnimationFrame(animate)
@@ -303,7 +338,7 @@ window.addEventListener("load", function() {
     }
 
     function startGame() {
-        animate()
+        animate(0)
         startBtn.removeEventListener("click", startGame)
     }
 
