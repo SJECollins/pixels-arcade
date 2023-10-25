@@ -32,14 +32,14 @@ window.addEventListener("load", function() {
     let score = 0
     let customerArray = []
     let maxCustomers = 0
-    let currentCustomers = 0
     let customerTimer = 0
     let customerInterval = 1000
     let randomCustomerInterval = Math.random() * 1000 + 10000
-    let spawned = 0
     let spillArray = []
+    let spillTimer = 0
+    let spillInterval = 1000
+    let randomSpillInterval = Math.random() * 1000 + 10000
     let maxSpills = 0
-    let currentSpills = 0
     let shelfArray = []
     let shelfTimer = 0
     let shelfInterval = 1000
@@ -175,6 +175,11 @@ window.addEventListener("load", function() {
                             input.keys.splice(input.keys.indexOf("KeyA", 1))
                         }
                     }
+                    if (this.interacting) {
+                        shelf.health = 3
+                        // Probably need a better way to handle score - this is imprecise
+                        score += 1
+                    }
                 } else {
                     this.onShelf = false
                 }
@@ -289,14 +294,13 @@ window.addEventListener("load", function() {
                 this.markedForDeletion = true
             }
             // If the customer has slipped on a spill???
-
         }
     }
 
     // Handle customers
     function handleCustomers(deltaTime) {
         if (customerTimer > customerInterval + randomCustomerInterval) {
-            let spawnPositions = [64, 160, 256]
+            let spawnPositions = [32, 64, 128, 160, 224, 256]
             const randomSpawnPosition = spawnPositions[Math.floor(Math.random() * spawnPositions.length)]
             let customers = [0, 64, 128, 192]
             const randomCustomer = customers[Math.floor(Math.random() * customers.length)]
@@ -325,9 +329,7 @@ window.addEventListener("load", function() {
             this.frameX = 64
             this.frameY = frameY
             this.frameCount = 2
-            this.fps = 6
-            this.frameTimer = 0
-            this.frameInterval = 1000/this.fps
+            this.countdown = 680
             this.health = 2
         }
         draw(context) {
@@ -390,6 +392,12 @@ window.addEventListener("load", function() {
         }
 
         shelfArray.forEach(shelf => {
+            if (shelf.health < 1) {
+                shelf.countdown -= deltaTime
+            }
+            if (shelf.coundown <= 0) {
+                gameOver = true
+            }
             shelf.draw(ctx)
             shelf.update()
         })
@@ -413,50 +421,22 @@ window.addEventListener("load", function() {
     }
 
     // Handle spills
-    function handleSpills() {
-        let spawnX = 0
-        let spawnY = 0
-    }
+    function handleSpills(deltaTime) {
+        let yPositions = [32, 64, 128, 160, 224, 256]
 
-    // Exclamation class
-    class Exclamation {
-        constructor(spawnX, spawnY) {
-            this.img = exclamationImg
-            this.x = spawnX
-            this.y = spawnY
-            this.width = tileSize * 2
-            this.height = tileSize * 2
-            this.frameX = 0
-            this.frameY = 0
-            this.frameCount = 1
-            this.fps = 10
-            this.frameTimer = 0
-            this.frameInterval = 1000/this.fps
-            this.markedForDeletion = false
+        if (spillTimer > spillInterval + randomSpillInterval) {
+            let spawnY = yPositions[Math.floor(Math.random() * yPositions.length)]
+            let spawnX = (Math.floor(Math.random() * 7) * 32) + 64
+            spillArray.push(new Spill(spawnY, spawnX))
+            randomSpillInterval = Math.random() * 1000 + 10000
+            spillTimer = 0
+        } else {
+            spillTimer += deltaTime
         }
-        draw(context) {
-            if (!this.markedForDeletion) {
-                context.drawImage(this.img, this.x, this.y, this.width, this.height)
-            }
-        }
-        update() {
-            if (this.frameTimer > this.frameInterval) {
-                if (this.frameX >= this.frameCount) {
-                    this.frameX = 0
-                } else {
-                    this.frameX++
-                }
-                this.frameTimer = 0
-            } else {
-                this.frameTimer += deltaTime
-            }
-        }
-    }
-
-    // Handle exclamations
-    function handleExclamations() {
-        let spawnX = 0
-        let spawnY = 0
+        spillArray.forEach(spill => {
+            spill.draw(ctx)
+        })
+        spillArray = spillArray.filter(spill => !spill.markedForDeletion)
     }
 
 
@@ -471,6 +451,7 @@ window.addEventListener("load", function() {
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
         handleShelves(deltaTime)
+        handleSpills(deltaTime)
         player.draw(ctx, deltaTime)
         player.update(input)
         player.interact(input)
