@@ -25,6 +25,7 @@ window.addEventListener("load", function() {
     exclamationImg.src = "../assets/images/stockboy/exclamation.png"
 
     // Variables
+
     const gameWidth = 320
     const gameHeight = 288
     const tileSize = 16
@@ -178,9 +179,9 @@ window.addEventListener("load", function() {
                     if (this.interacting) {
                         setTimeout(() => {
                             shelf.health = 2
+                            updateScore(10)
                         }, 2000)
                         // Probably need a better way to handle score - this is imprecise
-                        score += 1
                     }
                 } else {
                     this.onShelf = false
@@ -193,6 +194,7 @@ window.addEventListener("load", function() {
                 if (distance < spill.width / 2 + this.width / 2 && this.interacting) {
                     setTimeout(() => {
                         spill.markedForDeletion = true
+                        updateScore(10)
                     }, 3000)
                 } 
             })
@@ -322,6 +324,7 @@ window.addEventListener("load", function() {
                 this.frameX = 5
                 setTimeout(() => {
                     this.slipped = false
+                    updateScore(-10)
                 }, 3000)                
             }, 2000)
         }
@@ -481,6 +484,40 @@ window.addEventListener("load", function() {
         spillArray = spillArray.filter(spill => !spill.markedForDeletion)
     }
 
+    const updateScore = ((change) => {
+        let lastRun = new Date()
+        return (change) => {
+            let now = new Date()
+            if ((now - lastRun) < 3000) return
+            lastRun = now
+            score = score + change
+        }
+        })()
+
+    function handleScore() {
+        let time = 0
+        let startTime = setInterval(() => {
+            time++
+            score++
+            timeDisplay.innerHTML = time
+            scoreDisplay.innerHTML = score
+            if (gameOver) {
+                clearInterval(startTime)
+                timeDisplay.innerHTML = "GAME OVER!"
+                document.querySelector("#time").innerHTML = time
+                document.querySelector("#result").innerHTML = score
+                startBtn.addEventListener("click", startGame)
+
+            }
+        }, 1000)
+    }
+
+    function endGame(context) {
+        context.font = "32px Verdana"
+        context.textAlign = "center"
+        context.fillStyle = "black"
+        context.fillText("GAME OVER", gameWidth / 2, gameHeight / 2)
+    }
 
     // Starting classes
     const background = new Background()
@@ -500,18 +537,21 @@ window.addEventListener("load", function() {
         
         if (!gameOver) {
             requestAnimationFrame(animate)
+        } else {
+            endGame()
         }
     }
 
     function startGame() {
         spawnShelves()
+        handleScore()
         animate(0)
         document.addEventListener("keydown", handleInteract)
         startBtn.removeEventListener("click", startGame)
     }
 
     startBtn.addEventListener("click", startGame)
-    reset.addEventListener("click", () => {
+    resetBtn.addEventListener("click", () => {
         location.reload()
     })
 })
