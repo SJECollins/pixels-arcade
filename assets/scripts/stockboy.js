@@ -4,6 +4,7 @@ window.addEventListener("load", function() {
 
     const timeDisplay = document.getElementById("timer")
     const scoreDisplay = document.getElementById("score")
+    const shelfDisplay = document.getElementById("shelves")
     
     const canvas = document.getElementById("canvas")
     const ctx = canvas.getContext("2d")
@@ -17,6 +18,8 @@ window.addEventListener("load", function() {
     bgImg.src = "../assets/images/stockboy/floor.png"
     const shelfImg = new Image()
     shelfImg.src = "../assets/images/stockboy/shelf.png"
+    const deadShelfImg = new Image()
+    deadShelfImg.src = "../assets/images/stockboy/deadshelf.png"
     const customerImg = new Image()
     customerImg.src = "../assets/images/stockboy/customer.png"
     const spillImg = new Image()
@@ -176,7 +179,7 @@ window.addEventListener("load", function() {
                             input.keys.splice(input.keys.indexOf("KeyA"), 1)
                         }
                     }
-                    if (this.interacting) {
+                    if (this.interacting && !shelf.dead) {
                         setTimeout(() => {
                             shelf.health = 2
                             updateScore(10)
@@ -198,7 +201,29 @@ window.addEventListener("load", function() {
                     }, 3000)
                 } 
             })
-        }
+            customerArray.forEach(cust => {
+                const distanceX = cust.x - this.x
+                const distanceY = cust.y - this.y
+                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
+                if (distance < cust.width / 2 + this.width / 2) {
+                    if (distanceX < 2 && distanceX > -2) {
+                        if (distanceY > -4 && this.frameY == 0) {
+                            input.keys.splice(input.keys.indexOf("KeyS"), 1)
+                        }
+                        if (distanceY < 6 && this.frameY == 32) {
+                            input.keys.splice(input.keys.indexOf("KeyW"), 1)
+                        }
+                    } else if (distanceY < 6 && distanceY > -4) {
+                        if (distanceX < 6 && this.frameY == 64) {
+                            input.keys.splice(input.keys.indexOf("KeyD"), 1)
+                        }
+                        if (distanceX > -6 && this.frameY == 96) {
+                            input.keys.splice(input.keys.indexOf("KeyA"), 1)
+                        }
+                }
+            }
+        })
+    }
         interact() {
             this.frameCount = 1
             this.interacting = true
@@ -362,14 +387,18 @@ window.addEventListener("load", function() {
             this.frameX = 64
             this.frameY = frameY
             this.warningFrameX = 0
+            this.fps = 3
+            this.frameTimer = 0
+            this.frameInterval = 1000/this.fps
             this.frameCount = 1
-            this.countdown = 680
+            this.countdown = 6800
             this.health = 2
+            this.dead = false
         }
         draw(context) {
             context.drawImage(this.img, this.frameX, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
-            if (this.health == 0) {
-                context.drawImage(this.warningImg, this.warningFrameX, 0, this.width, this.height, this.x, this.y, this.width, this.height)
+            if (this.health == 0 && !this.dead) {
+                context.drawImage(this.warningImg, this.warningFrameX * this.width, 0, this.width, this.height, this.x, this.y, this.width, this.height)
             }
         }
         update(deltaTime) {
@@ -379,8 +408,12 @@ window.addEventListener("load", function() {
                 this.frameX = 32
             } else {
                 this.frameX = 0
-                if (this.frameTimer > this.frameInterval) {
-                    if (this.warningFrameX > this.frameCount) {
+                if (this.dead) {
+                    this.img = deadShelfImg
+                    this.frameY= 0
+                }
+                if (this.frameTimer > this.frameInterval && !this.dead) {
+                    if (this.warningFrameX >= this.frameCount) {
                         this.warningFrameX = 0
                     } else {
                         this.warningFrameX++
@@ -442,6 +475,7 @@ window.addEventListener("load", function() {
             if (shelf.countdown <= 0 && shelf.countdown >= -100) {
                 emptyShelves += 1
                 shelf.countdown -= 200
+                shelf.dead = true
             }
             shelf.draw(ctx)
             shelf.update(deltaTime)
@@ -484,7 +518,7 @@ window.addEventListener("load", function() {
         spillArray = spillArray.filter(spill => !spill.markedForDeletion)
     }
 
-    const updateScore = ((change) => {
+    const updateScore = (() => {
         let lastRun = new Date()
         return (change) => {
             let now = new Date()
@@ -501,13 +535,14 @@ window.addEventListener("load", function() {
             score++
             timeDisplay.innerHTML = time
             scoreDisplay.innerHTML = score
+            shelfDisplay.innerHTML = emptyShelves
             if (gameOver) {
                 clearInterval(startTime)
                 timeDisplay.innerHTML = "GAME OVER!"
                 document.querySelector("#time").innerHTML = time
                 document.querySelector("#result").innerHTML = score
+                document.querySelector("#game-over").style.display = "block"
                 startBtn.addEventListener("click", startGame)
-
             }
         }, 1000)
     }
@@ -534,11 +569,15 @@ window.addEventListener("load", function() {
         player.draw(ctx, deltaTime)
         player.update(input)
         handleCustomers(deltaTime)
+
+        if (emptyShelves >= 5) {
+            gameOver = true
+        }
         
         if (!gameOver) {
             requestAnimationFrame(animate)
         } else {
-            endGame()
+            endGame(ctx)
         }
     }
 
