@@ -59,6 +59,9 @@
     font-weight: 700;
 }
 
+body { -webkit-touch-callout: none !important; }
+button { -webkit-user-select: none !important; }
+
 @media (min-width: 680px) {
     #canvas {
         width: 640px;

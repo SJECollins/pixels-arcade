@@ -1,4 +1,11 @@
 window.addEventListener("load", function() {
+    window.oncontextmenu = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+        return false
+    }
+
     const startBtn = document.getElementById("start")
     const resetBtn = document.getElementById("reset")
 
