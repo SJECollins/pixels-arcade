@@ -56,3 +56,11 @@
     color: var(--apple-light-green);
     font-weight: 700;
 }
+
+body { 
+    -webkit-touch-callout: none !important; 
+}
+button,  #directions { 
+    -webkit-user-select: none !important; 
+    user-select: none !important;
+}
