@@ -59,8 +59,13 @@
     font-weight: 700;
 }
 
-body { -webkit-touch-callout: none !important; }
-button { -webkit-user-select: none !important; }
+body { 
+    -webkit-touch-callout: none !important; 
+}
+button,  #directions { 
+    -webkit-user-select: none !important; 
+    user-select: none !important;
+}
 
 @media (min-width: 680px) {
     #canvas {
