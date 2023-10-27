@@ -247,7 +247,7 @@ window.addEventListener("load", function() {
                         this.keys.push(e.code)
                      }
             })
-            window.addEventListener("mousedown", (e) => {
+            window.addEventListener("touchstart", (e) => {
                 if ((e.target.id == "left"||
                      e.target.id == "up" ||
                      e.target.id == "down" ||
@@ -264,7 +264,7 @@ window.addEventListener("load", function() {
                     this.keys.splice(this.keys.indexOf(e.code), 1)
                     }
             })
-            window.addEventListener("mouseup", (e) => {
+            window.addEventListener("touchend", (e) => {
                 if (e.target.id == "left"||
                     e.target.id == "up" ||
                     e.target.id == "down" ||
