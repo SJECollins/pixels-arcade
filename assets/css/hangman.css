@@ -13,7 +13,7 @@
 
 /* Board styling */
 #board {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: evenly;
     align-items: center;
