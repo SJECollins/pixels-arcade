@@ -263,6 +263,15 @@ window.addEventListener("load", function() {
                         this.keys.push(e.target.id)
                      }
             })
+            window.addEventListener("mousedown", (e) => {
+                if ((e.target.id == "left"||
+                     e.target.id == "up" ||
+                     e.target.id == "down" ||
+                     e.target.id == "right")
+                     && this.keys.indexOf(e.target.id) === -1) {
+                        this.keys.push(e.target.id)
+                     }
+            })
             window.addEventListener("keyup", (e) => {
                 if (e.code == "KeyW" ||
                     e.code == "KeyD" ||
@@ -278,7 +287,15 @@ window.addEventListener("load", function() {
                     e.target.id == "right") {
                     this.keys.splice(this.keys.indexOf(e.target.id), 1)
                     }
-            })            
+            })
+            window.addEventListener("mouseup", (e) => {
+                if (e.target.id == "left"||
+                    e.target.id == "up" ||
+                    e.target.id == "down" ||
+                    e.target.id == "right") {
+                    this.keys.splice(this.keys.indexOf(e.target.id), 1)
+                    }
+            })         
         }
     }
 
