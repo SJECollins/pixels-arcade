@@ -586,6 +586,7 @@ window.addEventListener("load", function() {
         handleScore()
         animate(0)
         document.addEventListener("keydown", handleInteract)
+        document.getElementById("interact").addEventListener("click", handleInteract)
         startBtn.removeEventListener("click", startGame)
     }
 
