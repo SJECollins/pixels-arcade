@@ -6,16 +6,32 @@ window.addEventListener("load", () => {
     const scoreDisplay = document.getElementById("score")
 
     const canvas = document.getElementById("canvas")
-    const ctx = document.getContext("2d")
+    const ctx = canvas.getContext("2d")
 
 
     // Images
+    const backgroundImg = new Image()
+    backgroundImg.src = "../assets/images/deli/counter.png"
+    const tinImg = new Image()
+    tinImg.src = "../assets/images/deli/tins.png"
+    const brownImg = new Image()
+    brownImg.src = "../assets/images/deli/brownsauce.png"
+    const mayoImg = new Image()
+    mayoImg.src = "../assets/images/deli/mayo.png"
+    const butterImg = new Image()
+    butterImg.src = "../assets/images/deli/butter.png"
+    const ticketImg = new Image()
+    ticketImg.src = "../assets/images/deli/ticket.png"
+    const bellImg = new Image()
+    bellImg.src = "../assets/images/deli/bell.png"
 
 
     // Variables
     const gameWidth = 320
-    const gameHeight = 28
-    const tileSize = 32
+    const gameHeight = 288
+    const tileSize = 48
+
+    let ingredientArray = []
     
     let ticketNumber = 0
     let ticketTimer = 0
@@ -33,7 +49,7 @@ window.addEventListener("load", () => {
     // Background
     class Background {
         constructor() {
-            this.img = ""
+            this.img = backgroundImg
             this.x = 0
             this.y = 0
             this.width = gameWidth
@@ -46,25 +62,45 @@ window.addEventListener("load", () => {
 
     // Ingredients
     class Ingredient {
-        constructor(ingredientImg) {
+        constructor(ingredientImg, positionX, positionY, imgX, name) {
             this.img = ingredientImg
             this.x = positionX
             this.y = positionY
             this.width = tileSize
             this.height = tileSize
-            this.ingredientArray = []
+            this.frameX = imgX
+            this.frameY = 0
+            this.name = name
         }
         draw(context) {
-            context.drawImage(this.img, this.x, this.y, this.width, this.height)
+            context.drawImage(this.img, this.frameX, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
         }
         action() {
 
         }
     }
     
+    const spawnIngredients = () => {
+        let startXPosition = [16, 64, 112, 160, 208, 256]
+        let tinArray = ["chicken", "cheese", "lettuce", "onion", "pepper", "tomato"]
+        for (let i = startXPosition.length - 1; i >= 0; i--) {
+            let posX = startXPosition.splice(Math.floor(Math.random() * startXPosition.length), 1)
+            let name = tinArray[i]
+            console.log(name)
+            let image = tinImg
+            let imgX = 240 - (i * 48)
+            console.log(imgX)
+            ingredientArray.push(new Ingredient(image, posX, 96, imgX, name))
+        }
+        ingredientArray.push(new Ingredient(brownImg, 16, 144, 0, "brown sauce"))
+        ingredientArray.push(new Ingredient(mayoImg, 64, 144, 0, "mayo"))
+        ingredientArray.push(new Ingredient(butterImg, 16, 192, 0, "butter"))
+    }
     
     const handleIngredients = () => {
-
+        ingredientArray.forEach(ingredient => {
+            ingredient.draw(ctx)
+        })
     }
 
 
@@ -105,10 +141,12 @@ window.addEventListener("load", () => {
     const background = new Background()
 
     const animate = (timeStamp) => {
+        console.log("animating")
         const deltaTime = timeStamp - lastTime
         lastTime = timeStamp
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
+        handleIngredients()
 
         if (!gameOver) {
             requestAnimationFrame(animate)
@@ -116,6 +154,7 @@ window.addEventListener("load", () => {
     }
     
     const startGame = () => {
+        spawnIngredients()
         animate(0)
     }
 
