@@ -42,12 +42,11 @@ window.addEventListener("load", () => {
     let ticketNumber = 0
     let ticketTimer = 0
     let ticketInterval = 5000
-    let randomTicketInterval = Math.random() * 1000 + 10000
+    let randomTicketInterval = Math.random() * 1000 + 1000
     let ticketArray = []
 
     let currentSandwich = {}
 
-    let time = 0
     let score = 0
     let lastTime = 0
     let gameOver = false
@@ -80,9 +79,6 @@ window.addEventListener("load", () => {
         }
         draw(context) {
             context.drawImage(this.img, this.frameX, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
-            context.beginPath()
-            context.rect(this.x, this.y, this.width/2, this.height/2)
-            context.stroke()
         }
         addIngredient(clickX, clickY) {
             // if clicked push this ingredients name to the currentSandwich ingredientArray
@@ -115,7 +111,7 @@ window.addEventListener("load", () => {
             console.log("position: ", posX)
             ingredientArray.push(new Ingredient(image, posX[0], 96, 48, imgX, name))
         }
-        ingredientArray.push(new Ingredient(brownImg, 16, 144, 48, 0, "brown sauce"))
+        ingredientArray.push(new Ingredient(brownImg, 16, 144, 48, 0, "ketchup"))
         ingredientArray.push(new Ingredient(mayoImg, 64, 144, 48, 0, "mayo"))
         ingredientArray.push(new Ingredient(butterImg, 16, 192, 48, 0, "butter"))
         ingredientArray.push(new Ingredient(rollsImg, 208, 144, 96, 0, "roll"))
@@ -139,29 +135,104 @@ window.addEventListener("load", () => {
         draw(context) {
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
         }
-        ringBell() {}
+        ringBell(clickX, clickY) {
+            const distanceX = (this.x + this.width/2) - clickX
+            const distanceY = (this.y + this.height/2) - clickY
+            const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
+            if (distance < this.height / 2) {
+                let ticket = ticketArray[0].fillings
+                let sandwich = currentSandwich.ingredientArray
+                sandwich.shift()
+                console.log(ticket)
+                console.log(sandwich)
+                if (sandwich.length == ticket.length) {
+                    console.log("same length")
+                    if (compareArrays(ticket, sandwich)) {
+                        console.log("identical")
+                        score += 10
+                    } else {
+                        ticket.sort()
+                        sandwich.sort()
+                        if (compareArrays(ticket, sandwich)) {
+                            console.log("out of order")
+                            score += 8
+                        } else {
+                            console.log("different ingredients")
+                            score += 2
+                            for (let i = 0; i < ticket.length; i++) {
+                                if (ticket[i] === sandwich[i]) {
+                                    score++
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    ticket.sort()
+                    sandwich.sort()
+                    for (let i = 0; i < ticket.length; i++) {
+                        if (ticket[i] === sandwich[i]) {
+                            score++
+                        }
+                    }
+                }
+                ticketNumber++
+                currentSandwich = {}
+                ticketArray.shift()
+        }
+        }
+    }
+
+    const compareArrays = (a, b) => {
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] != b[i]) {
+                return false
+            }
+        }
+        return true
     }
 
 
     // Tickets - create a ticket 
     class Ticket {
-        constructor() {
+        constructor(selectedFillings) {
             this.img = ticketImg
-            this.x = positionX
-            this.y = 32
+            this.x = 16
+            this.y = 22
             this.width = tileSize
-            this.height = tileSize
+            this.height = 64
+            this.fillings = selectedFillings
         }
         draw(context) {
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
-        }
-        update() {
-
+            context.font = "10px Arial"
+            for (let i = 0; i < this.fillings.length; i++) {
+	            context.fillText(this.fillings[i], this.x + 6, this.y + (10 + (i * 10)))
+            }
         }
     }
 
-    const handleTickets = () => {
+    const handleTickets = (ctx, deltaTime) => {
+        let fillings = ["ketchup", "mayo", "butter", "chicken", "cheese", "lettuce", "onion", "pepper", "tomato"]
+        if (ticketArray.length <= 6) {
+            if (ticketTimer > ticketInterval + randomTicketInterval) {
+                let randomNumFillings = Math.floor(Math.random() * (5 - 3 + 1) + 3)
+                let selectedFillings = []
+                for (let i = 0; i < randomNumFillings; i++) {
+                    let randomFilling = fillings[Math.floor(Math.random() * fillings.length)]
+                    selectedFillings.push(randomFilling)
+                }
+                ticketArray.push(new Ticket(selectedFillings))
+                randomTicketInterval = Math.random() * 2000 + 4000
+                ticketTimer = 0
+            } else {
+                ticketTimer += deltaTime
+            }
+        }
 
+        ticketArray.forEach((ticket, index) => {
+            ticket.x = 16 + (index * 48)
+            ticket.draw(ctx)
+        })
     }
 
     // The sandwich
@@ -180,7 +251,7 @@ window.addEventListener("load", () => {
                 context.drawImage(this.rollImg, this.x, this.y, this.width, this.height)
             }
             for (let i = 0; i < this.ingredientArray.length; i++) {
-                if (this.ingredientArray[i] == "brown sauce") {
+                if (this.ingredientArray[i] == "ketchup") {
                     context.drawImage(this.img, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height)
                 } else if (this.ingredientArray[i] == "butter") {
                     context.drawImage(this.img, 0, 32, this.width, this.height, this.x, this.y, this.width, this.height)
@@ -209,6 +280,24 @@ window.addEventListener("load", () => {
         }
     }
 
+    const handleDisplay = () => {
+        let time = 180
+        let startTime = setInterval(() => {
+            time--
+            timeDisplay.innerHTML = time
+            scoreDisplay.innerHTML = score
+            if (time <= 0) {
+                gameOver = true
+                clearInterval(startTime)
+                timeDisplay.innerHTML = "GAME OVER!"
+                document.querySelector("#sandwiches").innerHTML = ticketNumber
+                document.querySelector("#result").innerHTML = score
+                document.querySelector("#game-over").style.display = "block"
+                startBtn.addEventListener("click", startGame)
+            }
+        }, 1000)
+    }
+
     canvas.addEventListener("click", (e) => {
         const rect = canvas.getBoundingClientRect()
         const x = e.clientX - rect.left
@@ -219,6 +308,7 @@ window.addEventListener("load", () => {
         ingredientArray.forEach(ingredient => {
             ingredient.addIngredient(x, y)
         })
+        bell.ringBell(x, y)
     })
 
 
@@ -233,6 +323,7 @@ window.addEventListener("load", () => {
         bell.draw(ctx)
         handleIngredients()
         handleSandwiches(ctx)
+        handleTickets(ctx, deltaTime)
 
         if (!gameOver) {
             requestAnimationFrame(animate)
@@ -241,6 +332,8 @@ window.addEventListener("load", () => {
     
     const startGame = () => {
         spawnIngredients()
+        handleDisplay()
+        startBtn.removeEventListener("click", startGame)
         animate(0)
     }
 
