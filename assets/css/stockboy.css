@@ -70,6 +70,6 @@ button,  #directions {
 @media (min-width: 680px) {
     #canvas {
         width: 640px;
-        height: 640px;
+        height: 576px;
     }
 }
