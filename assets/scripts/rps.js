@@ -13,6 +13,9 @@ const choices = document.querySelectorAll(".selections")
 const threeRounds = document.getElementById("three-rounds")
 const fiveRounds = document.getElementById("five-rounds")
 
+const classicBtn = document.getElementById("classic")
+const rpslsBtn = document.getElementById("rpsls")
+
 // Our global variables
 let computerPick
 let userPick
@@ -21,19 +24,45 @@ let userPoints = 0
 let computerPoints = 0
 let round = 0
 let numberOfRounds = 3
+let classicGame = true
+
+function removeListeners() {
+  threeRounds.removeEventListener("click", playThree)
+  fiveRounds.removeEventListener("click", playFive)
+  classicBtn.removeEventListener("click", chooseClassic)
+  rpslsBtn.removeEventListener("click", chooseRPSLS)
+}
+
+function chooseClassic() {
+  classicBtn.classList.add("selected")
+  rpslsBtn.classList.remove("selected")
+  document.getElementById("lizard").style.display = "none"
+  document.getElementById("spock").style.display = "none"
+  computer.src = "../assets/images/rps/classic.png"
+  user.src = "../assets/images/rps/classic.png"
+  classicGame = true
+}
+
+function chooseRPSLS() {
+  classicGame = false
+  rpslsBtn.classList.add("selected")
+  classicBtn.classList.remove("selected")
+  document.getElementById("lizard").style.display = "inline-block"
+  document.getElementById("spock").style.display = "inline-block"
+  computer.src = "../assets/images/rps/all.png"
+  user.src = "../assets/images/rps/all.png"
+}
 
 // Our functions to select our levels
 function playThree() {
   threeRounds.classList.add("selected")
-  threeRounds.removeEventListener("click", playThree)
-  fiveRounds.removeEventListener("click", playFive)
+  removeListeners()
   numberOfRounds = 3
 }
 
 function playFive() {
   fiveRounds.classList.add("selected")
-  threeRounds.removeEventListener("click", playThree)
-  fiveRounds.removeEventListener("click", playFive)
+  removeListeners()
   numberOfRounds = 5
 }
 
@@ -42,24 +71,13 @@ function playFive() {
  * And then call userChoice to display an image, and call computerChoice and compare
  * From Ania Kubow (see credits)
  */
- choices.forEach(choice => choice.addEventListener("click", (event) => {
+choices.forEach(choice => choice.addEventListener("click", (event) => {
   userPick = event.target.id
-  userChoice()
+  console.log(userPick)
+  user.src = `../assets/images/rps/${userPick}.png`
   computerChoice()
   compare()
 }))
-
-function userChoice() {
-  if (userPick === "rock") {
-    user.src = "../assets/images/rps/rock-right.webp"
-  }
-  if (userPick === "paper") {
-    user.src = "../assets/images/rps/paper-right.webp"
-  }
-  if (userPick === "scissors") {
-    user.src = "../assets/images/rps/scissors-right.webp"
-  }
-}
 
 /**
  * The computerChoice function randomly picks a number and then assigns the computerPick
@@ -70,19 +88,14 @@ function userChoice() {
  * Adapted from Ania Kubow (see credits)
  */
 function computerChoice() {
-  const randomChoice = Math.floor(Math.random() * choices.length)
-  if (randomChoice === 0) {
-    computerPick = "rock"
-    computer.src = "../assets/images/rps/rock-left.webp"
+  let choiceArray = ["rock", "paper", "scissors"]
+  if (!classicGame) {
+    let extras = ["lizard", "spock"]
+    choiceArray.push(...extras)
   }
-  if (randomChoice === 1) {
-    computerPick = "paper"
-    computer.src = "../assets/images/rps/paper-left.webp"
-  }
-  if (randomChoice === 2) {
-    computerPick = "scissors"
-    computer.src = "../assets/images/rps/scissors-left.webp"
-  }
+  computerPick = choiceArray[Math.floor(Math.random() * choiceArray.length)]
+  console.log(computerPick)
+  computer.src = `../assets/images/rps/${computerPick}.png`
 }
 
 /**
@@ -92,20 +105,25 @@ function computerChoice() {
  * Adapted from Ania Kubow (see credits)
  */
  function compare() {
-  if (computerPick === "rock" && userPick === "paper") {
+  if (computerPick === userPick) {
+    result = "It's a draw."
+  } else if (
+    computerPick === "rock" && userPick === "paper" ||
+    computerPick === "rock" && userPick === "spock" ||
+    computerPick === "paper" && userPick === "scissors" ||
+    computerPick === "paper" && userPick === "lizard" ||
+    computerPick === "scissors" && userPick === "rock" ||
+    computerPick === "scissors" && userPick === "spock" ||
+    computerPick === "lizard" && userPick === "rock" ||
+    computerPick === "lizard" && userPick === "scissors" ||
+    computerPick === "spock" && userPick === "paper" ||
+    computerPick === "spock" && userPick === "lizard"
+  ) {
     userPoints++
-    result = "You win"
-  } else if (computerPick === "paper" && userPick === "scissors") {
-    userPoints++
-    result = "You win"
-  } else if (computerPick === "scissors" && userPick === "rock") {
-    userPoints++
-    result = "You win"
-  } else if (computerPick === userPick) {
-    result = "It's a draw"
+    result = "You win!"
   } else {
     computerPoints++
-    result = "You lose"
+    result = "You lose..."
   }
 
   endGame()
@@ -135,6 +153,8 @@ function endGame() {
 }
 
 // Our EventListeners
+classicBtn.addEventListener("click", chooseClassic)
+rpslsBtn.addEventListener("click", chooseRPSLS)
 threeRounds.addEventListener("click", playThree)
 fiveRounds.addEventListener("click", playFive)
 reset.addEventListener("click", () => {
