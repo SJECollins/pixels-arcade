@@ -41,7 +41,7 @@ window.addEventListener("load", () => {
     
     let ticketNumber = 0
     let ticketTimer = 0
-    let ticketInterval = 5000
+    let ticketInterval = 2000
     let randomTicketInterval = Math.random() * 1000 + 1000
     let ticketArray = []
 
@@ -213,7 +213,7 @@ window.addEventListener("load", () => {
 
     const handleTickets = (ctx, deltaTime) => {
         let fillings = ["ketchup", "mayo", "butter", "chicken", "cheese", "lettuce", "onion", "pepper", "tomato"]
-        if (ticketArray.length <= 6) {
+        if (ticketArray.length < 6) {
             if (ticketTimer > ticketInterval + randomTicketInterval) {
                 let randomNumFillings = Math.floor(Math.random() * (5 - 3 + 1) + 3)
                 let selectedFillings = []
@@ -222,7 +222,7 @@ window.addEventListener("load", () => {
                     selectedFillings.push(randomFilling)
                 }
                 ticketArray.push(new Ticket(selectedFillings))
-                randomTicketInterval = Math.random() * 2000 + 4000
+                randomTicketInterval = Math.random() * 4000 + 1000
                 ticketTimer = 0
             } else {
                 ticketTimer += deltaTime

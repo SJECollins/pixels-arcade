@@ -13,9 +13,11 @@
     gap: 8px;
 }
 
-@media (min-width: 680px) {
-    #canvas {
-        width: 640px;
-        height: 576px;
-    }
+body { 
+    -webkit-touch-callout: none !important; 
+}
+
+#stats { 
+    -webkit-user-select: none !important; 
+    user-select: none !important;
 }
