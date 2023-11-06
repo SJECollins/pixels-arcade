@@ -35,7 +35,8 @@ Basic RPS. Can choose from best of 3 or 5.
 Images for the game from [here](https://publicdomainvectors.org/en/free-clipart/Rock-Paper-Scissors/51207.html)
 
 TODO: ~~add LS option.~~
-Update CSS to style choices better - too large
+
+~~Update CSS to style choices better - too large~~
 
 ## Minesweeper
 

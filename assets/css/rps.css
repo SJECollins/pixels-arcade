@@ -4,6 +4,7 @@
   height: 70vh;
   padding-left: 10px;
   padding-right: 10px;
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -30,14 +31,14 @@
 }
 
 #computer-choice, #user-choice {
-  width: 100px;
-  height: auto;
+  width: auto;
+  height: 100px;
   margin: 10px auto;
 }
 
 .selections {
-  width: 150px;
-  height: 150px;
+  max-width: 125px;
+  max-height: 125px;
   cursor: pointer;
 }
 
@@ -46,11 +47,11 @@
 @media (max-height: 860px),
 (max-width: 900px) {
   #board {
-    margin: 0 auto;
+    margin: 1rem auto;
   }
   .selections {
-    width: 100px;
-    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
   }
   h2 {
     font-size: 1.25em;
@@ -63,12 +64,12 @@
   }
   #computer-choice,
   #user-choice {
-    width: 75px;
-    height: auto;
+    width: auto;
+    height: 75px;
   }
   .selections {
-    width: 75px;
-    height: 75px;
+    max-width: 75px;
+    max-height: 75px;
   }
   h2 {
     font-size: 1em;
