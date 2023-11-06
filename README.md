@@ -77,7 +77,8 @@ COULDDO: More levels, more bosses.
 
 3 board options - 4, 6 and 9 squares -, checkbox for speed, options for numbers of rounds - ten, twenty or "endless" (200).
 
-TODO: style radio buttons and checkboxes.
+TODO: ~~style radio buttons and checkboxes.~~
+~~also made it sort of responsive down to 360px width while I was at it~~
 
 ## Missing Item Game
 03/07

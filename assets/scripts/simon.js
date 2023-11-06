@@ -56,8 +56,25 @@ function medium() {
   seventhColor.style.display = "none"
   eighthColor.style.display = "none"
   ninthColor.style.display = "none"
-  document.getElementById("board").style.width = "750px"
-  document.getElementById("board").style.height = "500px"
+  let colors = document.querySelectorAll(".colour")
+  if (screen.width < 380) {
+    console.log ("small!")
+    document.getElementById("board").style.height = "320px"
+    for (let colour of colors) {
+      colour.style.width = "38%"
+      colour.style.height = "30%"
+    }
+  } else if (screen.width >= 380 && screen.width < 950) {
+    document.getElementById("board").style.height = "280px"
+    document.getElementById("board").style.width = "360px"
+    for (let colour of colors) {
+      colour.style.width = "30%"
+      colour.style.height = "37%"
+    }
+  } else {
+    document.getElementById("board").style.width = "750px"
+  }
+
 }
 
 function large() {
@@ -67,8 +84,22 @@ function large() {
   seventhColor.style.display = "flex"
   eighthColor.style.display = "flex"
   ninthColor.style.display = "flex"
-  document.getElementById("board").style.width = "750px"
-  document.getElementById("board").style.height = "750px"
+  let colors = document.querySelectorAll(".colour")
+  for (let colour of colors) {
+    colour.style.width = "30%"
+    colour.style.height = "30%"
+  }
+  if (screen.width < 380) {
+    document.getElementById("board").style.width = "320px"
+    document.getElementById("board").style.height = "320px"
+  } else if (screen.width >= 380 && screen.width < 950) {
+    document.getElementById("board").style.width = "360px"
+    document.getElementById("board").style.height = "360px"
+  } else {
+    document.getElementById("board").style.width = "750px"
+    document.getElementById("board").style.height = "750px"    
+  }
+
 }
 
 function handleListeners() {
