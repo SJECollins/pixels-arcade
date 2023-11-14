@@ -19,6 +19,7 @@ let numberOfHoles
 let holesArray = []
 let holes = []
 let rabbits = []
+let moles = 0
 
 // Hit sound
 let soundHit = new Audio("../assets/sounds/hit.mp3")
@@ -61,6 +62,7 @@ function disableButtons() {
  * They set the difficulty level, start the game and disable the buttons from being selected once the game starts
  */
 function levelOne() {
+  moles = 1
   startOne.classList.add("selected")
   numberOfHoles = 6
   difficulty = "easy"
@@ -69,6 +71,7 @@ function levelOne() {
 }
 
 function levelTwo() {
+  moles = 2
   startTwo.classList.add("selected")
   numberOfHoles = 9
   difficulty = "medium"
@@ -77,6 +80,7 @@ function levelTwo() {
 }
 
 function levelThree() {
+  moles = 3
   startThree.classList.add("selected")
   numberOfHoles = 9
   difficulty = "hard"
@@ -95,6 +99,14 @@ function levelThree() {
 function randomHole(holes) {
   let pickHole = Math.floor(Math.random() * numberOfHoles)
   let hole = holes[pickHole]
+
+  if (moles > 0) {
+    let randomNum = Math.floor(Math.random() * 20)
+    if (randomNum === 1) {
+      hole.firstChild.classList.add("mole")
+      moles--
+    }
+  }
 
   // We don't want the rabbit to pop out of the same hole multiple times in a row
   if (hole === lastHole) {
@@ -138,6 +150,7 @@ function popUp() {
   hole.classList.add("up")
   setTimeout(() => {
     hole.classList.remove("up")
+    hole.firstChild.classList.remove("mole")
     if (!timeUp) popUp()
   }, speed)
 }
@@ -149,6 +162,10 @@ function popUp() {
  * Adapted from Franks Laboratory
  */
  function slap(){
+  if (this.classList.contains("mole")) {
+    countdown = 0
+    document.getElementById("auto-lose").innerHTML = "YOU SLAPPED A MOLE!"
+  }
   points++
   score.innerHTML = points
   this.style.backgroundImage = "url('../assets/images/rabbit/rabbit-bonk.png')"

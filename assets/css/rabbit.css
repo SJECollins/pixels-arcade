@@ -72,9 +72,14 @@
   cursor: pointer;
 }
 
-.hole.up .rabbit {
+.mole {
+  background-image: url("../images/rabbit/mole.png") !important;
+}
+
+.hole.up .rabbit, .hole.up .mole {
   top: 0;
 }
+
 
 /* Media queries */
 @media (max-width: 580px) {
