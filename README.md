@@ -22,7 +22,9 @@ Coding along with these tutorials:
 
 3 difficulty levels - different number of holes for rabbits to pop out of and different speeds.
 
-TODO: add a mole that if the user whacks they automatically lose.
+TODO: ~~add a mole that if the user whacks they automatically lose.~~
+
+More levels??
 
 ## Rock, Paper, Scissors
 There's roughly one million tutorials for a rock, paper, scissors game online using JavaScript.
