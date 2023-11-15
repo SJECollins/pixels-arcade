@@ -307,10 +307,10 @@ window.addEventListener("load", function() {
             }
             // Check for collision with bullets
             bullets.forEach(bullet => {
-                const distanceX = bullet.x - this.x
-                const distanceY = bullet.y - this.y
+                const distanceX = bullet.x - (this.x + this.width / 2)
+                const distanceY = bullet.y - (this.y + this.width / 2)
                 const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
-                if (distance < bullet.width + this.width / 2) {
+                if (distance < bullet.width + this.width / 3) {
                     // Change img if damaged, delete if dead
                     if (this.health > 5) {
                         bullet.markedForDeletion = true
