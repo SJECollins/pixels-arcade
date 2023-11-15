@@ -111,7 +111,7 @@ COULDDO: different levels? Even just different backgrounds and alternative enemi
 
 A wave-based, top-down shooter using HTML5 canvas and JS. Zombies spawn in the fog and chase the player around the screen, and you shoot them to survive. More zombies spawn per wave. So far there's no true win condition, theoretically you could play it forever?? Would probably break. Added mobile controls that sort of work, haha.
 
-TODO: Revisit bullet collision with the zombies
+TODO: ~~Revisit bullet collision with the zombies~~
 
 ## Hide & Seek
 02/01/2023
