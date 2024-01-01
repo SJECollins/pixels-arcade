@@ -48,8 +48,8 @@
     justify-content: space-between;
     align-items: center;
     height: 3rem;
-    border-top: 2px dashed var(--apple-black);
-    border-bottom: 2px dashed var(--apple-black);
+    border-top: 2px dashed var(--secondary-background);
+    border-bottom: 2px dashed var(--secondary-background);
 }
 
 #bet {
@@ -64,8 +64,8 @@
 
 #end-hand {
     height: 120px;
-    background-color: var(--apple-black);
-    color: var(--apple-light-green);
+    background-color: var(--menu-background);
+    color: var(--menu-text);
     width: min(600px, 80vw);
     border-radius: 20px;
     position: absolute;
@@ -73,7 +73,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 99;
-    box-shadow: 15px 15px 30px var(--apple-black);
+    box-shadow: 0 0 4px 4px var(--shadow);
 }
 
 #hand {
@@ -88,23 +88,23 @@
 
 .card {
     height: 160px;
-    width: 80px;
+    width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     font-size: 2rem;
-    color: var(--apple-white);
-    background-color: var(--apple-black);
-    box-shadow: 0 2px 2px 8px var(--apple-black);
+    color: var(--secondary-text);
+    background-color: var(--secondary-background);
+    box-shadow: 0 0 4px 4px var(--shadow);
     border-radius: 8px;
 }
 
 .hidden-card {
     height: 160px;
-    width: 80px;
-    color: var(--apple-black);
-    background-color: var(--apple-black);
-    box-shadow: 0 2px 2px 8px var(--apple-black);
+    width: 100px;
+    color: transparent;
+    background-color: var(--secondary-background);
+    box-shadow: 0 0 4px 4px var(--shadow);
     border-radius: 8px;
 }
 

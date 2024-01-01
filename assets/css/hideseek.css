@@ -6,12 +6,13 @@
 }
 
 .terminal {
-    background-color: var(--apple-black);
+    background-color: var(--menu-background);
     width: 700px;
     height: 400px;
     border-radius: 8px;
     margin: 2em auto;
     position: relative;
+    box-shadow: 0 0 4px 4px var(--shadow);
 }
 
 #message {
@@ -22,9 +23,9 @@
     text-align: left;
     font-size: 0.75rem;
     line-height: 1.5;
-    color: var(--apple-light-green);
+    color: var(--menu-text);
     overflow-y: auto;
-    border-bottom: 2px dotted var(--apple-dark-green);
+    border-bottom: 2px dotted var(--text-interaction);
 }
 
 .response {
@@ -35,18 +36,18 @@
 }
 
 .input-text {
-    color: var(--apple-light-green);
+    color: var(--menu-text);
 }
 
 #user-input {
     border: 0;
     outline: 0;
-    border-bottom: 2px solid var(--apple-light-green);
+    border-bottom: 2px solid var(--menu-text);
     background: transparent;
     font-size: 0.75em;
     font-family: "Press Start 2p";
-    color: var(--apple-light-green);
-    caret-color: var(--apple-light-green);
+    color: var(--menu-text);
+    caret-color: var(--menu-text);
 }
 
 #user-input:hover {
@@ -60,15 +61,15 @@
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: var(--apple-dark-green);
+    background: var(--text-interaction);
   }
   
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: var(--apple-light-green);
+    background: var(--menu-text);
   }
   
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--apple-light-green);
+    background: var(--menu-text);
   }

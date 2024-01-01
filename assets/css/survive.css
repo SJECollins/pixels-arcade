@@ -7,8 +7,8 @@
 }
 
 #canvas {
-    border: 4px solid var(--apple-black);
-    box-shadow: 0 10px 15px;
+    border: 4px solid var(--secondary-background);
+    box-shadow: 0 0 4px 4px var(--shadow);
 }
 
 /* Styling for on screen controls */
@@ -52,8 +52,8 @@
 }
 
 #fire {
-    background-color: var(--apple-black);
-    color: var(--apple-light-green);
+    background-color: var(--secondary-background);
+    color: var(--primary-text);
     font-weight: 700;
 }
 

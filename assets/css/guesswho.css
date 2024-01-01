@@ -13,7 +13,7 @@
 }
 
 #answer-display {
-    border: 2px solid var(--apple-black);
+    border: 2px solid var(--secondary-background);
     margin: 1em 4em;
     padding: 1em;
 }
@@ -21,10 +21,13 @@
 input {
     border: 0;
     outline: 0;
-    border-bottom: 2px solid var(--apple-black);
+    border-bottom: 2px solid var(--secondary-background);
     background: transparent;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     text-align: center;
+    color: var(--primary-text);
+    font-family: "Press Start 2P";
+    width: 360px;
 }
 
 /* Grid styling */
@@ -49,12 +52,13 @@ input {
     -webkit-transition: 0.5s;
     transition: 0.5s;
     border-radius: 10px;
-    background-color: var(--apple-black);
-    box-shadow: 12px 8px 10px;
+    background-color: var(--secondary-background);
+    box-shadow: 0 0 4px 4px var(--shadow);
+
 }
 
 .char-name {
-    color: var(--apple-light-green);
+    color: var(--menu-text);
     position: fixed;
     left: 50%;
     bottom: 0;

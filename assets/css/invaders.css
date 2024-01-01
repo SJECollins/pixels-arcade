@@ -15,8 +15,8 @@
   border-radius: 8px;
   display: flex;
   flex-wrap: wrap;
-  background-color: var(--apple-black);
-  box-shadow: 10px 10px 15px;
+  background-color: var(--menu-background);
+  box-shadow: 0 0 4px 4px var(--shadow);
 }
 
 #board div {
@@ -76,9 +76,10 @@
 }
 
 #fire {
-  background-color: var(--apple-black);
-  color: var(--apple-light-green);
+  background-color: var(--secondary-background);
+  color: var(--primary-text);
   font-weight: 700;
+  width: 100px !important;
 }
 
 /* Media queries */

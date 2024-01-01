@@ -181,11 +181,11 @@
                 <h2>Welcome to Apocalypse Trail!</h2>
                 <p>You can add between 1 and 3 characters.</p>
                 <label for="first-char">First Character:</label>
-                <input type="text" id="first-char" name="characters">
+                <input type="text" id="first-char" name="characters" autocomplete="off">
                 <label for="second-char">Second Character:</label>
-                <input type="text" id="second-char" name="characters">
+                <input type="text" id="second-char" name="characters" autocomplete="off">
                 <label for="third-char">Third Character:</label>
-                <input type="text" id="third-char" name="characters">
+                <input type="text" id="third-char" name="characters" autocomplete="off">
                 <button id="enter-chars">Enter</button>
             </div>
         </div>
@@ -268,7 +268,9 @@
     </section>
     <!-- Footer with social links -->
     <footer>
-    </footer>
+        <button id="toggle-display">Toggle Display</button>
+      </footer>
+      <script src="../assets/scripts/theme.js"></script>
     <script src="../assets/scripts/trail.js"></script>
     <script src="../assets/scripts/popups.js"></script>
 </body>

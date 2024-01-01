@@ -1,6 +1,6 @@
 .terminal {
-    color: var(--apple-light-green);
-    background-color: var(--apple-black);
+    color: var(--menu-text);
+    background-color: var(--menu-background);
     width: 700px;
     height: 400px;
     border-radius: 8px;
@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-evenly;
     padding: 0.5em;
-    border-bottom: 2px solid var(--apple-dark-green);
+    border-bottom: 2px solid var(--text-interaction);
 }
 
 #stats div {
@@ -28,7 +28,7 @@
 
 #test-text {
     background-color: inherit;
-    color: var(--apple-dark-green);
+    color: var(--text-interaction);
     font-family: "Press Start 2P";
     line-height: 1.5em;
     letter-spacing: 2px;
@@ -52,17 +52,17 @@
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: var(--apple-dark-green);
+    background: var(--text-interaction);
   }
   
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: var(--apple-light-green);
+    background: var(--menu-text);
   }
   
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--apple-light-green);
+    background: var(--menu-text);
   }
 
 .wrong {
@@ -70,7 +70,7 @@
 }
 
 .right {
-    color: var(--apple-light-green);
+    color: var(--menu-text);
 }
 
 .current {

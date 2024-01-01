@@ -32,7 +32,7 @@
 }
 
 .spot {
-    background-color: var(--apple-white);
+    background-color: var(--tertiary-text);
     width: 54px;
     height: 54px;
     margin: auto;
@@ -68,13 +68,13 @@
 }
 
 input[type="radio"]:checked {
-    accent-color: var(--apple-dark-green);
-    background-color: var(--apple-white);
+    accent-color: var(--text-interaction);
+    background-color: var(--tertiary-text);
 }
 
 #player-selected, #red-selected, #yellow-selected {
     margin-top: 4px;
-    color: var(--apple-dark-green);
+    color: var(--text-interaction);
     display: none;
 }
 

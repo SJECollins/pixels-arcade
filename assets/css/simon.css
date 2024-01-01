@@ -9,13 +9,12 @@
 }
 
 #board {
-  background-color: whitesmoke;
-  /* border: 4px solid #282828; */
+  background-color: var(--primary-background);
   border-radius: 10px;
   height: 500px;
   width: 500px;
   margin: 2em auto;
-  box-shadow: 10px 10px 15px;
+  box-shadow: 0 0 4px 4px var(--shadow);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -35,7 +34,7 @@
 .colour {
   height: 225px;
   width: 225px;
-  border: 10px solid #282828;
+  border: 10px solid var(--secondary-background);
   border-radius: 10px;
 }
 
@@ -86,8 +85,8 @@
 }
 
 #game-over {
-  background-color: #282828;
-  color: #25c40d;
+  background-color: var(--menu-background);
+  color: var(--menu-text);
   width: 500px;
   height: 250px;
   border-radius: 20px;
@@ -109,19 +108,19 @@
 }
 
 #end a {
-  background-color: #EEF1DB;
-  color: #282828;
+  background-color: var(--secondary-background);
+  color: var(--primary-text);
   padding: 1em 2em;
   border-radius: 10px;
   margin: 5px 0;
 }
 
 input[type="radio"]:checked {
-  accent-color: var(--apple-light-green);
+  accent-color: var(--secondary-text);
 }
 
 input[type="checkbox"]:checked {
-  accent-color: var(--apple-light-green);
+  accent-color: var(--secondary-text);
 }
 
 @media (max-width: 359px) {

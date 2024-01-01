@@ -26,12 +26,12 @@
 }
 
 .title {
-  color: var(--apple-black);
+  color: var(--primary-text);
   font-size: 1.25rem;
 }
 
 .background-card {
-  background-color: var(--apple-black);
+  background-color: #282828;
   border-radius: 20px;
 }
 

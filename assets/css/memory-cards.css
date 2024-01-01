@@ -37,7 +37,7 @@
   transition: 0.5s;
   border-radius: 10px;
   background-color: var(--apple-black);
-  box-shadow: 5px 0 5px;
+  box-shadow: 0 0 4px 4px var(--shadow);
 }
 
 .card:active {
