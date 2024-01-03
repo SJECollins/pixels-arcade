@@ -2,6 +2,9 @@ window.addEventListener("load", () => {
     const startBtn = document.getElementById("start")
     const resetBtn = document.getElementById("reset")
 
+    const scoreDisplay = document.getElementById("score")
+    const timeDisplay = document.getElementById("timer")
+
     const canvas = document.getElementById("canvas")
     const ctx = canvas.getContext("2d")
 
@@ -23,13 +26,15 @@ window.addEventListener("load", () => {
     const tileSize = 32
     let gooseArray = []
     let bulletArray = []
+    let grassArray = []
     let gooseTimer = 0
-    let bulletTimer = 0
     let gooseInterval = 3000
     let bulletInterval = 0
     let randomGooseInterval = Math.random() * 1000 + 1000
     let lastTime = 0
     let gameOver = false
+    let time = 60
+    let score = 0
 
     class Background {
         constructor() {
@@ -74,27 +79,10 @@ window.addEventListener("load", () => {
             context.drawImage(this.img, this.frameX, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
         }
         update(input) {
-            if (input == "KeyD" && this.frameX <= 128) {
+            if (input == "KeyD" && this.frameX < 128) {
                 this.frameX += 32
-            } else if (input == "KeyA" && this.frameX >= 0) {
+            } else if (input == "KeyA" && this.frameX > 0) {
                 this.frameX -= 32
-            }
-            switch (this.frameX) {
-                case 0:
-                    this.facing = "left"
-                    break
-                case 32:
-                    this.facing = "left-up"
-                    break
-                case 64:
-                    this.facing = "up"
-                    break
-                case 96:
-                    this.facing = "right-up"
-                    break
-                case 128:
-                    this.facing = "right"
-                    break
             }
         }
         shoot(input) {
@@ -112,17 +100,14 @@ window.addEventListener("load", () => {
                     case 32:
                         bulletX = 142
                         speedX = -0.9
-                        this.facing = "left-up"
                         break
                     case 96:
                         bulletX = 176
                         speedX = 0.9
-                        this.facing = "right-up"
                         break
                     case 128:
                         bulletX = 190
                         speedX = 1.8
-                        this.facing = "right"
                         break
                 }
             }
@@ -132,7 +117,6 @@ window.addEventListener("load", () => {
 
     const handleInputs = (e) => {
         let input = e.code
-        console.log(input)
         if (input == "KeyD" || input == "KeyA") {
             player.update(input)
         } else if (input == "Space") {
@@ -161,7 +145,7 @@ window.addEventListener("load", () => {
             this.x += this.speedX
             this.y += this.speedY
             if (this.x < 0 || this.y < 0 || this.x > gameWidth || this.y > gameHeight) {
-                this.markedForDelection = true
+                this.markedForDeletion = true
             }
         }
     }
@@ -184,7 +168,7 @@ window.addEventListener("load", () => {
             bullet.update()
         })
 
-        bulletArray = bulletArray.filter(bullet => !bullet.markedForDelection)
+        bulletArray = bulletArray.filter(bullet => !bullet.markedForDeletion)
     }
 
     class Goose {
@@ -203,10 +187,10 @@ window.addEventListener("load", () => {
             this.speed = 0.2
             this.direction = movingTo
             this.shot = false
-            this.markedforDeletion = false
+            this.markedForDeletion = false
         }
         draw(context) {
-            if (!this.markedforDeletion) {
+            if (!this.markedForDeletion) {
                 context.drawImage(this.img, this.frameX * this.width, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
             }
         }
@@ -235,12 +219,25 @@ window.addEventListener("load", () => {
                 }                
             } else {
                 this.frameY = 96
-                this.y += this.speed
+                this.frameCount = 0
+                this.y += this.speed * 2
             }
             // Delete the goose
-            if (this.y > gameHeight) {
-                this.markedforDeletion = true
+            if (this.y > gameHeight - 64 || this.y < 0) {
+                if (this.y > gameHeight - 64) {
+                    score += 1
+                }
+                this.markedForDeletion = true
             }
+
+            bulletArray.forEach(bullet => {
+                const distanceX = bullet.x - (this.x + this.width / 2)
+                const distanceY = bullet.y - (this.y + this.width / 2)
+                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
+                if (distance < bullet.width + this.width / 3) {
+                    this.shot = true
+                } 
+            })
         }
     }
 
@@ -257,11 +254,16 @@ window.addEventListener("load", () => {
                 imgY = 64
                 movingTo = "left"
             } else {
+                if (spawnX == 128 || spawnX == 160) {
+                    spawnX = 144
+                }
                 imgY = 0
                 movingTo = "up"
             }
             const newGoose = new Goose(spawnX, imgY, movingTo)
+            const newGrass = new MovingGrass(spawnX)
             gooseArray.push(newGoose)
+            grassArray.push(newGrass)
             randomGooseInterval = Math.random() * 4000 + 2500
             gooseTimer = 0
         } else {
@@ -271,7 +273,55 @@ window.addEventListener("load", () => {
             goose.draw(ctx)
             goose.update(deltaTime)
         })
-        gooseArray = gooseArray.filter(goose => !goose.markedforDeletion)
+        gooseArray = gooseArray.filter(goose => !goose.markedForDeletion)
+    }
+
+    class MovingGrass {
+        constructor(spawnX) {
+            this.img = movingGrassImg
+            this.x = spawnX
+            this.y = 160
+            this.width = tileSize
+            this.height = tileSize
+            this.frameX = 0
+            this.frameY = 0
+            this.frameCount = 1
+            this.fps = 5
+            this.frameTimer = 0
+            this.frameInterval = 1000/this.fps
+            this.speed = 0.5
+            this.lifeTimer = 0
+            this.markedForDeletion = false
+        }
+        draw(context) {
+            if (!this.markedForDeletion) {
+                context.drawImage(this.img, this.frameX * this.width, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
+            }
+        }
+        update(deltaTime) {
+            if (this.frameTimer > this.frameInterval) {
+                if (this.frameX >= this.frameCount) {
+                    this.frameX = 0
+                } else {
+                    this.frameX++
+                }
+                this.frameTimer = 0
+            } else {
+                this.frameTimer += deltaTime
+            }
+            this.lifeTimer += deltaTime
+            if (this.lifeTimer >= 4000) {
+                this.markedForDeletion = true
+            }
+        }
+    }
+
+    const handleGrass = (deltaTime) => {
+        grassArray.forEach(grass => {
+            grass.draw(ctx)
+            grass.update(deltaTime)
+        })
+        grassArray = grassArray.filter(grass => !grass.markedForDeletion)
     }
 
     const background = new Background()
@@ -280,9 +330,25 @@ window.addEventListener("load", () => {
     const grass = new Foreground(0, gameHeight - 128, grassImg, 0, gameWidth, 128)
     const player = new Player()
 
+    const displayStats = () => {
+        let countdown = setInterval(() => {
+            time--
+            timeDisplay.innerHTML = time
+            scoreDisplay.innerHTML = score
+            if (time <= 0) gameOver = true
+            if (gameOver) {
+                clearInterval(countdown)
+                timeDisplay.innerHTML = "GAME OVER!"
+                document.getElementById("result").innerHTML = score
+                document.getElementById("game-over").style.display = "block"
+            }
+        }, 1000)
+    }    
+
     const startGame = () => {
         startBtn.removeEventListener("click", startGame)
         window.addEventListener("keydown", handleInputs)
+        displayStats()
         runGame(0)
     }
 
@@ -297,6 +363,7 @@ window.addEventListener("load", () => {
         grass.draw(ctx)
         player.draw(ctx)
         player.update()
+        handleGrass(deltaTime)
         handleBullets()
 
         if (!gameOver) {
