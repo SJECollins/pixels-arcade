@@ -151,6 +151,15 @@ window.addEventListener("load", () => {
             if (this.y < 0 - (this.height * 2) || this.y > gameHeight + (this.height * 2)) {
                 this.markedForDeletion = true
             }
+            if (
+                player.x + player.width - 32 > this.x &&
+                player.x < this.x + this.width - 32 &&
+                player.y + player.height - 8 > this.y &&
+                player.y < this.y + this.height - 8
+            ) {
+                gameOver = true;
+            }
+            
         }
     }
 
@@ -230,6 +239,23 @@ window.addEventListener("load", () => {
         player = new Player(x, y)
         carDisplay.style.display = "none"
         runGame(0)
+        displayStats()
+    }
+
+    const displayStats = (t) => {
+        let startTime = setInterval(() => {
+            time++
+            score += Math.round(2 * velocity)
+            timeDisplay.innerHTML = time
+            scoreDisplay.innerHTML = score
+            if (gameOver) {
+                clearInterval(startTime)
+                timeDisplay.innerHTML = "GAME OVER!"
+                document.getElementById("time").innerHTML = time
+                document.getElementById("result").innerHTML = score
+                document.getElementById("game-over").style.display = "block"
+            }
+        }, 1000)
     }
 
     const background = new Background()
