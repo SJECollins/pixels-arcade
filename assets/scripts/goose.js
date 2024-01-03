@@ -73,29 +73,118 @@ window.addEventListener("load", () => {
         draw(context) {
             context.drawImage(this.img, this.frameX, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
         }
-        shoot() {
-
+        update(input) {
+            if (input == "KeyD" && this.frameX <= 128) {
+                this.frameX += 32
+            } else if (input == "KeyA" && this.frameX >= 0) {
+                this.frameX -= 32
+            }
+            switch (this.frameX) {
+                case 0:
+                    this.facing = "left"
+                    break
+                case 32:
+                    this.facing = "left-up"
+                    break
+                case 64:
+                    this.facing = "up"
+                    break
+                case 96:
+                    this.facing = "right-up"
+                    break
+                case 128:
+                    this.facing = "right"
+                    break
+            }
+        }
+        shoot(input) {
+            let bulletX = 159
+            let bulletY = 228
+            let speedY = -2
+            let speedX = 0
+            if (input == "Space") {
+                this.shooting = true
+                switch (this.frameX) {
+                    case 0:
+                        bulletX = 124
+                        speedX = -1.8
+                        break
+                    case 32:
+                        bulletX = 142
+                        speedX = -0.9
+                        this.facing = "left-up"
+                        break
+                    case 96:
+                        bulletX = 176
+                        speedX = 0.9
+                        this.facing = "right-up"
+                        break
+                    case 128:
+                        bulletX = 190
+                        speedX = 1.8
+                        this.facing = "right"
+                        break
+                }
+            }
+            handleBullets(bulletX, bulletY, speedX, speedY)
         }
     }
 
-    const handleInputs = () => {
-
+    const handleInputs = (e) => {
+        let input = e.code
+        console.log(input)
+        if (input == "KeyD" || input == "KeyA") {
+            player.update(input)
+        } else if (input == "Space") {
+            player.shoot(input)
+        }
     }
 
     class Bullet {
-        constructor() {
-
+        constructor(bulletX, bulletY, speedX, speedY) {
+            this.x = bulletX
+            this.y = bulletY
+            this.speedX = speedX
+            this.speedY = speedY
+            this.width = 2
+            this.height = 2
+            this.color = "black"
+            this.markedForDeletion = false
         }
         draw(context) {
-
+            if (!this.markedForDeletion) {
+                context.fillStyle = this.color
+                context.fillRect(this.x, this.y, this.width, this.height)
+            }
         }
         update() {
-
+            this.x += this.speedX
+            this.y += this.speedY
+            if (this.x < 0 || this.y < 0 || this.x > gameWidth || this.y > gameHeight) {
+                this.markedForDelection = true
+            }
         }
     }
 
-    const handleBullets = () => {
+    const handleBullets = (bulletX, bulletY, speedX, speedY) => {
+        if (bulletInterval <= 0 && player.shooting) {
+            bulletArray.push(new Bullet(bulletX, bulletY, speedX, speedY))
+            bulletInterval += 100
+            player.shooting = false
+        } else if (bulletInterval > 0) {
+            bulletInterval--
+            player.shooting = false
+        } else {
+            bulletInterval = 0
+            player.shooting = false
+        }
 
+        bulletArray.forEach(bullet => {
+            bullet.draw(ctx)
+            bullet.update()
+        })
+
+        bulletArray = bulletArray.filter(bullet => !bullet.markedForDelection)
     }
 
     class Goose {
@@ -159,9 +248,6 @@ window.addEventListener("load", () => {
         let spawnX = 0
         let imgY = 0
         let movingTo = ""
-        console.log("Goose timer: ", gooseTimer)
-        console.log("Goose interval: ", gooseInterval)
-        console.log("Random goose interval: ", randomGooseInterval)
         if (gooseTimer > gooseInterval + randomGooseInterval) {
             spawnX = Math.floor(Math.random() * 9) * 32
             if (spawnX < 96) {
@@ -178,7 +264,6 @@ window.addEventListener("load", () => {
             gooseArray.push(newGoose)
             randomGooseInterval = Math.random() * 4000 + 2500
             gooseTimer = 0
-            console.log("goose spawed")
         } else {
             gooseTimer += deltaTime
         }
@@ -197,6 +282,7 @@ window.addEventListener("load", () => {
 
     const startGame = () => {
         startBtn.removeEventListener("click", startGame)
+        window.addEventListener("keydown", handleInputs)
         runGame(0)
     }
 
@@ -210,6 +296,8 @@ window.addEventListener("load", () => {
         rightTree.draw(ctx)
         grass.draw(ctx)
         player.draw(ctx)
+        player.update()
+        handleBullets()
 
         if (!gameOver) {
             requestAnimationFrame(runGame)
