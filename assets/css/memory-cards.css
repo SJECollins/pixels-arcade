@@ -36,7 +36,7 @@
   -webkit-transition: 0.5s;
   transition: 0.5s;
   border-radius: 10px;
-  background-color: var(--apple-black);
+  background-color: var(--menu-background);
   box-shadow: 0 0 4px 4px var(--shadow);
 }
 
