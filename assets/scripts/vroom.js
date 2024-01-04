@@ -25,8 +25,8 @@ window.addEventListener("load", () => {
     let carDownArray = []
     let carUpTimer = 0
     let carDownTimer = 0
-    let carUpInterval = 10000
-    let carDownInterval = 10000
+    let carUpInterval = 5000
+    let carDownInterval = 5000
     let carUpRandomInterval = Math.random() * 1000 + 3000
     let carDownRandomInterval = Math.random() * 1000 + 3000
     let lastTime = 0
@@ -46,11 +46,14 @@ window.addEventListener("load", () => {
         draw(context) {
             context.drawImage(this.img, this.x, this.y, this.width, this.height)
             context.drawImage(this.img, this.x, this.y - this.height + 1, this.width, this.height)
+            context.drawImage(this.img, this.x, this.y + this.height - 1, this.width, this.height)
         }
         update() {
             this.speed = velocity
             this.y += this.speed
             if (this.y >= this.height) {
+                this.y = 0
+            } else if (this.y < -this.height) {
                 this.y = 0
             }
         }
@@ -179,7 +182,7 @@ window.addEventListener("load", () => {
                 let imageY = Math.random() < 0.5 ? 0 : 64
                 const newCar = new Car(spawnX, spawnY, imageX, imageY, carSpeed, carsImg, true)
                 carUpArray.push(newCar)
-                carUpRandomInterval = Math.random() * 1000 + 2000
+                carUpRandomInterval = Math.random() * 2000 + 2000
                 carUpTimer = 0
             } else {
                 carUpTimer += deltaTime
@@ -187,14 +190,16 @@ window.addEventListener("load", () => {
         }
         if (carDownArray.length < 3) {
             if (carDownTimer > carDownInterval + carDownRandomInterval) {
-                let spawnY = velocity > carSpeed ? -64 : 288
+                let spawnY = velocity < carSpeed + velocity ? -64 : 288
                 let spawnX = Math.random() < 0.5 ? 160 : 224
                 let imageX = images[Math.floor(Math.random() * images.length)]
                 let imageY = Math.random() < 0.5 ? 0 : 64
                 const newCar = new Car(spawnX, spawnY, imageX, imageY, carSpeed, carsDownImg, false)
                 carDownArray.push(newCar)
-                carDownRandomInterval = Math.random() * 1000 + 2000
+                carDownRandomInterval = Math.random() * 2000 + 2000
                 carDownTimer = 0
+                console.log("Car down")
+                console.log(newCar)
             } else {
                 carDownTimer += deltaTime
             }
@@ -264,7 +269,6 @@ window.addEventListener("load", () => {
     const runGame = (timeStamp) => {
         const deltaTime = timeStamp - lastTime
         lastTime = timeStamp
-        console.log(deltaTime)
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
         background.update(input)
