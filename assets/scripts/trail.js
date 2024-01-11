@@ -79,6 +79,7 @@ window.addEventListener("load", () => {
     let hasDog = false
     let cat
     let dog
+    let obstacleName
 
     // How to manage inventory???
     let inventory = []
@@ -537,32 +538,30 @@ window.addEventListener("load", () => {
         spawnedAnimals = spawnedAnimals.filter(animal => !animal.markedForDeletion)
     }
 
-    function approachEvent(e) {
+    function approachEvent(obsName) {
         gameChoices.removeEventListener("click", approachEvent)
         if (e.target && e.target.id == "approach") {
             gameChoices.innerHTML = ""
             gamePopText.innerHTML = ""
-            approachBuilding(obsName)
+            approachBuilding(obstacleName)
         }       
     }
 
     function tradeWater(e) {
         gameChoices.removeEventListener("click", tradeWater)
         if (e.target && e.target.id == "trade") {
-            tradeItem = "water"
             gameChoices.innerHTML = ""
             gamePopText.innerHTML = ""
-            trade(tradeItem)
+            trade("water")
         }    
     }
 
     function tradeFood(e) {
         gameChoices.removeEventListener("click", tradeFood)
         if (e.target && e.target.id == "trade") {
-            tradeItem = "food"
             gameChoices.innerHTML = ""
             gamePopText.innerHTML = ""
-            trade(tradeItem)
+            trade("food")
         }
     }
 
@@ -571,7 +570,7 @@ window.addEventListener("load", () => {
         if (e.target && e.target.id == "help-stranger") {
             gameChoices.innerHTML = ""
             gamePopText.innerHTML = ""
-            helpStranger(obsName)
+            helpStranger(obstacleName)
         }
     }
 
@@ -580,7 +579,7 @@ window.addEventListener("load", () => {
         if (e.target && e.target.id == "get-animal") {
             gameChoices.innerHTML = ""
             gamePopText.innerHTML = ""
-            getAnimal(obsName)
+            getAnimal(obstacleName)
         }
     }
 
@@ -588,6 +587,7 @@ window.addEventListener("load", () => {
     function obstacleEvents(obsType, obsName) {
         // First want to check what type of obstacle - building, people, animal
         // Then trigger the pop up with relevant text
+        obstacleName = obsName
         gameStats.gamePaused = true
         gamePopUp.style.display="block"
         gamePopText.insertAdjacentHTML("afterbegin", `
