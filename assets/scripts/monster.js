@@ -165,17 +165,17 @@ window.addEventListener("load", () => {
         if (obstacle.img == houseImg || obstacle.img == labImg) {
             if (player.x < obstacle.x + obstacle.width && 
                 player.x + player.width > obstacle.x && 
-                player.y < obstacle.y + obstacle.height && 
+                player.y < obstacle.y + obstacle.height - 2 && 
                 player.y + player.height > obstacle.y + tileSize) {
                 return true
             } else {
                 return false
             }
         } else {
-            if (player.x < obstacle.x + obstacle.width && 
-                player.x + player.width > obstacle.x && 
-                player.y < obstacle.y + obstacle.height && 
-                player.y + player.height > obstacle.y) {
+            if (player.x < obstacle.x + obstacle.width - 2 && 
+                player.x + player.width > obstacle.x - 2 && 
+                player.y < obstacle.y + obstacle.height - 2 && 
+                player.y + player.height > obstacle.y + 4) {
                 return true
             } else {
                 return false
