@@ -1,6 +1,7 @@
 window.addEventListener("load", () => {
     const startBtn = document.getElementById("start")
     const resetBtn = document.getElementById("reset")
+    const monsters = document.getElementById("monsters")
 
     const canvas = document.getElementById("canvas")
     const ctx = canvas.getContext("2d")
@@ -28,6 +29,8 @@ window.addEventListener("load", () => {
     playerImg.src = "../assets/images/monster/trainer.png"
     const playerBtlImg = new Image()
     playerBtlImg.src = "../assets/images/monster/playerbtl.png"
+    const pokecubeImg = new Image()
+    pokecubeImg.src = "../assets/images/monster/pokecube.png"
     const snartleImg = new Image()
     snartleImg.src = "../assets/images/monster/fakesquirtle_sprite.png"
 
@@ -37,8 +40,15 @@ window.addEventListener("load", () => {
     const tileSize = 16
     const obstacleArray = []
     const grassArray = []
+    const optionArray = []
     let battle = false
+    let throwing = false
+    let pauseAction = false
     let lastTime = 0
+    let optionIndex = 0
+    let wildPokemon = {}
+    let pokecube = {}
+    let team = []
 
     // Map
     class Background {
@@ -113,7 +123,7 @@ window.addEventListener("load", () => {
         triggerBattle() {
             if (this.moving) {
                 let battleChance = Math.floor(Math.random() * 2000)
-                if (battleChance == 1) {
+                if (battleChance == 1 && !battle && !throwing) {
                     battle = true
                     battleScene()
                 }
@@ -129,6 +139,46 @@ window.addEventListener("load", () => {
             ctx.font = "20px sans-serif"
             ctx.fillStyle = "#081820"
             ctx.fillText(this.lineOne, 32, 228)
+        }
+    }
+
+    class Option {
+        constructor(text, posX, posY, func, pokemon) {
+            this.optionText = text
+            this.x = posX
+            this.y = posY
+            this.executeFunc = func
+            this.selected = false
+            this.pokemon = pokemon
+        }
+        draw(ctx) {
+            ctx.font = "20px sans-serif"
+            ctx.fillStyle = "#081820"
+            ctx.fillText(this.optionText, this.x, this.y)
+            if (this.selected) {
+                ctx.beginPath();
+                ctx.moveTo(32, this.y);
+                ctx.lineTo(128, this.y);
+                ctx.stroke();
+            }
+        }
+        select() {
+            if (this.selected) {
+                if (this.executeFunc == "throwball") {
+                    throwing = true
+                    throwBall(this.pokemon)
+                } else if (this.executeFunc == "runaway") {
+                    optionArray.length = 0
+                    displayMessage.lineOne = "Git gud, chump!"
+                    setTimeout(() => {
+                        displayMessage.lineOne = "You ran like a coward!"
+                    }, 1500)
+                    setTimeout(() => {
+                        battle = false
+                        return firstScene()
+                    }, 3000)
+                }
+            } 
         }
     }
 
@@ -234,6 +284,53 @@ window.addEventListener("load", () => {
         }
     }
 
+    class Pokecube {
+        constructor(pokemon) {
+            this.img = pokecubeImg
+            this.x = gameWidth / 2
+            this.y = gameHeight / 2
+            this.moveX = 2
+            this.moveY = -2
+            this.width = tileSize
+            this.height = tileSize
+            this.stop = false
+            this.pokemon = pokemon
+        }
+        draw(ctx) {
+            ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+        }
+        update() {
+            if (!this.stop) {
+                this.x += this.moveX
+                this.y += this.moveY
+                if (this.x >= gameWidth - 32) {
+                    this.moveX = -2
+                } else if (this.x < 16) {
+                    this.moveX = 2
+                }
+                if (this.y >= gameHeight - 110) {
+                    this.moveY = -2
+                } else if (this.y < 16) {
+                    this.moveY = 2
+                }                
+            }
+        }
+        throw() {
+            if (this.x < wildPokemon.x + wildPokemon.width &&
+                this.x + this.width > wildPokemon.width &&
+                this.y < wildPokemon.y + wildPokemon.height &&
+                this.y + this.height > wildPokemon.y) {
+                    displayMessage.lineOne = "You caught it!"
+                    pauseAction = true
+                    team.push(this.pokemon)
+                } else {
+                    displayMessage.lineOne = "You missed, ya chump!"
+                }
+                this.stop = true
+                endBattle()
+        }
+    }
+
     const checkCollisions = (obstacle) => {
         if (obstacle.img == houseImg || obstacle.img == labImg) {
             if (player.x < obstacle.x + obstacle.width && 
@@ -276,6 +373,35 @@ window.addEventListener("load", () => {
                     this.keys.splice(this.keys.indexOf(e.code), 1)
                     }
             })      
+        }
+    }
+
+    const handleSelectMenu = (e) => {
+        if (e.code === "KeyS" && battle && !throwing) {
+            optionIndex++
+            if (optionIndex > optionArray.length - 1) {
+                optionIndex = 0
+            }
+        } else if (e.code === "KeyD" && battle && !throwing) {
+            optionIndex--
+            if (optionIndex < 0) {
+                optionIndex = optionArray.length - 1
+            }
+        }
+        for (let option in optionArray) {
+            if (option == optionIndex) {
+                optionArray[option].selected = true
+            } else {
+                optionArray[option].selected = false
+            }
+        }
+        if (e.code === "KeyE" && !throwing) {
+            if (optionArray[optionIndex].selected) {
+                optionArray[optionIndex].select()                
+            }
+        }
+        if (e.code == "Space" && throwing) {
+            pokecube.throw()
         }
     }
 
@@ -341,28 +467,44 @@ window.addEventListener("load", () => {
     }
 
     const battleScene = () => {
+        window.addEventListener("keydown", handleSelectMenu)
         background.img = battleBgImg
         obstacleArray.length = 0
         grassArray.length = 0
         const playerBattle = new StaticObject(playerBtlImg, 32, 80, 100, 100)
         obstacleArray.push(playerBattle)
-        const pokemonBattle = new StaticObject(snartleImg, 172, 32, 100, 100)
-        obstacleArray.push(pokemonBattle)
+        wildPokemon = new StaticObject(snartleImg, 172, 32, 100, 100)
+        console.log(wildPokemon)
         displayMessage.lineOne = "A wild Snartle appeared!"
-        setTimeout(() => {
-            displayMessage.lineOne = "You can't catch it!"
-        }, 1500)
-        setTimeout(() => {
-            displayMessage.lineOne = "Git gud, chump!"
-        }, 3000)
-        setTimeout(() => {
-            battle = false
-            return firstScene()
-        }, 4500)
+        const firstOption = new Option("Catch", 32, 250, "throwball", "snartle")
+        optionArray.push(firstOption)
+        const secondOption = new Option("Run Away", 32, 270, "runaway")
+        optionArray.push(secondOption)
     }
 
-    const throwBall = () => {
+    const throwBall = (pokemon) => {
+        battle = false
+        obstacleArray.length = 0
+        wildPokemon.x = 100
+        wildPokemon.y = 32
+        pokecube = new Pokecube(pokemon)
+        displayMessage.lineOne = "Press Space to throw the ball"
+    }
 
+    const endBattle = () => {
+        display()
+        setTimeout(() => {
+            battle = false
+            throwing = false
+            pauseAction = false
+            pokecube = {}
+            wildPokemon = {}
+            firstScene()
+        }, 1500)
+    }
+
+    const handleOptions = (ctx) => {
+        optionArray.forEach(option => option.draw(ctx))
     }
 
     const handleObjects = (ctx) => {
@@ -378,8 +520,11 @@ window.addEventListener("load", () => {
     }
 
     const startGame = () => {
+        startBtn.removeEventListener("click", startGame)
+        startBtn.blur()
+        canvas.focus()
         firstScene()
-        runGame()
+        return runGame()
     }
 
     const background = new Background()
@@ -387,22 +532,38 @@ window.addEventListener("load", () => {
     const input = new InputHandler()
     const displayMessage = new Message()
 
+    const display = () => {
+        for (let monster of team) {
+            monsters.innerHTML = monster + ", "
+        }
+    }
+
     function runGame(timeStamp) {
         const deltaTime = timeStamp - lastTime
         lastTime = timeStamp
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
         handleGrass(ctx, deltaTime)
-        if (!battle) {
+        if (!battle && !throwing) {
             player.draw(ctx, deltaTime)
             player.update(input)            
         }
-        if (battle) {
+        if (battle && !throwing) {
             displayMessage.draw(ctx)
+            handleOptions(ctx)
+            wildPokemon.draw(ctx)
         }
         handleObjects(ctx)
+        if (throwing) {
+            console.log("should be drawing")
+            displayMessage.draw(ctx)
+            if (!pauseAction) {
+                wildPokemon.draw(ctx)
+            }
+            pokecube.draw(ctx)
+            pokecube.update()     
+        }        
         requestAnimationFrame(runGame)
-
     }
 
     startBtn.addEventListener("click", startGame)
