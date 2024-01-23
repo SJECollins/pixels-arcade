@@ -112,7 +112,7 @@ window.addEventListener("load", () => {
         }
         triggerBattle() {
             if (this.moving) {
-                let battleChance = Math.floor(Math.random() * 1000)
+                let battleChance = Math.floor(Math.random() * 2000)
                 if (battleChance == 1) {
                     battle = true
                     battleScene()
@@ -349,6 +349,16 @@ window.addEventListener("load", () => {
         const pokemonBattle = new StaticObject(snartleImg, 172, 32, 100, 100)
         obstacleArray.push(pokemonBattle)
         displayMessage.lineOne = "A wild Snartle appeared!"
+        setTimeout(() => {
+            displayMessage.lineOne = "You can't catch it!"
+        }, 1500)
+        setTimeout(() => {
+            displayMessage.lineOne = "Git gud, chump!"
+        }, 3000)
+        setTimeout(() => {
+            battle = false
+            return firstScene()
+        }, 4500)
     }
 
     const throwBall = () => {
