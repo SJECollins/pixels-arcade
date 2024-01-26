@@ -33,6 +33,26 @@ window.addEventListener("load", () => {
     pokecubeImg.src = "../assets/images/monster/pokecube.png"
     const snartleImg = new Image()
     snartleImg.src = "../assets/images/monster/fakesquirtle_sprite.png"
+    const funguyImg = new Image()
+    funguyImg.src = "../assets/images/monster/funguy.png"
+    const cayenndarImg = new Image()
+    cayenndarImg.src = "../assets/images/monster/cayenndar.png"
+
+
+    const pokemons = [
+        {
+            "name": "Snartle",
+            "img": snartleImg
+        },
+        {
+            "name": "Cayenndar",
+            "img": cayenndarImg
+        },
+        {
+            "name": "funguy",
+            "img": funguyImg
+        }
+    ]
 
 
     const gameWidth = 320
@@ -167,6 +187,7 @@ window.addEventListener("load", () => {
                 if (this.executeFunc == "throwball") {
                     throwing = true
                     throwBall(this.pokemon)
+                    optionArray.length = 0
                 } else if (this.executeFunc == "runaway") {
                     optionArray.length = 0
                     displayMessage.lineOne = "Git gud, chump!"
@@ -473,10 +494,10 @@ window.addEventListener("load", () => {
         grassArray.length = 0
         const playerBattle = new StaticObject(playerBtlImg, 32, 80, 100, 100)
         obstacleArray.push(playerBattle)
-        wildPokemon = new StaticObject(snartleImg, 172, 32, 100, 100)
-        console.log(wildPokemon)
-        displayMessage.lineOne = "A wild Snartle appeared!"
-        const firstOption = new Option("Catch", 32, 250, "throwball", "snartle")
+        let randomPokemon = pokemons[Math.floor(Math.random() * pokemons.length)]
+        wildPokemon = new StaticObject(randomPokemon["img"], 172, 32, 100, 100)
+        displayMessage.lineOne = `A wild ${randomPokemon["name"]} appeared!`
+        const firstOption = new Option("Catch", 32, 250, "throwball", randomPokemon["name"])
         optionArray.push(firstOption)
         const secondOption = new Option("Run Away", 32, 270, "runaway")
         optionArray.push(secondOption)
@@ -533,9 +554,11 @@ window.addEventListener("load", () => {
     const displayMessage = new Message()
 
     const display = () => {
+        let teamList = ""
         for (let monster of team) {
-            monsters.innerHTML = monster + ", "
+            teamList += monster + ", "                
         }
+        monsters.innerHTML = teamList
     }
 
     function runGame(timeStamp) {
@@ -555,7 +578,6 @@ window.addEventListener("load", () => {
         }
         handleObjects(ctx)
         if (throwing) {
-            console.log("should be drawing")
             displayMessage.draw(ctx)
             if (!pauseAction) {
                 wildPokemon.draw(ctx)
