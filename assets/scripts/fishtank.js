@@ -39,22 +39,100 @@ window.addEventListener("load", () => {
         }
     }
 
-    class Fish {
-        constructor(img) {
-            this.img = img
-            this.x = 0
-            this.y = 0
-            this.width = 32
-            this.height = 32
-            this.frameX = 0
-            this.timer = 0
-            this.timerInterval = Math.random() * 4000 + 4000
-            
+    class Tank {
+        constructor(tankImg, tankX, tankY, tankW, tankH) {
+            this.img = tankImg
+            this.x = tankX
+            this.y = tankY
+            this.width = tankW
+            this.height = tankH
+        }
+        draw(context) {
+            context.drawImage(this.img, this.x, this.y, this.width, this.height)
         }
     }
 
+    const addTank = (size) => {
+        switch (size) {
+            case "small":
+                tank = new Tank(smallTankImg, 112, 144, 96, 80);
+                break;
+            case "medium":
+                tank = new Tank(mediumTankImg, 48, 128, 160, 96);
+                break;
+            case "large":
+                tank = new Tank(largeTankImg, 32, 112, 256, 112);
+                break;
+        }
+    }
+
+    class Fish {
+        constructor(startX, startY, fishY, startMoveX, startMoveY) {
+            this.img = fishImg
+            this.x = startX
+            this.y = startY
+            this.width = tileSize
+            this.height = tileSize
+            this.frameX = 0
+            this.frameY = fishY
+            this.flipTimer = 0
+            this.flipInterval = Math.random() * 4000 + 4000
+            this.moveSpeed = Math.floor(Math.random() * 5 + 1) / 10
+            this.moveX = startMoveX
+            this.moveY = startMoveY
+        }
+        draw(context) {
+            context.drawImage(this.img, this.frameX * this.width, this.frameY, this.width, this.height, this.x, this.y, this.width, this.height)
+        }
+        update(deltaTime) {
+            this.x += this.moveX
+            this.y += this.moveY
+            if (this.flipTimer > this.frameInterval) {
+                this.frameX = this.frameX == 0 ? 1 : 0
+                this.flipInterval = Math.random() * 4000 + 4000
+            } else if (this.x <= tank.x) {
+                this.moveX = this.moveSpeed
+                this.moveSpeed = Math.floor(Math.random() * 5 + 1) / 10
+                this.frameX = 1
+            } else if (this.x + this.width >= tank.x + tank.width) {
+                this.moveX = -this.moveSpeed
+                this.moveSpeed = Math.floor(Math.random() * 5 + 1) / 10
+                this.frameX = 0
+            } else {
+                this.flipTimer += deltaTime
+            }
+            if (this.y <= tank.y) {
+                this.moveY = this.moveSpeed
+                this.moveSpeed = Math.floor(Math.random() * 5 + 1) / 10
+            } else if (this.y + this.height >= tank.y + tank.height) {
+                this.moveY = -this.moveSpeed
+                this.moveSpeed = Math.floor(Math.random() * 5 + 1) / 10
+            }
+        }
+    }
+
+    const addFish = (fish) => {
+        let frameY = fish
+        let randomStartX = Math.floor(Math.random() * (160 - 128 + 1)) + 128
+        let randomStartY = Math.floor(Math.random() * (192 - 160 + 1)) + 160
+        let startMoveX = Math.floor(Math.random() * 5 + 1) / 10
+        let startMoveY = Math.floor(Math.random() * 5 + 1) / 10
+        let newFish = new Fish(randomStartX, randomStartY, frameY, startMoveX, startMoveY)
+        fishArray.push(newFish)
+    }
+
+    const handleFish = (deltaTime) => {
+        fishArray.forEach(fish => {
+            fish.draw(ctx)
+            fish.update(deltaTime)
+        })
+    }
+
     const startGame = () => {
+        addTank("small")
+        addFish(32)
         runGame(0)
+
     }
 
     const background = new Background()
@@ -64,6 +142,8 @@ window.addEventListener("load", () => {
         lastTime = timeStamp
         ctx.clearRect(0, 0, gameWidth, gameHeight)
         background.draw(ctx)
+        handleFish(deltaTime)
+        tank.draw(ctx)
 
         requestAnimationFrame(runGame)
     }
