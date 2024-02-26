@@ -538,7 +538,7 @@ window.addEventListener("load", () => {
         spawnedAnimals = spawnedAnimals.filter(animal => !animal.markedForDeletion)
     }
 
-    function approachEvent(obsName) {
+    function approachEvent(e) {
         gameChoices.removeEventListener("click", approachEvent)
         if (e.target && e.target.id == "approach") {
             gameChoices.innerHTML = ""
