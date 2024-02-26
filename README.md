@@ -14,6 +14,8 @@ I'm using the google font Press Start 2P as it is the only font Google offers th
 
 The colours used are primarily a black, beige and some greens.
 
+Has a "Toggle display" button in footer to allow inverting site theme.
+
 ## Slap a Rabbit
 A whack-a-mole clone.
 Coding along with these tutorials:
@@ -201,6 +203,22 @@ Saw an interesting video from [Banana Coding](https://www.youtube.com/watch?v=xb
 
 COULDDO: figure out a way to enlarge canvas on large screens without affecting x,y coords for the click even.
 
+## Codebreaker
+30/12/24
+
+Saw someone made a "Guess the number" game, sort of like a code breaking type thing. So built one. Have to guess a 5 digit code based on some vague clues.
+
+## Vroom Vroom
+03/01/24
+
+Added a driving type game. Scrolling road, changes with speed. Car obstacles spawn (in front or behind depends on speed). Try to stay alive as long as possible. Bonus for speed
+
+## Goose Shoot
+04/01
+
+Don't sue me Nintendo!
+
+
 # General
 ## 02/07/22
 
@@ -229,3 +247,6 @@ Added menu to header for all pages for quicker navigation.
 ## 21/02/23
 
 Updated all the menus to include Blackjack and Apocalypse Trail. Added Blackjack to main menu. Also fixed CSS for menus so home is unordered and games are in ordered list. Was weird having "Home" as #1.
+
+## 01/2024
+CSS refactor to toggle display
