@@ -227,6 +227,11 @@ TODO: add onscreen/mobile controls - arrows? touchscreen?
 
 Just a fishtank simulator. Still in progress. Earn credits by keeping the fish alive. Spend on tanks, fish, some accessories.
 
+## Sudoku
+01/03
+
+Move over old Sudoku game had locally. Could probably do with some tweaking.
+
 
 # General
 ## 02/07/22
