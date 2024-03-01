@@ -65,19 +65,19 @@ const squares = Array.from(document.querySelectorAll("#board div"))
 let invaders = []
 
 // invader arrays?
-invadersOne = [
+const invadersOne = [
   0, 1, 2, 4, 5, 7, 8, 9,
   16, 17, 18, 21, 22, 23,
   30, 32, 34, 35, 37, 39
 ]
 
-invadersTwo = [
+const invadersTwo = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
   15, 16, 19, 20, 23, 24,
   30, 32, 34, 35, 37, 39
 ]
 
-invadersThree = [
+const invadersThree = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
   15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
   30, 31, 32, 33, 34, 35, 36, 37, 38, 39

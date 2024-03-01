@@ -77,7 +77,7 @@
 
 #fire {
   background-color: var(--secondary-background);
-  color: var(--primary-text);
+  color: var(--secondary-text);
   font-weight: 700;
   width: 100px !important;
 }
