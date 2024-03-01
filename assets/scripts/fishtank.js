@@ -35,7 +35,7 @@ window.addEventListener("load", () => {
     let miscArray = []
     let tank = {}
     let lastTime = 0
-    let credits = 0
+    let credits = 100
     let tankHealth = "good"
     let gameOver = false
     let paused = false
@@ -106,7 +106,7 @@ window.addEventListener("load", () => {
                 tank = new Tank(smallTankImg, 112, 144, 96, 80);
                 break;
             case "medium":
-                tank = new Tank(mediumTankImg, 48, 128, 160, 96);
+                tank = new Tank(mediumTankImg, 80, 128, 160, 96);
                 break;
             case "large":
                 tank = new Tank(largeTankImg, 32, 112, 256, 112);
@@ -199,7 +199,7 @@ window.addEventListener("load", () => {
             }
         }
         calculateSpeed() {
-            if (this.health < 5 || this.hungry) {
+            if (this.health < 50 || this.hungry) {
                 return Math.floor(Math.random() * 5 + 1) / 100
             } else {
                 return Math.floor(Math.random() * 5 + 1) / 10
@@ -246,12 +246,10 @@ window.addEventListener("load", () => {
                             fish.hungry = false
                             fish.hungerCounter = 0
                         })
-                        console.log("clicked food")
                     }
 
                     if (this.name == "sponge") {
                         tank.health = 100
-                        console.log("clicked sponge")
                     }
                 }
         }
@@ -274,17 +272,17 @@ window.addEventListener("load", () => {
     class Snail {
         constructor() {
             this.img = snailImg
-            this.frameX = 0
+            this.frameX = 1
             this.x = 160
-            this.y = 222
+            this.y = 204
             this.size = 16
-            this.moveX = 0.02
+            this.moveX = 0.01
             this.moveY = 0
-            this.moveSpeed = 0.02
+            this.moveSpeed = 0.01
             this.horizontal = true
         }
         draw(context) {
-            context.drawImage(this.img, this.frameX * this.size, 0, this.x, this.y, this.size, this.size, this.x, this.y, this.size, this.size)
+            context.drawImage(this.img, this.frameX * this.size, 0, this.size, this.size, this.x, this.y, this.size, this.size)
         }
         update() {
             this.x += this.moveX
@@ -294,19 +292,19 @@ window.addEventListener("load", () => {
                     if (Math.floor(Math.random() * 2) == 0) {
                         this.moveX = 0
                         this.moveY = -this.moveSpeed
-                        this.frameX = 32
+                        this.frameX = 2
                         this.horizontal = false
                     } else {
                         this.moveX = -this.moveSpeed
                         this.moveY = 0
-                        this.frameX = 16
+                        this.frameX = 1
                         this.horizontal = true
                     }
                 } else if (this.x + this.size >= tank.x + tank.width) {
                     if (Math.floor(Math.random() * 2) == 0) {
                         this.moveX = 0
                         this.moveY = -this.moveSpeed
-                        this.frameX = 48
+                        this.frameX = 3
                         this.horizontal = false
                     } else {
                         this.moveX = -this.moveSpeed
@@ -321,9 +319,9 @@ window.addEventListener("load", () => {
                     this.moveY = this.moveSpeed
                     this.horizontal = false
                     if (this.x <= tank.x) {
-                        this.frameX = 64
+                        this.frameX = 4
                     } else if (this.x + this.size >= tank.x + tank.width) {
-                        this.frameX = 80
+                        this.frameX = 5
                     }
                 } else if (this.y + this.size >= tank.y + tank.height) {
                     this.horizontal = true
@@ -364,26 +362,6 @@ window.addEventListener("load", () => {
         updateGame()
         runGame(0)
         document.getElementById("options").style.display = "block"
-    }
-
-    const background = new Background()
-
-    const runGame = (timeStamp) => {
-        const deltaTime = timeStamp - lastTime
-        lastTime = timeStamp
-        ctx.clearRect(0, 0, gameWidth, gameHeight)
-        background.draw(ctx)
-        handleFish(deltaTime)
-        tank.draw(ctx)
-        tank.update(deltaTime)
-        if (snailArray.length > 0) {
-            handleSnails(ctx)
-        }
-        if (miscArray.length > 0) {
-            handleMisc(ctx)
-        }
-
-        requestAnimationFrame(runGame)
     }
 
     const displayMessage = (message) => {
@@ -516,10 +494,33 @@ window.addEventListener("load", () => {
     addListeners()
     for (let cancelBtn of cancelBtns) {
         cancelBtn.addEventListener("click", () => {
-            removeListeners()
+            addListeners()
+            paused = false
             cancelBtn.parentNode.parentNode.style.display = "none"
         })
     }
+
+    const background = new Background()
+
+    const runGame = (timeStamp) => {
+        const deltaTime = timeStamp - lastTime
+        lastTime = timeStamp
+        ctx.clearRect(0, 0, gameWidth, gameHeight)
+        background.draw(ctx)
+        if (!paused) {
+            handleFish(deltaTime)
+            if (snailArray.length > 0) {
+                handleSnails(ctx)
+            }
+            tank.draw(ctx)
+            tank.update(deltaTime)
+            if (miscArray.length > 0) {
+                handleMisc(ctx)
+            }            
+        }
+        requestAnimationFrame(runGame)
+    }
+
     startBtn.addEventListener("click", startGame)
     resetBtn.addEventListener("click", () => {
         location.reload()
