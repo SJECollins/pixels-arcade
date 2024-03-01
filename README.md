@@ -1,4 +1,4 @@
-# Javascript Game Project
+# Pixel's Arcade
 
 A practice project to combine HTML, CSS and vanilla JavaScript.
 This is for educational purposes and purely for learning and reflection as I work through some tutorials. Also, it's a bit of a refresher on HTML and CSS.
@@ -258,4 +258,9 @@ Added menu to header for all pages for quicker navigation.
 Updated all the menus to include Blackjack and Apocalypse Trail. Added Blackjack to main menu. Also fixed CSS for menus so home is unordered and games are in ordered list. Was weird having "Home" as #1.
 
 ## 01/2024
+
 CSS refactor to toggle display
+
+## 03/01/2024
+
+Renamed the repository. JavaScript Game Project was annoying.
