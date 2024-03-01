@@ -211,12 +211,21 @@ Saw someone made a "Guess the number" game, sort of like a code breaking type th
 ## Vroom Vroom
 03/01/24
 
-Added a driving type game. Scrolling road, changes with speed. Car obstacles spawn (in front or behind depends on speed). Try to stay alive as long as possible. Bonus for speed
+Added a driving type game. Scrolling road, changes with speed. Car obstacles spawn (in front or behind depends on speed). Try to stay alive as long as possible. Bonus for speed.
+
+TODO: add onscreen/mobile controls - arrows would probably do
 
 ## Goose Shoot
 04/01
 
 Don't sue me Nintendo!
+
+TODO: add onscreen/mobile controls - arrows? touchscreen?
+
+## Fishtank Sim
+01/03
+
+Just a fishtank simulator. Still in progress. Earn credits by keeping the fish alive. Spend on tanks, fish, some accessories.
 
 
 # General
