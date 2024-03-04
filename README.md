@@ -265,7 +265,3 @@ Updated all the menus to include Blackjack and Apocalypse Trail. Added Blackjack
 ## 01/2024
 
 CSS refactor to toggle display
-
-## 03/01/2024
-
-Renamed the repository. JavaScript Game Project was annoying.
