@@ -22,13 +22,21 @@ let lastTime = 0
 class Pen {
     constructor(posX, posY) {
         this.img = penImg
+        this.sheepImg = sheepImg
         this.x = posX
         this.y = posY
         this.width = 64
         this.height = 32
+        this.pennedSheep = 0
+        this.gap = 0
     }
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+        if (this.pennedSheep > 0) {
+            for (let i = 0; i < this.pennedSheep; i++) {
+                ctx.drawImage(this.sheepImg, this.x + (i * 6), this.y, 16, 16)
+            }
+        }
     }
     penSheep(sheeps) {
         sheeps.forEach(sheep => {
@@ -37,7 +45,7 @@ class Pen {
                 sheep.position.y >= this.y &&
                 sheep.position.y <= this.y + this.height) {
                     sheep.penned = true
-                    console.log("penned")
+                    this.pennedSheep++
                 }
         })
     }
@@ -53,14 +61,11 @@ class Flock {
         }
     }
     draw(ctx) {
-        this.sheeps.forEach(sheep => {
-            if (!sheep.penned) {
-                sheep.draw(ctx)
-            }
-        })
+        this.sheeps.forEach(sheep => sheep.draw(ctx))
     }
     update() {
         this.sheeps.forEach(sheep => sheep.update(this.sheeps))
+        this.sheeps = this.sheeps.filter(sheep => !sheep.penned)
     }
 }
 
