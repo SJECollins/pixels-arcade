@@ -4,11 +4,44 @@ const resetBtn = document.getElementById("reset")
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
 
+const penImg = new Image()
+penImg.src = "../assets/images/sheepdog/pen.png"
+const sheepImg = new Image()
+sheepImg.src = "../assets/images/sheepdog/sheep.png"
+const dogImg = new Image()
+dogImg.src = "../assets/images/sheepdog/dog.png"
+
 const gameWidth = 320
 const gameHeight = 320
 
 let flock = {}
+let dog = {}
+let pen = {}
 let lastTime = 0
+
+class Pen {
+    constructor(posX, posY) {
+        this.img = penImg
+        this.x = posX
+        this.y = posY
+        this.width = 64
+        this.height = 32
+    }
+    draw(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+    }
+    penSheep(sheeps) {
+        sheeps.forEach(sheep => {
+            if (sheep.position.x >= this.x &&
+                sheep.position.x <= this.x + this.width &&
+                sheep.position.y >= this.y &&
+                sheep.position.y <= this.y + this.height) {
+                    sheep.penned = true
+                    console.log("penned")
+                }
+        })
+    }
+}
 
 class Flock {
     constructor(numSheep) {
@@ -20,7 +53,11 @@ class Flock {
         }
     }
     draw(ctx) {
-        this.sheeps.forEach(sheep => sheep.draw(ctx))
+        this.sheeps.forEach(sheep => {
+            if (!sheep.penned) {
+                sheep.draw(ctx)
+            }
+        })
     }
     update() {
         this.sheeps.forEach(sheep => sheep.update(this.sheeps))
@@ -29,6 +66,7 @@ class Flock {
 
 class Sheep {
     constructor(posX, posY) {
+        this.img = sheepImg
         this.position = { x: posX, y: posY }
         this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 }
         this.acceleration = { x: 0, y: 0 }
@@ -40,14 +78,17 @@ class Sheep {
         this.cohesionFactor = 0.05
         this.separationFactor = 2.0
         this.isStopped = false
+        this.rotationOffset = -Math.PI / 2
+        this.penned = false
     }
 
     draw(ctx) {
-        ctx.beginPath()
-        ctx.arc(this.position.x, this.position.y, 5, 0, Math.PI * 2)
-        ctx.fillStyle = "white"
-        ctx.fill()
-        ctx.closePath()
+        const angle = Math.atan2(this.velocity.y, this.velocity.x) + this.rotationOffset;
+        ctx.save();
+        ctx.translate(this.position.x, this.position.y);
+        ctx.rotate(angle);
+        ctx.drawImage(this.img, -this.img.width / 2, -this.img.height / 2);
+        ctx.restore();
     }
 
     update(flock) {
@@ -192,52 +233,137 @@ class Sheep {
             this.acceleration.y += forceY
         }
     }
+
+    moveAwayFromSheepdog(sheepdog) {
+        const distanceX = this.position.x - sheepdog.position.posX
+        const distanceY = this.position.y - sheepdog.position.posY
+        const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2)
+    
+        const fleeX = distanceX / distance
+        const fleeY = distanceY / distance
+    
+        const scaledFleeX = fleeX * 0.5
+        const scaledFleeY = fleeY * 0.5
+        this.position.x += scaledFleeX
+        this.position.y += scaledFleeY
+    }
 }
 
 class Sheepdog {
     constructor(posX, posY) {
+        this.img = dogImg
         this.position = {posX, posY}
-        this.maxSpeed = 5
+        this.maxSpeed = 2
+        this.moveX = 0
+        this.moveY = 0
+        this.direction = 0
     }
     draw(ctx) {
-        ctx.beginPath()
-        ctx.arc(this.position.posX, this.position.posY, 5, 0, Math.PI * 2)
-        ctx.fillStyle = "black"
-        ctx.fill()
-        ctx.closePath()
+        ctx.save();
+        ctx.translate(this.position.posX, this.position.posY);
+        ctx.rotate(this.direction)
+        ctx.drawImage(this.img, -8, -8, 16, 16);
+        ctx.restore();
     }
-    setPosition(x, y) {
-        this.position.x = x
-        this.position.y = y
+    handleInput(input) {
+        const prevPosX = this.position.posX
+        const prevPosY = this.position.posY
+
+        if (input.keys.indexOf("KeyD") > -1 || input.keys.indexOf("right") > -1) {
+            this.moveX = 1
+            this.frameY = 32
+            this.direction = -Math.PI / 2
+        } else if (input.keys.indexOf("KeyA") > -1 || input.keys.indexOf("left") > -1) {
+            this.moveX = -1
+            this.frameY = 64
+            this.direction = Math.PI / 2
+        } else if (input.keys.indexOf("KeyW") > -1 || input.keys.indexOf("up") > -1) {
+            this.moveY = -1
+            this.frameY = 96
+            this.direction = Math.PI
+        } else if (input.keys.indexOf("KeyS") > -1 || input.keys.indexOf("down") > -1) {
+            this.moveY = 1
+            this.frameY = 0
+            this.direction = 0
+        } else {
+            this.moveX = 0
+            this.moveY = 0
+        }
+
+        this.position.posX += this.moveX
+        this.position.posY += this.moveY
+
+        this.position.posX = Math.max(0, Math.min(gameWidth, this.position.posX))
+        this.position.posY = Math.max(0, Math.min(gameHeight, this.position.posY))
+
+        if (this.position.posX !== prevPosX || this.position.posY !== prevPosY) {
+            this.moveX = 0
+            this.moveY = 0
+        }
     }
     moveSheep(sheeps) {
-        const influenceRadius = 20
+        const influenceRadius = 40;
+        const maxInfluenceDistance = 100;
+        const maxInfluenceFactor = 1.5;
 
+        let scaredSheep = null;
+    
         sheeps.forEach(sheep => {
-            const distanceX = sheep.position.x - this.position.x ** 2
-            const distanceY = sheep.position.y - this.position.y ** 2
-            const distance = Math.sqrt(distanceX + distanceY)
-
+            const distanceX = sheep.position.x - this.position.posX;
+            const distanceY = sheep.position.y - this.position.posY;
+            const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+    
             if (distance < influenceRadius) {
-                const desiredVelocity = {
-                    x: sheep.position.x - this.position.x,
-                    y: sheep.position.y - this.position.y
+                sheep.moveAwayFromSheepdog(this)
+    
+                sheep.maxSpeed *= maxInfluenceFactor
+    
+                setTimeout(() => {
+                    sheep.maxSpeed /= maxInfluenceFactor
+                }, 1000)
+    
+                if (!scaredSheep || distance < scaredSheep.distanceToDog) {
+                    scaredSheep = { sheep, distanceToDog: distance }
                 }
-
-                const magnitude = Math.sqrt(desiredVelocity.x ** 2 + desiredVelocity.y ** 2)
-                desiredVelocity.x /= magnitude
-                desiredVelocity.y /= magnitude
-
-                desiredVelocity.x *= this.maxSpeed
-                desiredVelocity.y *= this.maxSpeed
-
-                const steer = {
-                    x: desiredVelocity.x - sheep.velocity.x,
-                    y: desiredVelocity.y - sheep.velocity.y
-                }
-                sheep.acceleration.x += steer.x
-                sheep.acceleration.y += steer.y
             }
+        })
+
+        if (scaredSheep) {
+            sheeps.forEach(otherSheep => {
+                if (otherSheep !== scaredSheep.sheep) {
+                    const distanceToScaredSheep = Math.sqrt(
+                        (otherSheep.position.x - scaredSheep.sheep.position.x) ** 2 +
+                        (otherSheep.position.y - scaredSheep.sheep.position.y) ** 2
+                    )
+                    if (distanceToScaredSheep < maxInfluenceDistance) {
+                        const influenceFactor = 1 - distanceToScaredSheep / maxInfluenceDistance
+                        otherSheep.alignmentFactor = maxInfluenceFactor * influenceFactor
+                    }
+                }
+            })
+        }
+    }
+}
+
+class InputHandler {
+    constructor() {
+        this.keys = []
+        window.addEventListener("keydown", (e) => {
+            if ((e.code == "KeyW" ||
+                 e.code == "KeyD" ||
+                 e.code == "KeyS" ||
+                 e.code == "KeyA" )
+                 && this.keys.indexOf(e.code) === -1) {
+                    this.keys.push(e.code)
+                 }
+        })
+        window.addEventListener("keyup", (e) => {
+            if (e.code == "KeyW" ||
+                e.code == "KeyD" ||
+                e.code == "KeyS" ||
+                e.code == "KeyA" ) {
+                this.keys.splice(this.keys.indexOf(e.code), 1)
+                }
         })
     }
 }
@@ -245,14 +371,22 @@ class Sheepdog {
 const startGame = () => {
     // Create the sheep, dog and pen
     flock = new Flock(8)
+    dog = new Sheepdog(160, 300)
+    pen = new Pen(128, 0)
     runGame()
 }
 
+const input = new InputHandler()
+
 const runGame = () => {
     ctx.clearRect(0, 0, gameWidth, gameHeight)
-
+    pen.draw(ctx)
+    pen.penSheep(flock.sheeps)
     flock.update()
     flock.draw(ctx)
+    dog.moveSheep(flock.sheeps)
+    dog.handleInput(input)
+    dog.draw(ctx)
 
     requestAnimationFrame(runGame)
 }
