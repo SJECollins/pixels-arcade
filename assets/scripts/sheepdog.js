@@ -29,150 +29,170 @@ class Flock {
 
 class Sheep {
     constructor(posX, posY) {
-        this.position = { posX, posY }
+        this.position = { x: posX, y: posY }
         this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 }
         this.acceleration = { x: 0, y: 0 }
-        this.maxSpeed = 0.5
+        this.maxSpeed = 0.4
+        this.maxForce = 0.05
+        this.neighborRadius = 50
+        this.avoidRadius = 20
+        this.alignmentFactor = 0.5
+        this.cohesionFactor = 0.05
+        this.separationFactor = 2.0
+        this.isStopped = false
     }
 
     draw(ctx) {
         ctx.beginPath()
-        ctx.arc(this.position.posX, this.position.posY, 5, 0, Math.PI * 2)
+        ctx.arc(this.position.x, this.position.y, 5, 0, Math.PI * 2)
         ctx.fillStyle = "white"
         ctx.fill()
         ctx.closePath()
     }
 
     update(flock) {
-        const alignmentDistance = 20
-        const separationDistance = 20
-        const cohesionDistance = 12
+        this.acceleration = { x: 0, y: 0 }
+        this.separation(flock)
+        this.alignment(flock)
+        this.cohesion(flock)
 
-        const alignmentForce = this.align(flock, alignmentDistance);
-        const separationForce = this.separate(flock, separationDistance);        
-        const cohesionForce = this.cohesion(flock, cohesionDistance);
-    
-        this.acceleration.x += separationForce.x + alignmentForce.x + cohesionForce.x;
-        this.acceleration.y += separationForce.y + alignmentForce.y + cohesionForce.y;
-    
-        this.velocity.x += this.acceleration.x;
-        this.velocity.y += this.acceleration.y;
-    
-        const speed = Math.sqrt(this.velocity.x ** 2 + this.velocity.y ** 2);
+        if (!this.isStopped) {
+            const speedVariationFactor = Math.random() * 0.2 + 0.9
+            this.velocity.x *= speedVariationFactor
+            this.velocity.y *= speedVariationFactor
+        }
+
+        const stopProbability = 0.01
+        if (!this.isStopped && Math.random() < stopProbability) {
+            this.isStopped = true
+        }
+
+        if (this.isStopped) {
+            const startProbability = 0.1
+            if (Math.random() < startProbability) {
+                this.isStopped = false
+                this.velocity = { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 }
+            }
+        }
+
+        this.velocity.x += this.acceleration.x
+        this.velocity.y += this.acceleration.y
+
+        const speed = Math.sqrt(this.velocity.x ** 2 + this.velocity.y ** 2)
         if (speed > this.maxSpeed) {
-            this.velocity.x = (this.velocity.x / speed) * this.maxSpeed;
-            this.velocity.y = (this.velocity.y / speed) * this.maxSpeed;
+            this.velocity.x = (this.velocity.x / speed) * this.maxSpeed
+            this.velocity.y = (this.velocity.y / speed) * this.maxSpeed
         }
-    
-        this.position.posX += this.velocity.x;
-        this.position.posY += this.velocity.y;
-    
-        this.acceleration.x = 0;
-        this.acceleration.y = 0;
 
-        if (this.position.posX < 0) {
-            this.position.posX = 0
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
+
+        if (this.position.x < 0) {
+            this.position.x = 0
             this.velocity.x *= -1
-        } else if (this.position.posX > gameWidth) {
-            this.position.posX = gameWidth
+        } else if (this.position.x > canvas.width) {
+            this.position.x = canvas.width
             this.velocity.x *= -1
         }
     
-        if (this.position.posY < 0) {
-            this.position.posY = 0
+        if (this.position.y < 0) {
+            this.position.y = 0
             this.velocity.y *= -1
-        } else if (this.position.posY > gameHeight) {
-            this.position.posY = gameHeight
+        } else if (this.position.y > canvas.height) {
+            this.position.y = canvas.height
             this.velocity.y *= -1
         }
     }
 
-    align(flock, alignmentDistance) {
-        let totalVelX = 0;
-        let totalVelY = 0;
-        let totalNeighbors = 0;
-    
-        flock.forEach(sheep => {
-            if (sheep !== this) {
-                const distance = Math.sqrt(
-                    (sheep.position.posX - this.position.posX) ** 2 +
-                    (sheep.position.posY - this.position.posY) ** 2
-                );
-    
-                if (distance < alignmentDistance) {
-                    totalVelX += sheep.velocity.x;
-                    totalVelY += sheep.velocity.y;
-                    totalNeighbors++;
-                }
+    separation(flock) {
+        let moveX = 0
+        let moveY = 0
+        let count = 0
+
+        for (const otherSheep of flock) {
+            const distanceX = otherSheep.position.x - this.position.x
+            const distanceY = otherSheep.position.y - this.position.y
+            const distanceSq = distanceX * distanceX + distanceY * distanceY
+
+            if (distanceSq > 0 && distanceSq < this.avoidRadius ** 2) {
+                moveX -= distanceX
+                moveY -= distanceY
+                count++
             }
-        });
-    
-        if (totalNeighbors > 0) {
-            const avgVelX = totalVelX / totalNeighbors;
-            const avgVelY = totalVelY / totalNeighbors;
-    
-            return { x: avgVelX, y: avgVelY };
-        } else {
-            return { x: 0, y: 0 };
+        }
+
+        if (count > 0) {
+            moveX /= count
+            moveY /= count
+            const magnitude = Math.sqrt(moveX * moveX + moveY * moveY)
+            this.applyForce(moveX / magnitude, moveY / magnitude, this.separationFactor)
         }
     }
-    
-    cohesion(flock, cohesionDistance) {
-        let centerX = 0;
-        let centerY = 0;
-        let totalNeighbors = 0;
-    
-        flock.forEach(sheep => {
-            if (sheep !== this) {
-                const distance = Math.sqrt(
-                    (sheep.position.posX - this.position.posX) ** 2 +
-                    (sheep.position.posY - this.position.posY) ** 2
-                );
-    
-                if (distance < cohesionDistance) {
-                    centerX += sheep.position.posX;
-                    centerY += sheep.position.posY;
-                    totalNeighbors++;
-                }
+
+    alignment(flock) {
+        let avgVelocityX = 0
+        let avgVelocityY = 0
+        let count = 0
+
+        for (const otherSheep of flock) {
+            const distanceX = otherSheep.position.x - this.position.x
+            const distanceY = otherSheep.position.y - this.position.y
+            const distanceSq = distanceX * distanceX + distanceY * distanceY
+
+            if (distanceSq > 0 && distanceSq < this.neighborRadius ** 2) {
+                avgVelocityX += otherSheep.velocity.x
+                avgVelocityY += otherSheep.velocity.y
+                count++
             }
-        });
-    
-        if (totalNeighbors > 0) {
-            centerX /= totalNeighbors;
-            centerY /= totalNeighbors;
-    
-            const cohesionVectorX = centerX - this.position.posX;
-            const cohesionVectorY = centerY - this.position.posY;
-    
-            return { x: cohesionVectorX, y: cohesionVectorY };
-        } else {
-            return { x: 0, y: 0 };
+        }
+
+        if (count > 0) {
+            avgVelocityX /= count
+            avgVelocityY /= count
+            const magnitude = Math.sqrt(avgVelocityX * avgVelocityX + avgVelocityY * avgVelocityY)
+            this.applyForce(avgVelocityX / magnitude, avgVelocityY / magnitude, this.alignmentFactor)
         }
     }
-    
-    separate(flock, separationDistance) {
-        let separationVectorX = 0;
-        let separationVectorY = 0;
-    
-        flock.forEach(sheep => {
-            if (sheep !== this) {
-                const distance = Math.sqrt(
-                    (sheep.position.posX - this.position.posX) ** 2 +
-                    (sheep.position.posY - this.position.posY) ** 2
-                );
-    
-                if (distance < separationDistance) {
-                    separationVectorX += (this.position.posX - sheep.position.posX) / distance;
-                    separationVectorY += (this.position.posY - sheep.position.posY) / distance;
-                }
+
+    cohesion(flock) {
+        let avgPosX = 0
+        let avgPosY = 0
+        let count = 0
+
+        for (const otherSheep of flock) {
+            const distanceX = otherSheep.position.x - this.position.x
+            const distanceY = otherSheep.position.y - this.position.y
+            const distanceSq = distanceX * distanceX + distanceY * distanceY
+
+            if (distanceSq > 0 && distanceSq < this.neighborRadius ** 2) {
+                avgPosX += otherSheep.position.x
+                avgPosY += otherSheep.position.y
+                count++
             }
-        });
-    
-        return { x: separationVectorX, y: separationVectorY };
+        }
+
+        if (count > 0) {
+            avgPosX /= count
+            avgPosY /= count
+            const steerX = avgPosX - this.position.x
+            const steerY = avgPosY - this.position.y
+            const magnitude = Math.sqrt(steerX * steerX + steerY * steerY)
+            this.applyForce(steerX / magnitude, steerY / magnitude, this.cohesionFactor)
+        }
     }
-    
+
+    applyForce(forceX, forceY, factor) {
+        const magnitude = Math.sqrt(forceX * forceX + forceY * forceY)
+        if (magnitude > 0) {
+            forceX /= magnitude
+            forceY /= magnitude
+            forceX *= this.maxForce * factor
+            forceY *= this.maxForce * factor
+            this.acceleration.x += forceX
+            this.acceleration.y += forceY
+        }
+    }
 }
-
 
 class Sheepdog {
     constructor(posX, posY) {
