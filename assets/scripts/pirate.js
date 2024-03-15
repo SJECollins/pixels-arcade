@@ -22,6 +22,8 @@ const tileSize = 32
 let wind = {}
 let playerShip = {}
 let enemyShips = []
+let playerBalls = []
+let enemyBalls = []
 let lastTime = 0
 
 class Background {
@@ -116,8 +118,8 @@ class Background {
 class Player {
     constructor() {
         this.img = playerImg
-        this.x = 0
-        this.y = 0
+        this.x = gameWidth / 2
+        this.y = gameHeight / 2
         this.width = tileSize * 2
         this.frameX = 0
         this.speed = 0
@@ -125,6 +127,9 @@ class Player {
         this.angle = 0
         this.sailsChangeTimer = 0
         this.sailsChangeInterval = 1000
+        this.cannonTimer = 0
+        this.cannonInterval = 1000
+        this.health = 100
     }
     draw(ctx) {
         ctx.save()
@@ -156,9 +161,18 @@ class Player {
             this.sailsChangeTimer += deltaTime
         }
 
-        if (input.keys.includes("Space")) {
-            console.log("Fire")
+        if (this.cannonTimer > this.cannonInterval) {
+            if (input.keys.includes("KeyE")) {
+                fireCannon(this, "right")
+            }
+            if (input.keys.includes("KeyQ")) {
+                fireCannon(this, "left")
+            }
+            this.cannonTimer = 0
+        } else {
+            this.cannonTimer += deltaTime
         }
+
     }
 }
 
@@ -172,6 +186,7 @@ class EnemyShip {
         this.frameX = 0
         this.speed = 0
         this.sails = 0
+        this.health = 100
     }
     draw(ctx) {}
     update() {}
@@ -213,6 +228,70 @@ class Wind {
     }
 }
 
+class CannonBall {
+    constructor(x, y, angle) {
+        this.x = x
+        this.y = y
+        this.angle = angle
+        this.speed = 1
+        this.radius = 2
+        this.color = "black"
+        this.dx = Math.cos(this.angle) * this.speed
+        this.dy = Math.sin(this.angle) * this.speed
+        this.markForDeletion = false
+    }
+
+    draw(ctx) {
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+        ctx.fillStyle = this.color
+        ctx.fill()
+        ctx.closePath()
+    }
+    move() {
+        this.x += this.dx
+        this.y += this.dy
+
+        if (this.x > gameWidth || this.x < 0 || this.y > gameHeight || this.y < 0) {
+            this.markForDeletion = true
+        }
+    }
+}
+
+const fireCannon = (ship, direction) => {
+    const ballOffset = (direction == "left") ? -20 : 20
+    const ballPositions = [-8, 4, 16]
+    const angleAdjusted = (direction == "left") ? Math.PI : 0
+
+    for (let i = 0; i < ballPositions.length; i++) {
+        const cannonX = ship.x + ballOffset * Math.cos(ship.angle) - ballPositions[i] * Math.sin(ship.angle)
+        const cannonY = ship.y + ballOffset * Math.sin(ship.angle) + ballPositions[i] * Math.cos(ship.angle)
+        
+        const firingAngle = ship.angle + angleAdjusted
+        
+        const cannonBall = new CannonBall(cannonX, cannonY, firingAngle)
+        if (ship == playerShip) {
+            playerBalls.push(cannonBall)
+        } else {
+            enemyBalls.push(cannonBall)
+        }
+    }
+}
+
+const handleBalls = (ctx) => {
+    playerBalls.forEach(ball => {
+        ball.draw(ctx)
+        ball.move()
+    })
+    playerBalls = playerBalls.filter(ball => !ball.markForDeletion)
+    enemyBalls.forEach(ball => {
+        ball.draw(ctx)
+        ball.move()
+    })
+    enemyBalls = enemyBalls.filter(ball => !ball.markForDeletion)
+}
+
+
 class InputHandler {
     constructor() {
         this.keys = []
@@ -221,7 +300,8 @@ class InputHandler {
                  e.code == "KeyD" ||
                  e.code == "KeyS" ||
                  e.code == "KeyA" ||
-                 e.code == "Space")
+                 e.code == "KeyE" ||
+                 e.code == "KeyQ")
                  && this.keys.indexOf(e.code) === -1) {
                     this.keys.push(e.code)
                  }
@@ -231,7 +311,8 @@ class InputHandler {
                 e.code == "KeyD" ||
                 e.code == "KeyS" ||
                 e.code == "KeyA" ||
-                e.code == "Space") {
+                e.code == "KeyE" ||
+                e.code == "KeyQ") {
                 this.keys.splice(this.keys.indexOf(e.code), 1)
                 }
         })
@@ -261,6 +342,8 @@ const runGame = (timeStamp) => {
 
     playerShip.draw(ctx)
     playerShip.update(deltaTime)
+
+    handleBalls(ctx)
     requestAnimationFrame(runGame)
 }
 
