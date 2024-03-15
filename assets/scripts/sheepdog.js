@@ -17,7 +17,8 @@ const gameHeight = 320
 let flock = {}
 let dog = {}
 let pen = {}
-let lastTime = 0
+let time = 0
+let gameOver = false
 
 class Pen {
     constructor(posX, posY) {
@@ -34,7 +35,7 @@ class Pen {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
         if (this.pennedSheep > 0) {
             for (let i = 0; i < this.pennedSheep; i++) {
-                ctx.drawImage(this.sheepImg, this.x + (i * 6), this.y, 16, 16)
+                ctx.drawImage(this.sheepImg, this.x + (i * 7), this.y, 16, 16)
             }
         }
     }
@@ -46,6 +47,13 @@ class Pen {
                 sheep.position.y <= this.y + this.height) {
                     sheep.penned = true
                     this.pennedSheep++
+                    document.getElementById("penned-sheep").innerHTML = this.pennedSheep
+                    document.getElementById("loose-sheep").innerHTML = 8 - this.pennedSheep
+                    if (this.pennedSheep == 8) {
+                        setTimeout(() => {
+                            gameOver = true
+                        }, 1000)
+                    }
                 }
         })
     }
@@ -247,10 +255,12 @@ class Sheep {
         const fleeX = distanceX / distance
         const fleeY = distanceY / distance
     
-        const scaledFleeX = fleeX * 0.5
-        const scaledFleeY = fleeY * 0.5
-        this.position.x += scaledFleeX
-        this.position.y += scaledFleeY
+        const maxVelocityChange = 0.05
+        const scaledFleeX = fleeX * maxVelocityChange
+        const scaledFleeY = fleeY * maxVelocityChange
+        
+        this.velocity.x += scaledFleeX
+        this.velocity.y += scaledFleeY
     }
 }
 
@@ -264,11 +274,11 @@ class Sheepdog {
         this.direction = 0
     }
     draw(ctx) {
-        ctx.save();
-        ctx.translate(this.position.posX, this.position.posY);
+        ctx.save()
+        ctx.translate(this.position.posX, this.position.posY)
         ctx.rotate(this.direction)
-        ctx.drawImage(this.img, -8, -8, 16, 16);
-        ctx.restore();
+        ctx.drawImage(this.img, -8, -8, 16, 16)
+        ctx.restore()
     }
     handleInput(input) {
         const prevPosX = this.position.posX
@@ -307,16 +317,17 @@ class Sheepdog {
         }
     }
     moveSheep(sheeps) {
-        const influenceRadius = 40;
-        const maxInfluenceDistance = 100;
-        const maxInfluenceFactor = 1.5;
+        const influenceRadius = 50
+        const maxInfluenceDistance = 100
+        const maxInfluenceFactor = 1.1
+        const fleeAlignmentFactor = 0.2
 
-        let scaredSheep = null;
+        let scaredSheep = null
     
         sheeps.forEach(sheep => {
-            const distanceX = sheep.position.x - this.position.posX;
-            const distanceY = sheep.position.y - this.position.posY;
-            const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+            const distanceX = sheep.position.x - this.position.posX
+            const distanceY = sheep.position.y - this.position.posY
+            const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2)
     
             if (distance < influenceRadius) {
                 sheep.moveAwayFromSheepdog(this)
@@ -342,7 +353,7 @@ class Sheepdog {
                     )
                     if (distanceToScaredSheep < maxInfluenceDistance) {
                         const influenceFactor = 1 - distanceToScaredSheep / maxInfluenceDistance
-                        otherSheep.alignmentFactor = maxInfluenceFactor * influenceFactor
+                        otherSheep.alignmentFactor = fleeAlignmentFactor * influenceFactor
                     }
                 }
             })
@@ -373,12 +384,25 @@ class InputHandler {
     }
 }
 
+const handleDisplay = () => {
+    let updateDisplay = setInterval(() => {
+        time++
+        document.getElementById("timer").innerHTML = time
+        if (gameOver) clearInterval(updateDisplay)
+    }, 1000)
+}
+
 const startGame = () => {
-    // Create the sheep, dog and pen
     flock = new Flock(8)
     dog = new Sheepdog(160, 300)
     pen = new Pen(128, 0)
+    handleDisplay()
     runGame()
+}
+
+const endGame = () => {
+    document.getElementById("game-over").style.display = "block"
+    document.getElementById("result").innerHTML = time
 }
 
 const input = new InputHandler()
@@ -392,8 +416,11 @@ const runGame = () => {
     dog.moveSheep(flock.sheeps)
     dog.handleInput(input)
     dog.draw(ctx)
-
-    requestAnimationFrame(runGame)
+    if (gameOver) {
+        endGame()
+    } else {
+        requestAnimationFrame(runGame)
+    }
 }
 
 startBtn.addEventListener("click", startGame)

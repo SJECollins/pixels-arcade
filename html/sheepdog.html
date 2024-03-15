@@ -132,6 +132,11 @@
         <button id="start">Start!</button>
         <button id="reset">Reset</button>
       </div>
+      <div>
+        <p>Loose: <span id="loose-sheep">8</span></p>
+        <p>Penned: <span id="penned-sheep">0</span></p>
+        <p>Time: <span id="timer">0</span></p>
+      </div>
 
       <canvas width="320" height="320" id="canvas"></canvas> 
 
@@ -140,15 +145,9 @@
     <!-- Instruction pop up-->
     <div id="intro" class="pop-up">
       <div class="pop-up-card">
-        <h2>Welcome to the Anagram Game</h2>
-        <p>There are five categories: </p>
-        <p> Movies, Food, Songs, Animals, and Books</p>
-        <p>When you press start you'll get an anagram</p>
-        <p>of a single word or title from one of these</p>
-        <p>categories</p>
-        <p>If you can get five anagrams right in a row,</p>
-        <p>YOU WIN!</p>
-        <p>But just one wrong, and you lose!</p>
+        <h2>Welcome to Sheepdog Trials</h2>
+        <p>Use WASD to control the dog.</p>
+        <p>Herd all the sheep into the pen to win.</p>
         <button id="close-pop-up">Got It!</button>
       </div>
     </div>
@@ -157,8 +156,7 @@
     <div id="game-over" class="pop-up">
       <div id="end" class="pop-up-card">
         <h2>Game Over!</h2>
-        <p>YOU <span id="result"></span></p>
-        <h3>The word was <span class="right-word"></span></h3>
+        <p>You penned all the sheep in <span id="result"></span> seconds!</p>
         <a href="sheepdog.html">Play Again</a>
         <a href="../index.html">Home</a>
       </div>
