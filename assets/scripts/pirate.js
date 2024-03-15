@@ -18,7 +18,8 @@ bgImg.src = "../assets/images/pirate/sea.png"
 const gameWidth = 320
 const gameHeight = 320
 const tileSize = 32
-
+let enemyTimer = 0
+let enemyInterval = Math.random() * 10000 + 5000
 let wind = {}
 let playerShip = {}
 let enemyShips = []
@@ -172,23 +173,32 @@ class Player {
         } else {
             this.cannonTimer += deltaTime
         }
-
     }
 }
 
 class EnemyShip {
-    constructor() {
+    constructor(posX, posY) {
         this.img = shipImg
         this.x = posX
         this.y = posY
         this.width = tileSize * 2
-        this.height = tileSize * 2
         this.frameX = 0
         this.speed = 0
         this.sails = 0
+        this.angle = 0
+        this.sailsChangeTimer = 0
+        this.sailsChangeInterval = 1000
+        this.cannonTimer = 0
+        this.cannonInterval = 1000
         this.health = 100
     }
-    draw(ctx) {}
+    draw(ctx) {
+        ctx.save()
+        ctx.translate(gameWidth / 2, gameHeight / 2)
+        ctx.rotate(this.angle)
+        ctx.drawImage(this.img, this.frameX, 0, this.width, this.width, -this.width / 2, -this.width / 2, this.width, this.width)
+        ctx.restore()
+    }
     update() {}
 }
 
@@ -238,7 +248,7 @@ class CannonBall {
         this.color = "black"
         this.dx = Math.cos(this.angle) * this.speed
         this.dy = Math.sin(this.angle) * this.speed
-        this.markForDeletion = false
+        this.markedForDeletion = false
     }
 
     draw(ctx) {
@@ -255,6 +265,33 @@ class CannonBall {
         if (this.x > gameWidth || this.x < 0 || this.y > gameHeight || this.y < 0) {
             this.markForDeletion = true
         }
+    }
+}
+
+class InputHandler {
+    constructor() {
+        this.keys = []
+        window.addEventListener("keydown", (e) => {
+            if ((e.code == "KeyW" ||
+                 e.code == "KeyD" ||
+                 e.code == "KeyS" ||
+                 e.code == "KeyA" ||
+                 e.code == "KeyE" ||
+                 e.code == "KeyQ")
+                 && this.keys.indexOf(e.code) === -1) {
+                    this.keys.push(e.code)
+                 }
+        })
+        window.addEventListener("keyup", (e) => {
+            if (e.code == "KeyW" ||
+                e.code == "KeyD" ||
+                e.code == "KeyS" ||
+                e.code == "KeyA" ||
+                e.code == "KeyE" ||
+                e.code == "KeyQ") {
+                this.keys.splice(this.keys.indexOf(e.code), 1)
+                }
+        })
     }
 }
 
@@ -283,40 +320,40 @@ const handleBalls = (ctx) => {
         ball.draw(ctx)
         ball.move()
     })
-    playerBalls = playerBalls.filter(ball => !ball.markForDeletion)
+    playerBalls = playerBalls.filter(ball => !ball.markedForDeletion)
     enemyBalls.forEach(ball => {
         ball.draw(ctx)
         ball.move()
     })
-    enemyBalls = enemyBalls.filter(ball => !ball.markForDeletion)
+    enemyBalls = enemyBalls.filter(ball => !ball.markedForDeletion)
 }
 
-
-class InputHandler {
-    constructor() {
-        this.keys = []
-        window.addEventListener("keydown", (e) => {
-            if ((e.code == "KeyW" ||
-                 e.code == "KeyD" ||
-                 e.code == "KeyS" ||
-                 e.code == "KeyA" ||
-                 e.code == "KeyE" ||
-                 e.code == "KeyQ")
-                 && this.keys.indexOf(e.code) === -1) {
-                    this.keys.push(e.code)
-                 }
-        })
-        window.addEventListener("keyup", (e) => {
-            if (e.code == "KeyW" ||
-                e.code == "KeyD" ||
-                e.code == "KeyS" ||
-                e.code == "KeyA" ||
-                e.code == "KeyE" ||
-                e.code == "KeyQ") {
-                this.keys.splice(this.keys.indexOf(e.code), 1)
-                }
-        })
+const handleEnemies = (deltaTime) => {
+    let spawnX = 0
+    let spawnY = 0
+    if (enemyTimer > enemyInterval) {
+        let spawn = Math.random() < 0.5 ? "x" : "y"
+        let position = Math.random() < 0.5 ? 0 : 320
+        if (spawn == "x") {
+            spawnX = position
+            spawnY = Math.floor(Math.random() * 320)
+            enemyShips.push(new EnemyShip(spawnX, spawnY))
+        } else {
+            spawnY = position
+            spawnX = Math.floor(Math.random() * 320)
+            enemyShips.push(new EnemyShip(spawnX, spawnY))
+        }
+        enemyInterval = Math.random() * 10000 + 5000
+        enemyTimer = 0
+    } else {
+        enemyTimer += deltaTime
     }
+
+    enemyShips.forEach(ship => {
+        ship.draw(ctx)
+        ship.update(deltaTime)
+    })
+    enemyShips = enemyShips.filter(ship => !ship.markedForDeletion)
 }
 
 const startGame = () => {
