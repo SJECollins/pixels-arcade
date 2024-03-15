@@ -271,7 +271,7 @@ class Sheepdog {
         this.maxSpeed = 2
         this.moveX = 0
         this.moveY = 0
-        this.direction = 0
+        this.direction = Math.PI
     }
     draw(ctx) {
         ctx.save()
