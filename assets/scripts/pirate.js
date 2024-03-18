@@ -26,6 +26,8 @@ let enemyShips = []
 let playerBalls = []
 let enemyBalls = []
 let lastTime = 0
+let gameOver = false
+let sunkShips = 0
 
 class Background {
     constructor() {
@@ -154,20 +156,22 @@ class Player {
         this.y = gameHeight / 2
         this.width = tileSize * 2
         this.frameX = 0
+        this.frameY = 0
         this.speed = 0
         this.sails = 0
         this.angle = 0
         this.sailsChangeTimer = 0
         this.sailsChangeInterval = 1000
-        this.cannonTimer = 0
+        this.cannonTimer = 1000
         this.cannonInterval = 1000
         this.health = 100
+        this.strength = 10
     }
     draw(ctx) {
         ctx.save()
         ctx.translate(gameWidth / 2, gameHeight / 2)
         ctx.rotate(this.angle)
-        ctx.drawImage(this.img, this.frameX, 0, this.width, this.width, -this.width / 2, -this.width / 2, this.width, this.width)
+        ctx.drawImage(this.img, this.frameX, this.frameY, this.width, this.width, -this.width / 2, -this.width / 2, this.width, this.width)
         ctx.restore()
     }
     update(deltaTime) {
@@ -199,14 +203,29 @@ class Player {
         if (this.cannonTimer > this.cannonInterval) {
             if (input.keys.includes("KeyE")) {
                 fireCannon(this, "right")
+                this.cannonTimer = 0
             }
             if (input.keys.includes("KeyQ")) {
                 fireCannon(this, "left")
+                this.cannonTimer = 0
+
             }
-            this.cannonTimer = 0
         } else {
             this.cannonTimer += deltaTime
         }
+
+        if (this.health > 50) {
+            this.frameY = 0
+        } else if (this.health > 30) {
+            this.frameY = 64
+        } else if (this.health > 0) {
+            this.frameY = 128
+        } else {
+            setTimeout(() => {
+                gameOver = true
+            }, 500)
+        }
+
     }
 }
 
@@ -217,23 +236,28 @@ class EnemyShip {
         this.y = posY
         this.width = tileSize * 2
         this.frameX = 0
+        this.frameY = 0
         this.speed = 0.4
-        this.sails = 1
+        this.sails = 0
         this.angle = 0
         this.sailsChangeTimer = 0
         this.sailsChangeInterval = 1000
         this.cannonTimer = 0
-        this.cannonInterval = 1000
+        this.cannonInterval = 1500
+        this.aimlessTimer = 2000
+        this.aimlessInterval = 2000
         this.health = 100
+        this.strength = 3
         this.chaseRadius = 140
         this.dangerRadius = 80
         this.rotationSpeed = 0.05
+        this.markedForDeletion = false
     }
     draw(ctx) {
         ctx.save()
         ctx.translate(this.x, this.y)
         ctx.rotate(this.angle)
-        ctx.drawImage(this.img, this.frameX, 0, this.width, this.width, -this.width / 2, -this.width / 2, this.width, this.width)
+        ctx.drawImage(this.img, this.frameX, this.frameY, this.width, this.width, -this.width / 2, -this.width / 2, this.width, this.width)
         ctx.restore()
     }
     update(player, deltaTime, background) {
@@ -242,6 +266,17 @@ class EnemyShip {
         // Calculate distance and angle to player
         const distanceToPlayer = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2)
         const angleToPlayer = Math.atan2(player.y - this.y, player.x - this.x)
+
+        // Update speed
+        if (distanceToPlayer < this.chaseRadius) {
+            if (player.sails != 0) {
+                this.sails = player.sails
+            } else {
+                this.sails = 1
+            }
+        } else if (distanceToPlayer > this.chaseRadius) {
+            this.sails = 1
+        }
 
         if (distanceToPlayer < this.dangerRadius) {
             // Inside dangerRadius turn side to player and fire cannons
@@ -266,11 +301,44 @@ class EnemyShip {
             this.angle += rotation
             this.x += Math.cos(angleToPlayer) * speed
             this.y += Math.sin(angleToPlayer) * speed
+        } else {
+            if (this.aimlessTimer > this.aimlessInterval) {
+                const randomAngle = Math.random() * 2 * Math.PI
+                const rotation = Math.sign(randomAngle - this.angle) * this.rotationSpeed
+                this.angle += rotation
+                this.aimlessTimer = 0
+            }
+            const dx = Math.cos(this.angle - Math.PI / 2) * speed
+            const dy = Math.sin(this.angle - Math.PI / 2) * speed
+            this.x += dx
+            this.y += dy
+            this.aimlessTimer += deltaTime
         }
+
         // Update position based on background speedX and speedY to move relative to background
         this.x = this.x + background.speedX
         this.y = this.y + background.speedY
-    }    
+        
+        // Change sprites for sails
+        if (this.sails == 0) {
+            this.frameX = 0
+        } else if (this.sails == 1) {
+            this.frameX = 64
+        } else {
+            this.frameX = 128
+        }
+        // Change sprite for damage
+        if (this.health > 50) {
+            this.frameY = 0
+        }else if (this.health > 30) {
+            this.frameY = 64
+        } else if (this.health > 0) {
+            this.frameY = 128
+        } else {
+            this.markedForDeletion = true
+            sunkShips++
+        }
+    }
 }
 
 class Wind {
@@ -310,7 +378,7 @@ class Wind {
 }
 
 class CannonBall {
-    constructor(x, y, angle) {
+    constructor(x, y, angle, shooter) {
         this.x = x
         this.y = y
         this.startX = x
@@ -322,6 +390,7 @@ class CannonBall {
         this.dx = Math.cos(this.angle) * this.speed
         this.dy = Math.sin(this.angle) * this.speed
         this.markedForDeletion = false
+        this.shooter = shooter
     }
 
     draw(ctx) {
@@ -331,12 +400,21 @@ class CannonBall {
         ctx.fill()
         ctx.closePath()
     }
-    move() {
+    move(player, enemies) {
         this.x += this.dx
         this.y += this.dy
 
+        // Collide with player
+        this.collideWithTarget(player)
+
+        // Collide with enemies
+        for (let enemy of enemies) {
+            if (this.collideWithTarget(enemy)) break
+        }
+
+        // Check if exceeds max distance
         const distanceSquared = (this.x - this.startX) ** 2 + (this.y - this.startY) ** 2
-        const maxDistance = 70 ** 2
+        const maxDistance = 60 ** 2
 
         if (distanceSquared > maxDistance) {
             this.markedForDeletion = true
@@ -345,6 +423,24 @@ class CannonBall {
         if (this.x > gameWidth || this.x < 0 || this.y > gameHeight || this.y < 0) {
             this.markedForDeletion = true
         }
+    }
+    collideWithTarget(target) {
+        // Don't collide with self!
+        if (target === this.shooter) {
+            return false
+        }
+        // Check distance to target and if within target radius hit!
+        const distanceToTarget = (this.x - target.x) ** 2 + (this.y - target.y) ** 2
+        const targetRadius = (target.width / 3) ** 2
+
+        if (distanceToTarget < targetRadius) {
+            target.health -= this.shooter.strength
+            // Update the display to show player their health
+            updateDisplay()
+            this.markedForDeletion = true
+            return true
+        }
+        return false
     }
 }
 
@@ -386,7 +482,7 @@ const fireCannon = (ship, direction) => {
         
         const firingAngle = ship.angle + angleAdjusted
         
-        const cannonBall = new CannonBall(cannonX, cannonY, firingAngle)
+        const cannonBall = new CannonBall(cannonX, cannonY, firingAngle, ship)
         if (ship == playerShip) {
             playerBalls.push(cannonBall)
         } else {
@@ -395,15 +491,15 @@ const fireCannon = (ship, direction) => {
     }
 }
 
-const handleBalls = (ctx) => {
+const handleBalls = (ctx, player, enemies) => {
     playerBalls.forEach(ball => {
         ball.draw(ctx)
-        ball.move()
+        ball.move(player, enemies)
     })
     playerBalls = playerBalls.filter(ball => !ball.markedForDeletion)
     enemyBalls.forEach(ball => {
         ball.draw(ctx)
-        ball.move()
+        ball.move(player, enemies)
     })
     enemyBalls = enemyBalls.filter(ball => !ball.markedForDeletion)
 }
@@ -413,7 +509,7 @@ const handleEnemies = (player, deltaTime, background) => {
     let spawnY = 0
     if (enemyTimer > enemyInterval) {
         let spawn = Math.random() < 0.5 ? "x" : "y"
-        let position = Math.random() < 0.5 ? 0 : 320
+        let position = Math.random() < 0.5 ? -32 : 352
         if (spawn == "x") {
             spawnX = position
             spawnY = Math.floor(Math.random() * 320)
@@ -425,9 +521,6 @@ const handleEnemies = (player, deltaTime, background) => {
         }
         enemyInterval = Math.random() * 10000 + 5000
         enemyTimer = 0
-        console.log("enemy spawned")
-        console.log(spawnX)
-        console.log(spawnY)
     } else {
         enemyTimer += deltaTime
     }
@@ -439,12 +532,21 @@ const handleEnemies = (player, deltaTime, background) => {
     enemyShips = enemyShips.filter(ship => !ship.markedForDeletion)
 }
 
+const updateDisplay = () => {
+    document.getElementById("player-health").innerHTML = playerShip.health
+}
+
 const startGame = () => {
     // Spawn the map and player boat
     wind = new Wind()
     playerShip = new Player()
     startBtn.removeEventListener("click", startGame)
     runGame(0)
+}
+
+const endGame = () => {
+    document.getElementById("game-over").style.display = "block"
+    document.getElementById("result").innerHTML = sunkShips
 }
 
 const input = new InputHandler()
@@ -463,8 +565,12 @@ const runGame = (timeStamp) => {
     playerShip.draw(ctx)
     playerShip.update(deltaTime)
     handleEnemies(playerShip, deltaTime, background)
-    handleBalls(ctx)
-    requestAnimationFrame(runGame)
+    handleBalls(ctx, playerShip, enemyShips)
+    if (gameOver) {
+        endGame()
+    } else {
+        requestAnimationFrame(runGame)
+    }
 }
 
 startBtn.addEventListener("click", startGame)
