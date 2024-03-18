@@ -253,8 +253,7 @@ class EnemyShip {
             this.angle += rotation
 
             if (this.cannonTimer > this.cannonInterval) {
-                fireCannon(this, "right")
-                fireCannon(this, "left")
+                fireCannon(this, angleDifference > 0 ? "right" : "left")
                 this.cannonTimer = 0
             } else {
                 this.cannonTimer += deltaTime
