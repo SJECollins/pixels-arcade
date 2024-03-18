@@ -38,8 +38,6 @@ class Background {
         this.speedX = 0
         this.speedY = 0
         this.windDirection = 0
-        this.relativeSpeed = 0
-        this.relativeDirection = 0
     }
     draw(context) {
         context.drawImage(this.img, this.x, this.y, this.width, this.height)
@@ -116,10 +114,6 @@ class Background {
                 // Update position of background based on velocity
                 this.x += backgroundVelocity.x
                 this.y += backgroundVelocity.y
-
-                // Update relative speed and direction to use in enemy update
-                this.relativeSpeed = Math.sqrt((backgroundVelocity.x ** 2) + (backgroundVelocity.y ** 2))
-                this.relativeDirection = Math.atan2(backgroundVelocity.y, backgroundVelocity.x)
 
                 // Wrap background
                 if (this.x > this.width) {
@@ -223,16 +217,16 @@ class EnemyShip {
         this.y = posY
         this.width = tileSize * 2
         this.frameX = 0
-        this.speed = 0.5
-        this.sails = 0
+        this.speed = 0.4
+        this.sails = 1
         this.angle = 0
         this.sailsChangeTimer = 0
         this.sailsChangeInterval = 1000
         this.cannonTimer = 0
         this.cannonInterval = 1000
         this.health = 100
-        this.chaseRadius = 260
-        this.dangerRadius = 100
+        this.chaseRadius = 140
+        this.dangerRadius = 80
         this.rotationSpeed = 0.05
     }
     draw(ctx) {
@@ -243,6 +237,8 @@ class EnemyShip {
         ctx.restore()
     }
     update(player, deltaTime, background) {
+        let speed = this.speed * this.sails
+
         // Calculate distance and angle to player
         const distanceToPlayer = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2)
         const angleToPlayer = Math.atan2(player.y - this.y, player.x - this.x)
@@ -250,7 +246,10 @@ class EnemyShip {
         if (distanceToPlayer < this.dangerRadius) {
             // Inside dangerRadius turn side to player and fire cannons
             const angleDifference = angleToPlayer - this.angle
-            const rotation = Math.sign(angleDifference) * Math.min(Math.abs(angleDifference), this.rotationSpeed)
+            const shortestRotation = Math.atan2(Math.sin(angleDifference), Math.cos(angleDifference))
+            const sideToTurn = shortestRotation > 0 ? -1 : 1
+            const rotation = sideToTurn * Math.min(Math.abs(shortestRotation), this.rotationSpeed)
+            
             this.angle += rotation
 
             if (this.cannonTimer > this.cannonInterval) {
@@ -260,14 +259,14 @@ class EnemyShip {
             } else {
                 this.cannonTimer += deltaTime
             }
-        } else {
-            // Outside dangerRadius face player and try to chase
+        } else if (distanceToPlayer < this.chaseRadius) {
+            // Outside dangerRadius but inside chaseRadius, face player and try to chase
             const desiredAngle = angleToPlayer + Math.PI / 2
             const angleDifference = desiredAngle - this.angle
             const rotation = Math.sign(angleDifference) * Math.min(Math.abs(angleDifference), this.rotationSpeed)
             this.angle += rotation
-            this.x += Math.cos(angleToPlayer) * this.speed
-            this.y += Math.sin(angleToPlayer) * this.speed
+            this.x += Math.cos(angleToPlayer) * speed
+            this.y += Math.sin(angleToPlayer) * speed
         }
         // Update position based on background speedX and speedY to move relative to background
         this.x = this.x + background.speedX
