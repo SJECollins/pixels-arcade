@@ -230,7 +230,21 @@ Just a fishtank simulator. Still in progress. Earn credits by keeping the fish a
 ## Sudoku
 01/03
 
-Move over old Sudoku game had locally. Could probably do with some tweaking.
+Moving over older Sudoku game had locally. Could probably do with some tweaking.
+
+## Sheepdog Trials
+15/03
+
+Started with learning a bit about boids, turned into a game where you control the dog and try to pen the sheep who're milling about
+
+## Pirates?
+18/03
+
+Off the back of the sheepdog game and watching too much Black Sails. User controls a ship and sails around, has to use the wind to move. Can raise and lower sails and fire the cannons. Other ships pursue the player.
+
+TODO: filter the enemy array when they're too far away. 
+Check the janky firing on the enemy. 
+Stop the enemies sitting on top of each other.
 
 
 # General
