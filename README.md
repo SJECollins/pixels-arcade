@@ -246,6 +246,13 @@ TODO: filter the enemy array when they're too far away.
 Check the janky firing on the enemy. 
 Stop the enemies sitting on top of each other.
 
+## Hoof Hustle
+17/04
+
+"Betting" game. User selects a horse to back before the race starts. Bit of randomness to their ordering. User currently just wins or loses.
+
+COULDDO: Add betting?
+
 
 # General
 ## 02/07/22
@@ -279,3 +286,7 @@ Updated all the menus to include Blackjack and Apocalypse Trail. Added Blackjack
 ## 01/2024
 
 CSS refactor to toggle display
+
+## 17/04
+
+Updates menus - added quiz to menus on individual games as it was previously missing. Still have to add Sudoku game.
