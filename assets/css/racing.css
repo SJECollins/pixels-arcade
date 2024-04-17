@@ -1,0 +1,13 @@
+#message {
+    display: none;
+    margin: 1em;
+}
+
+#horse-selection {
+    display: none;
+}
+
+fieldset {
+    display: flex;
+    flex-direction: column;
+}

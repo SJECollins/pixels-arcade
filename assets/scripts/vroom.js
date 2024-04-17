@@ -247,7 +247,7 @@ window.addEventListener("load", () => {
         displayStats()
     }
 
-    const displayStats = (t) => {
+    const displayStats = () => {
         let startTime = setInterval(() => {
             time++
             score += Math.round(2 * velocity)
