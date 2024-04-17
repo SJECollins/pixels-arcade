@@ -38,12 +38,12 @@ class Track {
     }
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
-        ctx.drawImage(this.img, this.x + this.width - speed, this.y, this.width, this.height)
+        ctx.drawImage(this.img, this.x + this.width, this.y, this.width, this.height)
     }
     update() {
         this.x -= speed
         if (this.x < 0 - this.width) {
-            this.x = this.x - (0 - this.width)
+            this.x = 0
         }
     }
 }
