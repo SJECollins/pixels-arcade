@@ -1,0 +1,37 @@
+#word-grid, #guess-input {
+    display: grid;
+    background-color: var(--secondary-background);
+    max-width: fit-content;
+    margin: 1rem auto;
+}
+
+#guess-input {
+    display: flex;
+}
+
+.cell {
+    border: 2px solid var(--primary-background);
+    border-radius: 1px;
+    width: 40px;
+    height: 40px;
+    color: var(--secondary-text);
+    text-align: center;
+    font-size: 48;
+    font-family: "Press Start 2P", sans-serif;
+}
+
+.guess-cell {
+    background-color: transparent;
+}
+
+.correct-letter {
+    background-color: #918708;
+}
+
+.correct-place {
+    background-color: var(--text-interaction);
+}
+
+.wrong-letter {
+    background-color: inherit;
+}
