@@ -1,5 +1,6 @@
 const wordGrid = document.getElementById("word-grid")
 const guessInput = document.getElementById("guess-input")
+const keyboard = document.getElementById("keyboard")
 
 const startBtn = document.getElementById("start")
 const resetBtn = document.getElementById("reset")
@@ -11,15 +12,67 @@ const gameVars = {
     "word": ""
 }
 
-const preventNumeric = (e) => {
-    e.target.value = e.target.value.replace(/[^a-zA-Z]/g, '')
+let lastKeyPressed = null;
+
+document.addEventListener('keydown', (e) => {
+    lastKeyPressed = e.key
+});
+
+let lastSelectedInput = null
+
+document.addEventListener('mousedown', (e) => {
+    if (e.target.tagName === "INPUT") {
+        lastSelectedInput = e.target
+    }
+})
+
+const moveFocus = (input) => {
+
+}
+
+const checkInput = (e) => {
+    const input = e.target
+    if ((/[^a-zA-Z]/g).test(input.value)){
+        return input.value = input.value.replace(/[^a-zA-Z]/g, '')
+    }
+    let newValue = input.value.slice(-1)
+    if ((/^[a-z]$/.test(newValue))) {
+        newValue = newValue.toUpperCase()
+    }
+    input.value = newValue
+    if (input.nextSibling && input.nextSibling.tagName == "INPUT" && lastKeyPressed != "Delete" && lastKeyPressed != "Backspace") {
+        input.nextSibling.focus()
+        lastSelectedInput = input.nextSibling
+    }
+}
+
+const inputKey = (e) => {
+    const letter = e.target.innerHTML
+
+    if (lastSelectedInput) {
+        lastSelectedInput.value = letter
+        const event = new Event('input');
+        lastSelectedInput.dispatchEvent(event);
+    }
+}
+
+const createKeyboard = () => {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+    for (let i = 0; i < alphabet.length; i++) {
+        const key = document.createElement("button")
+        key.innerHTML = alphabet[i]
+        key.classList.add("cell", "key")
+        key.addEventListener("click", inputKey)
+        keyboard.appendChild(key)
+    }
 }
 
 const getLength = () => {
     return parseInt(document.querySelector("input[name='word-length']:checked").value)
 }
 
-const renderGrid = (length) => {
+const renderGame = (length) => {
     wordGrid.innerHTML = ""
 
     wordGrid.style.gridTemplateColumns = `repeat(${length}, 1fr)`;
@@ -38,18 +91,22 @@ const renderGrid = (length) => {
         guessCell.name = "guess"
         guessCell.maxLength = 1
         guessCell.classList.add("cell", "guess-cell")
-        guessCell.addEventListener("input", preventNumeric)
+        guessCell.addEventListener("input", checkInput)
         guessInput.appendChild(guessCell)
     }
+
+    lastSelectedInput = document.querySelectorAll(".guess-cell")[0]
+
+    createKeyboard()
 }
 
 const pickWord = (length) => {
     if (length == 3) {
-        return threeLetters[Math.floor(Math.random() * threeLetters.length)]
+        return threeLetters[Math.floor(Math.random() * threeLetters.length)].toUpperCase()
     } else if (length == 4) {
-        return fourLetters[Math.floor(Math.random() * fourLetters.length)]
+        return fourLetters[Math.floor(Math.random() * fourLetters.length)].toUpperCase()
     } else {
-        return fiveLetters[Math.floor(Math.random() * fiveLetters.length)]
+        return fiveLetters[Math.floor(Math.random() * fiveLetters.length)].toUpperCase()
     }
 }
 
@@ -89,6 +146,8 @@ const checkGuess = () => {
     gameVars["guesses"].push(guess)
     
     guessCells.forEach(cell => cell.value = "");
+    lastSelectedInput = document.querySelectorAll(".guess-cell")[0]
+
 
     setTimeout(() => {
         if (correct === gameVars["word"].length) {
@@ -108,7 +167,7 @@ const checkGuess = () => {
 const startGame = () => {
     startBtn.removeEventListener("click", startGame)
     gameVars["length"] = getLength()
-    renderGrid(gameVars["length"])
+    renderGame(gameVars["length"])
     gameVars["word"] = pickWord(gameVars["length"])
     guessBtn.addEventListener("click", checkGuess)
 }
