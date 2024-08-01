@@ -75,14 +75,14 @@ const getLength = () => {
 const renderGame = (length) => {
     wordGrid.innerHTML = ""
 
-    wordGrid.style.gridTemplateColumns = `repeat(${length}, 1fr)`;
-    wordGrid.style.gridTemplateRows = `repeat(${length}, 1fr)`;
+    wordGrid.style.gridTemplateColumns = `repeat(${length}, 1fr)`
+    wordGrid.style.gridTemplateRows = `repeat(${length}, 1fr)`
 
     const totalCells = length * length;
-    for (let i = 1; i <= totalCells; i++) {
-        const gridCell = document.createElement('div');
+    for (let i = 0; i < totalCells; i++) {
+        const gridCell = document.createElement('div')
         gridCell.classList.add("grid-cell", "cell")
-        wordGrid.appendChild(gridCell);
+        wordGrid.appendChild(gridCell)
     }
 
     for (let i = 1; i <= length; i++) {
@@ -172,6 +172,7 @@ const startGame = () => {
     guessBtn.addEventListener("click", checkGuess)
 }
 
+guessBtn.style.display = "none"
 startBtn.addEventListener("click", startGame)
 resetBtn.addEventListener("click", () => {
     location.reload()
