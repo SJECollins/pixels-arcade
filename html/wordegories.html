@@ -138,7 +138,6 @@
     <h1>Wordegories</h1>
     <p id="instructions">Instructions</p>
 
-    <div id="board">
       <!-- Game Buttons -->
       <div id="buttons">
         <button id="start">Start!</button>
@@ -158,12 +157,12 @@
       </div>
 
       <div>
-        <p>Chances remaining: <span id="changes">3</span></p>
+        <p>Chances remaining: <span id="chances">3</span></p>
       </div>
 
       <div id="correct-categories"></div>
       <div id="game"></div>
-      <button type="button" id="guess">Submit</button>
+      <button type="button" id="guess-button">Submit</button>
       <div id="message"></div>
 
       <!-- Instruction pop up-->
@@ -177,7 +176,16 @@
           <button id="close-pop-up">Got It!</button>
         </div>
       </div>
-    </div>
+            <!-- Game Over -->
+      <div id="game-over" class="pop-up">
+        <div id="end" class="pop-up-card">
+          <h2>Game Over!</h2>
+          <p>You <span id="result"></span></p>
+          <a href="wordegories.html">Play Again</a>
+          <a href="../index.html">Home</a>
+        </div>
+      </div>
+
   </section>
   <footer>
     <button id="toggle-display">Toggle Display</button>

@@ -4,18 +4,27 @@ const message = document.getElementById("message")
 
 const startBtn = document.getElementById("start")
 const resetBtn = document.getElementById("reset")
-const guessBtn = document.getElementById("guess")
+const guessBtn = document.getElementById("guess-button")
 
 const gameVars = {
     "categories": [],
     "difficulty": 3,
     "chances": 3,
-    "selected": []
+    "selected": [],
+    "correct": 0
+}
+
+const shuffle = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
 const selectCategories = (difficulty) => {
-    const randomised = categories.sort(() => 0.5 - Math.random());
-    gameVars["categories"] = randomised.slice(0, difficulty)
+    const shuffledCategories = shuffle([...categories])
+    gameVars["categories"] = shuffledCategories.slice(0, difficulty)
 }
 
 const selectWord = (e) => {
@@ -32,10 +41,30 @@ const selectWord = (e) => {
     }
 }
 
+const checkGuess = () => {
+    if (gameVars["selected"].length != 4) {
+        displayMessage("Please select 4 words")
+        return false
+    } else {
+        const sortedSelected = gameVars["selected"].slice().sort()
+        for (let category of gameVars["categories"]) {
+            const sortedCat = category["words"].slice().sort()
+            if (sortedSelected.every((value, index) => value === sortedCat[index])) {
+                displayMessage("Correct!")
+                return category
+            }
+        }
+        displayMessage("Not a match...")
+        gameVars["chances"] -= 1
+        document.getElementById("chances").innerHTML = gameVars["chances"]
+        return false
+    }
+}
+
 const submitGuess = () => {
-    console.log("submitted")
     const category = checkGuess()
     if (category) {
+        gameVars["correct"] += 1
         const catDiv = document.createElement("div")
         catDiv.classList.add("category-display")
         const theme = document.createElement("p")
@@ -56,29 +85,21 @@ const submitGuess = () => {
         }
     }
 
-    
+    gameVars["selected"] = []
+    checkEnd()
 }
 
-const checkGuess = () => {
-    if (gameVars["selected"].length != 4) {
-        displayMessage("Please select 4 words")
-        return false
-    } else {
-        const sortedSelected = gameVars["selected"].slice().sort()
-        for (let category of gameVars["categories"]) {
-            const sortedCat = category["words"].slice().sort()
-            if (sortedSelected.every((value, index) => value === sortedCat[index])) {
-                displayMessage("Correct!")
-                return category
-            }
-        }
-        displayMessage("Not a match...")
-        return false
+const checkEnd = () => {
+    console.log("checking")
+    if (gameVars["difficulty"] == gameVars["correct"]) {
+        console.log("won")
+        document.getElementById("game-over").style.display = "block"
+        document.getElementById("result").innerHTML = "found all the matches!"
+    } else if (gameVars["chances"] == 0) {
+        console.log(lost)
+        document.getElementById("game-over").style.display = "block"
+        document.getElementById("result").innerHTML = "didn't find all the matches..."
     }
-}
-
-const correctGuess = (category) => {
-
 }
 
 const buildBoard = () => {
@@ -89,7 +110,7 @@ const buildBoard = () => {
         }
     })
 
-    allWords = allWords.sort(() => 0.5 - Math.random())
+    allWords = shuffle(allWords)
 
     gameBoard.style.gridTemplateColumns = `repeat(4, 1fr)`
     gameBoard.style.gridTemplateRows = `repeat(${gameVars["difficulty"]}, 1fr)`
@@ -111,6 +132,7 @@ const displayMessage = (text) => {
 }
 
 const startGame = () => {
+    startBtn.removeEventListener("click", startGame)
     gameVars["difficulty"] = parseInt(document.querySelector("input[name='categories']:checked").value)
     selectCategories(gameVars["difficulty"])
 

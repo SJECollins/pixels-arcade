@@ -138,30 +138,29 @@
     <h1>Guess The Word</h1>
     <p id="instructions">Instructions</p>
 
-    <div id="board">
-      <!-- Game Buttons -->
-      <div id="buttons">
-        <button id="start">Start!</button>
-        <button id="reset">Reset</button>
-      </div>
-      <div id="options">
-        <label for="three">Three: 
-            <input type="radio" name="word-length" id="three" value="3">
-        </label>
-        <label for="four">Four: 
-            <input type="radio" name="word-length" id="four" value="4">
-        </label>
-        <label for="five">Five: 
-            <input type="radio" name="word-length" id="five" value="5" checked>
-        </label>
-      </div>
+    <!-- Game Buttons -->
+    <div id="buttons">
+      <button id="start">Start!</button>
+      <button id="reset">Reset</button>
+    </div>
+    <div id="options">
+      <label for="three">Three: 
+          <input type="radio" name="word-length" id="three" value="3">
+      </label>
+      <label for="four">Four: 
+          <input type="radio" name="word-length" id="four" value="4">
+      </label>
+      <label for="five">Five: 
+          <input type="radio" name="word-length" id="five" value="5" checked>
+      </label>
+    </div>
 
-      <!-- Grid -->
-       <div id="word-grid"></div>
+    <!-- Grid -->
+    <div id="word-grid"></div>
 
-       <div id="guess-input"></div>
-       <div id="keyboard"></div>
-       <button type="button" id="guess-button">Submit</button>
+    <div id="guess-input"></div>
+    <div id="keyboard"></div>
+    <button type="button" id="guess-button">Submit</button>
 
     <!-- Instruction pop up-->
     <div id="intro" class="pop-up">
