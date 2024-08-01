@@ -53,24 +53,13 @@ const pickWord = (length) => {
     }
 }
 
-// const checkLetter = (guess) => {
-//     for (let i = 0; i < guess.length; i++) {
-//         if (gameVars["word"][i] == guess[i]) {
-//             return correctPlace
-//         } else if (gameVars["word"].includes(guess[i])) {
-//             return correctLetter
-//         } else {
-//             return wrong
-//         }
-//     }
-// }
-
 const checkGuess = () => {
-    let guess = []
+    guessBtn.removeEventListener("click", checkGuess)
+    let guess = ""
     let correct = 0
     
     const guessCells = document.querySelectorAll(".guess-cell")    
-    guessCells.forEach(cell => guess.push(cell.value))
+    guessCells.forEach(cell => guess += cell.value)
     console.log(guess)
     console.log(gameVars["word"])
 
@@ -97,12 +86,23 @@ const checkGuess = () => {
         cell.innerHTML = guessedLetter;
     }
 
-
-    if (correct === gameVars["word"].length) {
-        console.log("Congratulations! You guessed the word!");
-    }
-
+    gameVars["guesses"].push(guess)
+    
     guessCells.forEach(cell => cell.value = "");
+
+    setTimeout(() => {
+        if (correct === gameVars["word"].length) {
+            document.getElementById("game-over").style.display = "block"
+            document.getElementById("result").innerHTML = "WON!"
+            document.getElementById("right-word").innerHTML = gameVars["word"]
+        } else if (gameVars["length"] == gameVars["guesses"].length) {
+            document.getElementById("game-over").style.display = "block"
+            document.getElementById("result").innerHTML = "lost..."
+            document.getElementById("right-word").innerHTML = gameVars["word"]
+        } else {
+            guessBtn.addEventListener("click", checkGuess)
+        }
+    }, 500)
 }
 
 const startGame = () => {
@@ -111,10 +111,6 @@ const startGame = () => {
     renderGrid(gameVars["length"])
     gameVars["word"] = pickWord(gameVars["length"])
     guessBtn.addEventListener("click", checkGuess)
-}
-
-const endGame = () => {
-
 }
 
 startBtn.addEventListener("click", startGame)

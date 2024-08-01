@@ -15,23 +15,42 @@
     width: 40px;
     height: 40px;
     color: var(--secondary-text);
-    text-align: center;
     font-size: 48;
     font-family: "Press Start 2P", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .guess-cell {
+    text-align: center;
     background-color: transparent;
 }
 
 .correct-letter {
-    background-color: #918708;
+    background-color: #a85008;
 }
 
 .correct-place {
-    background-color: var(--text-interaction);
+    background-color: #01680b;
 }
 
 .wrong-letter {
     background-color: inherit;
+}
+
+#options {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 1rem;
+}
+
+input {
+    accent-color: var(--secondary-text); 
+}
+
+label {
+    display: flex;
+    align-items: center;
 }
