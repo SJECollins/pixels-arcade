@@ -24,7 +24,7 @@ Coding along with these tutorials:
 
 3 difficulty levels - different number of holes for rabbits to pop out of and different speeds.
 
-TODO: ~~add a mole that if the user whacks they automatically lose.~~
+~~TODO: add a mole that if the user whacks they automatically lose.~~ DONE
 
 More levels??
 
@@ -38,9 +38,9 @@ Basic RPS. Can choose from best of 3 or 5.
 
 Images for the game from [here](https://publicdomainvectors.org/en/free-clipart/Rock-Paper-Scissors/51207.html)
 
-TODO: ~~add LS option.~~
+~~TODO: add LS option.~~ DONE
 
-~~Update CSS to style choices better - too large~~
+~~Update CSS to style choices better - too large~~ DONE
 
 ## Minesweeper
 
@@ -81,8 +81,9 @@ COULDDO: More levels, more bosses.
 
 3 board options - 4, 6 and 9 squares -, checkbox for speed, options for numbers of rounds - ten, twenty or "endless" (200).
 
-TODO: ~~style radio buttons and checkboxes.~~
-~~also made it sort of responsive down to 360px width while I was at it~~
+~~TODO: style radio buttons and checkboxes.~~ DONE
+
+*also made it sort of responsive down to 360px width while I was at it*
 
 ## Missing Item Game
 03/07
@@ -113,7 +114,7 @@ COULDDO: different levels? Even just different backgrounds and alternative enemi
 
 A wave-based, top-down shooter using HTML5 canvas and JS. Zombies spawn in the fog and chase the player around the screen, and you shoot them to survive. More zombies spawn per wave. So far there's no true win condition, theoretically you could play it forever?? Would probably break. Added mobile controls that sort of work, haha.
 
-TODO: ~~Revisit bullet collision with the zombies~~
+~~TODO: Revisit bullet collision with the zombies~~ DONE
 
 ## Hide & Seek
 02/01/2023
@@ -253,6 +254,16 @@ Stop the enemies sitting on top of each other.
 
 COULDDO: Add betting?
 
+## Guessagram
+01/08
+
+Wordle type game. User can choose 3, 4 or 5 letter words. Affects the number of guesses too so shorter words are harder.
+
+## Wordegories
+02/08
+
+I can't remember where I've seen the game this is based off or what the name was, just remembered it vaguely when working on the wordle type game. Groups of four words linked by categories. Can choose 3, 4 or 5 categories for difficulty. 3 lives.
+
 
 # General
 ## 02/07/22
@@ -289,4 +300,7 @@ CSS refactor to toggle display
 
 ## 17/04
 
-Updates menus - added quiz to menus on individual games as it was previously missing. Still have to add Sudoku game.
+Updated menus - added quiz to menus on individual games as it was previously missing. Still have to add Sudoku game.
+
+## 02/08
+Updated menus again - way too long. Switched to script to render links on menu modal. Removes almost 100 lines of code from each HTML file. Also, switched menu modal to scroll as it's getting too long. Also also, added Wordegories, Sudoku and Guessagram to the menus on the game pages. Need to update index page still.
