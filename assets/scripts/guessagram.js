@@ -117,8 +117,6 @@ const checkGuess = () => {
     
     const guessCells = document.querySelectorAll(".guess-cell")    
     guessCells.forEach(cell => guess += cell.value)
-    console.log(guess)
-    console.log(gameVars["word"])
 
     if (guess.length != gameVars["word"].length) {
         return console.log("wrong length")
@@ -170,6 +168,7 @@ const startGame = () => {
     renderGame(gameVars["length"])
     gameVars["word"] = pickWord(gameVars["length"])
     guessBtn.addEventListener("click", checkGuess)
+    guessBtn.style.display = "block"
 }
 
 guessBtn.style.display = "none"

@@ -75,3 +75,7 @@ label {
     display: flex;
     align-items: center;
 }
+
+#guess-button {
+    margin: 0 auto;
+}

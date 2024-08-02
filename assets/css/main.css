@@ -99,6 +99,8 @@ header {
   min-height: inherit;
   text-align: left;
   padding: 40px;
+  max-height: 60vh;
+  overflow-y: scroll;
 }
 
 .menu-pop-up-card h2 {
