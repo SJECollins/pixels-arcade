@@ -2,6 +2,7 @@
     display: grid;
     margin: 1rem auto;
     max-width: fit-content;
+    background-color: var(--secondary-background);
 }
 
 .grid-cell {
@@ -16,4 +17,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.selected {
+    background-color: red;
 }
