@@ -31,14 +31,12 @@ const shuffle = (array) => {
 }
 
 function canPlaceWord(word, row, col, direction) {
-    console.log("looking for place")
     const [rowDir, colDir] = gameVars["directions"][direction]
 
     let endRow = row + (word.length - 1) * rowDir
     let endCol = col + (word.length - 1) * colDir
 
     if (endRow < 0 || endRow >= gameVars["size"] || endCol < 0 || endCol >= gameVars["size"]) {
-        console.log("Can't place - too long")
         return false
     }
 
@@ -46,7 +44,6 @@ function canPlaceWord(word, row, col, direction) {
         let curRow = row + i * rowDir
         let curCol = col + i * colDir
         if (gameVars["boardArray"][curRow][curCol] !== "") {
-            console.log("Can't place - overlapping")
             return false
         }
     }
@@ -82,7 +79,6 @@ const renderGrid = () => {
     gameGrid.style.gridTemplateColumns = `repeat(${gameVars["size"]}, 1fr)`
     gameGrid.style.gridTemplateRows = `repeat(${gameVars["size"]}, 1fr)`
 
-    console.log(gameVars["theme"]["words"])
     for (let word of gameVars["theme"]["words"]) {
         let placed = false
 
@@ -90,7 +86,6 @@ const renderGrid = () => {
             const randomRow = Math.floor(Math.random() * gameVars["size"])
             const randomCol = Math.floor(Math.random() * gameVars["size"])
             let direction = directions[Math.floor(Math.random() * directions.length)]
-            console.log(direction)
 
             if (canPlaceWord(word, randomRow, randomCol, direction)) {
                 placeWord(word, randomRow, randomCol, direction)
@@ -110,7 +105,6 @@ const renderGrid = () => {
             gameGrid.appendChild(div)
         })
     })
-
 }
 
 const selectCell = (e) => {
@@ -125,7 +119,6 @@ const selectCell = (e) => {
         gameVars["selected"] = gameVars["selected"].replace(selected.innerHTML, "")
     }
 
-    console.log(gameVars["selected"])
     const selectedWord = gameVars["selected"].split().sort().join("")
     for (let word of gameVars["theme"]["words"]) {
         const themeWord = word.split().sort().join()
@@ -136,8 +129,8 @@ const selectCell = (e) => {
         }
     }
 
-    if (gameVars["found"].length === gameVars["theme"]["word"]) {
-        console.log("You win")
+    if (gameVars["found"].length === gameVars["theme"]["words"].length) {
+        document.getElementById("game-over").style.display = "block"
     }
 }
 

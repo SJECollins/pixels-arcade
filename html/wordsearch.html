@@ -47,54 +47,36 @@
     <h1>Word Search</h1>
     <p id="instructions">Instructions</p>
 
-      <!-- Game Buttons -->
-      <div id="buttons">
-        <button id="start">Start!</button>
-        <button id="reset">Reset</button>
-      </div>
-      
-      <!-- <div id="options">
-        <label for="three">Three: 
-            <input type="radio" name="categories" id="three" value="3" checked>
-        </label>
-        <label for="four">Four: 
-            <input type="radio" name="categories" id="four" value="4">
-        </label>
-        <label for="five">Five: 
-            <input type="radio" name="categories" id="five" value="5">
-        </label>
-      </div> -->
+    <!-- Game Buttons -->
+    <div id="buttons">
+      <button id="start">Start!</button>
+      <button id="reset">Reset</button>
+    </div>
 
-      <!-- <div>
-        <p>Chances remaining: <span id="chances">3</span></p>
-      </div> -->
+    <div id="category"></div>
+    <div id="game"></div>
+    <div id="correct-words"></div>
+    <div id="message"></div>
 
-      <div id="category"></div>
-      <div id="game"></div>
-      <div id="correct-words"></div>
-      <!-- <button type="button" id="submit-button">Submit</button> -->
-      <div id="message"></div>
-
-      <!-- Instruction pop up-->
-      <div id="intro" class="pop-up">
-        <div class="pop-up-card">
-          <h2>Welcome to Word Search</h2>
-          <p>Select the number of categories.</p>
-          <p>Each category has four related words to find.</p>
-          <p>Select the words and submit your guess.</p>
-          <p>Three wrongs guesses and you lose!</p>
-          <button id="close-pop-up">Got It!</button>
-        </div>
+    <!-- Instruction pop up-->
+    <div id="intro" class="pop-up">
+      <div class="pop-up-card">
+        <h2>Welcome to Word Search</h2>
+        <p>Find words related to the theme.</p>
+        <p>Correct words will be displayed when you find them.</p>
+        <p>There are ten in total.</p>
+        <button id="close-pop-up">Got It!</button>
       </div>
-            <!-- Game Over -->
-      <div id="game-over" class="pop-up">
-        <div id="end" class="pop-up-card">
-          <h2>Game Over!</h2>
-          <p>You found all the words!</p>
-          <a href="wordsearch.html">Play Again</a>
-          <a href="../index.html">Home</a>
-        </div>
+    </div>
+    <!-- Game Over -->
+    <div id="game-over" class="pop-up">
+      <div id="end" class="pop-up-card">
+        <h2>Game Over!</h2>
+        <p>You found all the words!</p>
+        <a href="wordsearch.html">Play Again</a>
+        <a href="../index.html">Home</a>
       </div>
+    </div>
 
   </section>
   <footer>

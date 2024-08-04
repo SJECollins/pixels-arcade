@@ -31,7 +31,8 @@ const games = [
     { title: "Survive the Horde", href: "../html/survive.html", label: "Survive the Horde game" },
     { title: "Typing Test", href: "../html/typing.html", label: "Typing test game" },
     { title: "Vroom Vroom", href: "../html/vroom.html", label: "Vroom vroom game" },
-    { title: "Wordegories", href: "../html/wordegories.html", label: "Wordegories game" }
+    { title: "Wordegories", href: "../html/wordegories.html", label: "Wordegories game" },
+    { title: "Word Search", href: "../html/wordsearch.html", label: "Word search game" }
   ]
   
 
