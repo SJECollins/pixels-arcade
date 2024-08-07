@@ -215,6 +215,7 @@ const startGame = () => {
     handleHorses(ctx)
     foreground.draw(ctx)
     displayMessage("The race is about to start! Choose a horse to back!")
+    betBtn.style.display = "inline-block"
     betBtn.addEventListener("click", showHorse)
 }
 
@@ -256,6 +257,7 @@ const runGame = (timeStamp) => {
     }
 }
 
+betBtn.style.display = "none"
 startBtn.addEventListener("click", startGame)
 resetBtn.addEventListener("click", () => {
     location.reload()

@@ -1,0 +1,20 @@
+#board {
+    display: grid;
+    margin: 1rem auto;
+    max-width: fit-content;
+    gap: 4px;
+}
+
+.cell {
+    background: var(--secondary-background) center center / contain no-repeat;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px 0 var(--shadow);
+    transition: 0.3s
+}
+
+.selected {
+    border-color: var(--text-interaction);
+}
+
