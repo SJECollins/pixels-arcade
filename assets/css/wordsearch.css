@@ -21,5 +21,7 @@
 }
 
 .selected {
-    background-color: red;
+    background-color: var(--secondary-text);
+    color: var(--primary-text);
+    text-decoration: none;
 }

@@ -111,12 +111,14 @@ const selectCell = (e) => {
     const selected = e.target
     const currentWord = gameVars["found"].length.toString()
 
-    if (!selected.classList.contains("selected") && !selected.classList.contains(`${currentWord}`)) {
-        selected.classList.add("selected", currentWord)
-        gameVars["selected"] += selected.innerHTML
-    } else {
-        selected.classList.remove("selected", currentWord)
-        gameVars["selected"] = gameVars["selected"].replace(selected.innerHTML, "")
+    if (!selected.classList.contains("locked")){
+        if (!selected.classList.contains("selected") && !selected.classList.contains(`${currentWord}`)) {
+            selected.classList.add("selected", currentWord)
+            gameVars["selected"] += selected.innerHTML
+        } else {
+            selected.classList.remove("selected", currentWord)
+            gameVars["selected"] = gameVars["selected"].replace(selected.innerHTML, "")
+        }
     }
 
     const selectedWord = gameVars["selected"].split().sort().join("")
@@ -126,11 +128,23 @@ const selectCell = (e) => {
             gameVars["found"].push(word)
             document.getElementById("correct-words").innerHTML = gameVars["found"].join(", ")
             gameVars["selected"] = ""
+            lockLetters()
         }
     }
 
     if (gameVars["found"].length === gameVars["theme"]["words"].length) {
         document.getElementById("game-over").style.display = "block"
+    }
+
+    console.log(gameVars["selected"])
+}
+
+const lockLetters = () => {
+    const cells = document.querySelectorAll(".selected")
+    for (let cell of cells) {
+        if (!cell.classList.contains("locked")) {
+            cell.classList.add("locked")
+        }
     }
 }
 
