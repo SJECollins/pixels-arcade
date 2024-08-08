@@ -20,5 +20,16 @@
 }
 
 .matched {
-    border-color: var(--text-interaction)
+    border-color: var(--text-interaction);
+}
+
+#stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 1rem auto;
+}
+
+#stats > div {
+    width: 160px;
 }

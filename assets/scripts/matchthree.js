@@ -1,4 +1,6 @@
 const gameBoard = document.getElementById("board")
+const moveDisplay = document.getElementById("moves")
+const scoreDisplay = document.getElementById("score")
 
 const startBtn = document.getElementById("start")
 const resetBtn = document.getElementById("reset")
@@ -8,6 +10,7 @@ let gameVars = {
     selected: [],
     matches: [],
     score: 0,
+    moves: 0,
     size: 8,
 }
 
@@ -155,6 +158,8 @@ const checkCells = () => {
 
 // Swapping the cells around, checking for matches
 const swapCells = (cellOneCoords, cellTwoCoords) => {
+    gameVars.moves += 1
+    moveDisplay.innerHTML = gameVars.moves
     const cellOne = gameVars.board[cellOneCoords[0]][cellOneCoords[1]]
     const cellTwo = gameVars.board[cellTwoCoords[0]][cellTwoCoords[1]]
     cellOne.element.dataset.row = cellTwoCoords[0]
@@ -224,6 +229,7 @@ const adjustScore = (cellObjects) => {
         })
         gameVars.score += cellObjects.colNeighbours.length
     }
+    scoreDisplay.innerHTML = gameVars.score
 }
 
 // Replace matched cells with null then call moveCells
@@ -277,10 +283,24 @@ const moveCells = () => {
         }
     }
     updateBoard()
+    checkMatches()
 }
 
 // Check for matches again once the board has been updated
 const checkMatches = () => {
+    for (let row = gameVars.size - 1; row >= 0; row--) {
+        for (let col = gameVars.size - 1; col >= 0; col--) {
+            const cell = gameVars.board[row][col]
+            const checkCell = checkNeighbours(cell)
+            if (checkCell.hasMatch) {
+                adjustScore(checkCell)
+                setTimeout(() => {
+                    removeCells(cell, checkCell)
+                }, 1000)
+            }
+        }
+    }
+    updateBoard()
 }
 
 const startGame = () => {
