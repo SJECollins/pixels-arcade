@@ -11,10 +11,14 @@
     height: 40px;
     border-radius: 5px;
     box-shadow: 0 2px 2px 0 var(--shadow);
-    transition: 0.3s
+    transition: 0.3s;
+    border: 2px solid var(--primary-background);
 }
 
 .selected {
     border-color: var(--text-interaction);
 }
 
+.matched {
+    border-color: var(--text-interaction)
+}
