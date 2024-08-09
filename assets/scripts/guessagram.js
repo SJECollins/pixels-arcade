@@ -38,6 +38,7 @@ const checkInput = (e) => {
     let newValue = input.value.slice(-1)
     if ((/^[a-z]$/.test(newValue))) {
         newValue = newValue.toUpperCase()
+        lastKeyPressed = "Delete"
     }
     input.value = newValue
     if (input.nextSibling && input.nextSibling.tagName == "INPUT" && lastKeyPressed != "Delete" && lastKeyPressed != "Backspace") {
