@@ -3,7 +3,7 @@
 A practice project to combine HTML, CSS and vanilla JavaScript.
 This is for educational purposes and purely for learning and reflection as I work through some tutorials. Also, it's a bit of a refresher on HTML and CSS.
 
-[Live Site](https://sjecollins.github.io/javascript-game-project/)
+[Live Site](https://sjecollins.github.io/pixels-arcade/)
 
 [Submitted CI project](https://github.com/SJECollins/ci-pp2-pixels-arcade)
 
